@@ -1,14 +1,24 @@
+<?php session_start();
+$_SESSION["userId"] = 1; ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="stylesheet" href="./public/css/chatStyle.css">
+    <script src="https://kit.fontawesome.com/9d1def913c.js" crossorigin="anonymous"></script>
+    <script defer src="./public/javascript/chatbox.js"></script>
+    <script>
+        const userId = <?= $_SESSION["userId"] ?>
+    </script>
     <title><?= $title; ?></title>
 </head>
 
 <body>
     <?= $content; ?>
 </body>
+
 </html>
