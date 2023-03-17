@@ -6,7 +6,8 @@
 
 <h1>Hello World!</h1>
 
-<?php 
+<?php
+include("./view/components/googleSignIn.php");
 $content = ob_get_clean();
 require('./view/template.php');
 ?>

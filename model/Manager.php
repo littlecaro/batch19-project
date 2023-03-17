@@ -1,7 +1,9 @@
 <?php
 
-class Manager{
-    protected function dbConnect() {
+class Manager
+{
+    protected function dbConnect()
+    {
         $HOST = "localhost";
         $DATABASE = "batch19_project";
         $USERNAME = "root";
