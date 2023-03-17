@@ -3,16 +3,25 @@
 
 require("./controller/controller.php");
 
-try{
+try {
     $action = $_REQUEST['action'] ?? null;
-    
-    switch ($action){
-        
+
+    switch ($action) {
+        case "userProfile":
+            require('./view/userProfile.php');
+            break;
+        case "userSignInGoogle":
+            $token = $_POST['credential']; //post credentials 
+            $decodedToken = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1])))); // decoding the json web token (JWT) into the array info
+
+            checkUserSignInGoogle($decodedToken);
+            // require('./view/testView.php');
+            break;
         default:
-        showIndex();
-        break;
+            showIndex();
+            break;
     }
-} catch (Exception $e){
+} catch (Exception $e) {
     $errorMsg = $e->getMessage();
-    require ("./view/errorView.php");
+    require("./view/errorView.php");
 }
