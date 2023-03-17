@@ -1,6 +1,6 @@
 <!-- View - responsible for display of the page. the frontend -->
 <?php
-    $title = "TODO:CHANGE ME";
+    $title = "TODO:change";
     ob_start();
 ?>
 
