@@ -1,19 +1,40 @@
-<div class="chatboxHead">
-    <div class="messagingProfileIco"><img src="./TestProfileImg/dustyProfile.png" alt=""></div>
-    <span class="chatboxTitle">Messages</span>
-    <div class="chatboxActions">
-        <i class="fa-solid fa-ellipsis"></i>
-        <i class="fa-solid fa-pen-to-square"></i>
-        <i class="fa-solid fa-ex"></i>
-    </div>
-</div>
-<div class="messageContainer">
-    <?php
-    if (!empty($messages)) {
-        foreach ($messages as $message) {
-            include('./view/components/messageCard.php');
-        }
-    }
-    ?>
+<?php
+$title = "TODO:CHANGE ME";
+ob_start();
+?>
 
+<div class="messengerMain">
+    <div class="messengerLeft">
+        <div class="messengerActions">
+            <h3>Messaging</h3>
+            <div class="search"><input type="text" name="messageSearch" id="messageSearch" placeholder="Search messages">
+            </div>
+        </div>
+        <div class="messeangerContacts">
+            <?php
+
+            if (!empty($chats)) {
+                foreach ($chats as $chat) {
+                    include('./view/components/chatCard.php');
+                }
+            }
+            ?>
+        </div>
+    </div>
+    <div class="messengerCenter">
+        <?php
+        if (!empty($conversationId) and !empty($senderId) and !empty($message)) {
+            include "./view/components/messageCard.php";
+        }
+        ?>
+    </div>
+    <div class="messengerRight"></div>
 </div>
+
+<script src="./public/javascript/chatFunc.js"></script>
+<script src="./public/javascript/messenger.js"></script>
+<script src="./public/javascript/messageSearch.js"></script>
+<?php
+$content = ob_get_clean();
+require('./view/template.php');
+?>
