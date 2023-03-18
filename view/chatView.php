@@ -10,7 +10,7 @@
                 <i class="fa-solid fa-chevron-up"></i>
             </div>
         </div>
-        <div class="messageContainer">
+        <div class="expandableWrapper">
             <div class="messageSearch"></div>
             <?php
             if (!empty($chats)) {
@@ -23,3 +23,4 @@
         </div>
     </div>
 </div>
+<script src="./public/javascript/chatbox.js"></script>

@@ -91,20 +91,21 @@ body {
   align-items: center;
 }
 
-.messageContainer {
+.expandableWrapper {
   display: none;
   margin-top: 10px;
   /* height: 0; */
   width: 100%;
 }
-.newChatBox .messageContainer.expand {
+.newChatBox .expandableWrapper.expand {
   width: 100%;
   height: fit-content;
-  min-height: 300px;
-  display: block;
-  overflow-y: scroll;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  /* overflow-y: scroll; */
 }
-.messageContainer.expand {
+.expandableWrapper.expand {
   width: 100%;
   height: fit-content;
   display: block;
@@ -200,13 +201,14 @@ body {
   bottom: 0;
 }
 .newChatBox form {
-  position: relative;
   bottom: 0;
   width: 90%;
-  display: none;
   justify-content: center;
-  height: 0;
   padding: 15px;
+  min-height: 80px;
+  display: flex;
+  position: relative;
+  background-color: white;
 }
 .messageInput {
   border-radius: 8px;
@@ -237,4 +239,10 @@ body {
 }
 .newChatBox .fa-solid.fa-xmark:hover {
   color: rgba(0, 0, 0, 0.7);
+}
+.messageContainer {
+  min-height: 300px;
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
 }

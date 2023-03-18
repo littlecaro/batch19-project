@@ -6,7 +6,7 @@ require_once './model/model.php';
 function showChats()
 {
     $chats = loadChats();
-    return $chats;
+    require("./view/messageView.php");
 }
 function showIndex()
 {
@@ -32,4 +32,13 @@ function addMessage($conversationId, $senderId, $message)
 {
     // echo "controller start";
     submitMessage($conversationId, $senderId, $message);
+}
+function searchMessages($term)
+{
+    $chats = searchMessagesGet($term);
+    if (!empty($chats)) {
+        foreach ($chats as $chat) {
+            include('./view/components/chatCard.php');
+        }
+    }
 }

@@ -10,7 +10,7 @@ $_SESSION["userId"] = 1; ?>
     <link rel="stylesheet" href="./public/css/style.css">
     <link rel="stylesheet" href="./public/css/chatStyle.css">
     <script src="https://kit.fontawesome.com/9d1def913c.js" crossorigin="anonymous"></script>
-    <script defer src="./public/javascript/chatbox.js"></script>
+    <link rel="stylesheet" href="./public/css/messenger.css">
     <script>
         const userId = <?= $_SESSION["userId"] ?>
     </script>

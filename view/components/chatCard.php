@@ -5,6 +5,6 @@
         <p class="chatPreviewText"><?= $chat->message ?></p>
     </div>
     <div class="chatPreviewDate">
-        <p><?= $chat->datetime ?></p>
+        <p><?= $chat->day, " ", $chat->month ?></p>
     </div>
 </li>

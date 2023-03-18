@@ -23,7 +23,16 @@ try {
                 // echo "getting controller";
                 addMessage($conversationId, $senderId, $message);
             }
+            break;
+        case "messenger":
+            showChats();
 
+            break;
+        case "search":
+            // print_r($_GET);
+            $term = $_GET['term'] ?? null;
+
+            searchMessages($term);
             break;
         default:
             showIndex();
