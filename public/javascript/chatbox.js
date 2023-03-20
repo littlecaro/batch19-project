@@ -4,6 +4,7 @@ const chatboxContainer = document.querySelector(".chatboxContainer");
 const chatboxHead = document.querySelector(".chatboxHead");
 const messageContainer = document.querySelector(".messageContainer");
 const chatboxFooter = document.querySelector(".chatboxFooter");
+
 if (chatboxHead) {
   chatboxHead.addEventListener("click", (e) => {
     chatBoxExpand(chatboxHead.nextElementSibling);

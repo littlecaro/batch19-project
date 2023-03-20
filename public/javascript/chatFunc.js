@@ -10,6 +10,27 @@ class MessageThread {
 
 function chatBoxExpand(toExpand) {
   toExpand.classList.toggle("expand");
+  console.log(
+    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList
+  );
+  if (
+    toExpand.previousElementSibling.lastElementChild.lastElementChild
+      .classList[1] == "fa-chevron-up"
+  ) {
+    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.add(
+      "fa-chevron-down"
+    );
+    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.remove(
+      "fa-chevron-up"
+    );
+  } else {
+    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.remove(
+      "fa-chevron-down"
+    );
+    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.add(
+      "fa-chevron-up"
+    );
+  }
 }
 
 function loadMessages(thread) {
@@ -30,6 +51,7 @@ function loadMessages(thread) {
   xhr.send(form);
   return xhr.response;
 }
+
 function createChatIcons(card) {
   let messagingProfileIco = document.createElement("div");
   messagingProfileIco.className = "messagingProfileIco";
@@ -40,6 +62,7 @@ function createChatIcons(card) {
   messagingProfileIco.appendChild(messagingProfileImg);
   return messagingProfileIco;
 }
+
 function createChatboxHead(card, thread, messagingProfileIco) {
   let newChatboxHead = document.createElement("div");
   newChatboxHead.className = "chatboxHead";
@@ -54,11 +77,13 @@ function createChatboxHead(card, thread, messagingProfileIco) {
 
   return newChatboxHead;
 }
+
 function createChatboxTitle() {
   let chatBoxTitle = document.createElement("div");
   chatBoxTitle.classList = "chatBoxTitle";
   return chatBoxTitle;
 }
+
 function createChatboxActions(thread) {
   let chatBoxActions = document.createElement("div");
   chatBoxActions.className = "chatBoxActions";
@@ -73,6 +98,7 @@ function createChatboxActions(thread) {
 
   return chatBoxActions;
 }
+
 function createChatboxInput(thread, messageContainer) {
   let inputmessage = document.createElement("input");
   inputmessage.className = "messageInput";
@@ -110,6 +136,7 @@ function createChatboxInput(thread, messageContainer) {
 
   return messageForm;
 }
+
 function createChatboxContainer(thread) {
   let messageContainer = document.createElement("div");
   messageContainer.className = "messageContainer";
@@ -117,6 +144,7 @@ function createChatboxContainer(thread) {
   messageContainer.innerHTML = response;
   return messageContainer;
 }
+
 function createformMessageContainer(messageContainer, messageForm) {
   let chatboxElementWrapper = document.createElement("div");
   chatboxElementWrapper.classList = "expandableWrapper";
@@ -124,6 +152,7 @@ function createformMessageContainer(messageContainer, messageForm) {
   chatboxElementWrapper.appendChild(messageForm);
   return chatboxElementWrapper;
 }
+
 function appendElements(
   chatboxHead,
   chatBoxTitle,
