@@ -1,6 +1,5 @@
-//TODO: Should make functions more flexible in order to be able to leave some of the elements out if we do not need them
-//, partially implemented
 const threadList = [];
+// A class to represent a message thread
 class MessageThread {
   constructor(parent, child) {
     this.parent = parent;
@@ -8,30 +7,33 @@ class MessageThread {
   }
 }
 
+/**
+ * Expands a chat box and changes its chevron icon.
+ * @param {HTMLElement} toExpand - The chat box to expand.
+ */
+
+// Function to expand the chatboxes and toggle the chevron icon
 function chatBoxExpand(toExpand) {
+  // Toggle the 'expand' class to show/hide the chatbox content
   toExpand.classList.toggle("expand");
-  console.log(
-    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList
-  );
-  if (
-    toExpand.previousElementSibling.lastElementChild.lastElementChild
-      .classList[1] == "fa-chevron-up"
-  ) {
-    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.add(
-      "fa-chevron-down"
-    );
-    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.remove(
-      "fa-chevron-up"
-    );
+
+  // Toggle the chevron icon to point up/down depending on the chatbox state
+  const chevron =
+    toExpand.previousElementSibling.lastElementChild.lastElementChild;
+  if (chevron.classList[1] == "fa-chevron-up") {
+    chevron.classList.remove("fa-chevron-up");
+    chevron.classList.add("fa-chevron-down");
   } else {
-    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.remove(
-      "fa-chevron-down"
-    );
-    toExpand.previousElementSibling.lastElementChild.lastElementChild.classList.add(
-      "fa-chevron-up"
-    );
+    chevron.classList.remove("fa-chevron-down");
+    chevron.classList.add("fa-chevron-up");
   }
 }
+
+/**
+ * Loads the messages of a thread using an XMLHttpRequest.
+ * @param {MessageThread} thread - The thread whose messages to load.
+ * @returns {string} - The response from the server.
+ */
 
 function loadMessages(thread) {
   let xhr = new XMLHttpRequest();
@@ -52,6 +54,7 @@ function loadMessages(thread) {
   return xhr.response;
 }
 
+// Function to create the messaging profile icon for a chatbox
 function createChatIcons(card) {
   let messagingProfileIco = document.createElement("div");
   messagingProfileIco.className = "messagingProfileIco";
@@ -63,6 +66,7 @@ function createChatIcons(card) {
   return messagingProfileIco;
 }
 
+// Function to create the header for a chatbox
 function createChatboxHead(card, thread, messagingProfileIco) {
   let newChatboxHead = document.createElement("div");
   newChatboxHead.className = "chatboxHead";
@@ -78,11 +82,14 @@ function createChatboxHead(card, thread, messagingProfileIco) {
   return newChatboxHead;
 }
 
+// Function to create the title for a chatbox. Currently not in use
 function createChatboxTitle() {
   let chatBoxTitle = document.createElement("div");
   chatBoxTitle.classList = "chatBoxTitle";
   return chatBoxTitle;
 }
+
+// Function to create the actions for a chatbox (e.g., the close button)
 
 function createChatboxActions(thread) {
   let chatBoxActions = document.createElement("div");
@@ -99,6 +106,7 @@ function createChatboxActions(thread) {
   return chatBoxActions;
 }
 
+// Function to create the input box
 function createChatboxInput(thread, messageContainer) {
   let inputmessage = document.createElement("input");
   inputmessage.className = "messageInput";
@@ -115,6 +123,7 @@ function createChatboxInput(thread, messageContainer) {
     let xhr = new XMLHttpRequest();
     var form = new FormData();
     form.append("message", inputmessage.value);
+    //the current conversation id is added as a conversation thread attribue to the html element
     form.append("conversationId", thread.parent.getAttribute("data-thread"));
     form.append("senderId", userId);
 
@@ -137,6 +146,7 @@ function createChatboxInput(thread, messageContainer) {
   return messageForm;
 }
 
+//create the container that contains the response of the AJAX request i.e. the conversation cards
 function createChatboxContainer(thread) {
   let messageContainer = document.createElement("div");
   messageContainer.className = "messageContainer";
@@ -145,6 +155,7 @@ function createChatboxContainer(thread) {
   return messageContainer;
 }
 
+//creates the form that includes the user input for sending a message
 function createformMessageContainer(messageContainer, messageForm) {
   let chatboxElementWrapper = document.createElement("div");
   chatboxElementWrapper.classList = "expandableWrapper";
@@ -153,6 +164,7 @@ function createformMessageContainer(messageContainer, messageForm) {
   return chatboxElementWrapper;
 }
 
+//appends everything to the new chatbox
 function appendElements(
   chatboxHead,
   chatBoxTitle,
@@ -161,7 +173,6 @@ function appendElements(
   newChatbox,
   parentElem
 ) {
-  console.log(typeof chatBoxActions);
   chatBoxTitle ? chatboxHead.appendChild(chatBoxTitle) : "";
   chatBoxActions ? chatboxHead.appendChild(chatBoxActions) : "";
   chatboxHead ? newChatbox.appendChild(chatboxHead) : "";

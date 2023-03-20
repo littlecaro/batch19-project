@@ -1,5 +1,7 @@
 const searchInput = document.getElementById("messageSearch");
 const contactsDiv = document.querySelector(".messeangerContacts");
+
+//Gets message cards on enter. The message cards include any conversation threads that include the search term
 searchInput.addEventListener("keyup", (e) => {
   console.log(e.key);
   if (e.key == "Enter") {
