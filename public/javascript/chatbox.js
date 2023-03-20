@@ -38,7 +38,7 @@ function newChat() {
           // Chatbox title
           let chatBoxTitle = createChatboxTitle();
           // Chatbox actions
-          let chatBoxActions = createChatboxActions();
+          let chatBoxActions = createChatboxActions(thread);
           // Create chatbox container
           let messageContainer = createChatboxContainer(thread);
           // Create chatbox input part
@@ -59,7 +59,7 @@ function newChat() {
           );
           // Toggle chatbox expand
           newChat.firstElementChild.addEventListener("click", () => {
-            chatBoxExpand(chatboxElementWrapper);
+            chatBoxExpand(chatboxElementWrapper, newChatboxHead);
           });
         }
       });

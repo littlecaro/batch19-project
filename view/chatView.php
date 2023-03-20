@@ -23,4 +23,5 @@
         </div>
     </div>
 </div>
+<script src="./public/javascript/chatFunc.js"></script>
 <script src="./public/javascript/chatbox.js"></script>

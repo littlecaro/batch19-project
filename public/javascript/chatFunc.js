@@ -59,7 +59,7 @@ function createChatboxTitle() {
   chatBoxTitle.classList = "chatBoxTitle";
   return chatBoxTitle;
 }
-function createChatboxActions() {
+function createChatboxActions(thread) {
   let chatBoxActions = document.createElement("div");
   chatBoxActions.className = "chatBoxActions";
   let icon1 = document.createElement("i");
@@ -124,13 +124,20 @@ function createformMessageContainer(messageContainer, messageForm) {
   chatboxElementWrapper.appendChild(messageForm);
   return chatboxElementWrapper;
 }
-function appendElements(child1, child2, child3, child4, newChat, parentElem) {
-  console.log(typeof child3);
-  child1 ? newChat.appendChild(child1) : "";
-  child2 ? newChat.appendChild(child2) : "";
-  child3 ? newChat.appendChild(child3) : "";
-  child4 ? newChat.appendChild(child4) : "";
+function appendElements(
+  chatboxHead,
+  chatBoxTitle,
+  chatBoxActions,
+  chatboxElementWrapper,
+  newChatbox,
+  parentElem
+) {
+  console.log(typeof chatBoxActions);
+  chatBoxTitle ? chatboxHead.appendChild(chatBoxTitle) : "";
+  chatBoxActions ? chatboxHead.appendChild(chatBoxActions) : "";
+  chatboxHead ? newChatbox.appendChild(chatboxHead) : "";
+  chatboxElementWrapper ? newChatbox.appendChild(chatboxElementWrapper) : "";
   console.log(parentElem);
-  console.log(newChat);
-  parentElem.prepend(newChat);
+  console.log(newChatbox);
+  parentElem.prepend(newChatbox);
 }
