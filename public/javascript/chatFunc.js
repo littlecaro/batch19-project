@@ -16,7 +16,13 @@ class MessageThread {
 function chatBoxExpand(toExpand) {
   // Toggle the 'expand' class to show/hide the chatbox content
   toExpand.classList.toggle("expand");
-
+  //Checks if the chevron exists
+  if (toExpand.previousElementSibling.lastElementChild.lastElementChild) {
+    chevronSwitch(toExpand);
+  }
+}
+// Chevron switch up and down
+function chevronSwitch(toExpand) {
   // Toggle the chevron icon to point up/down depending on the chatbox state
   const chevron =
     toExpand.previousElementSibling.lastElementChild.lastElementChild;
@@ -28,7 +34,6 @@ function chatBoxExpand(toExpand) {
     chevron.classList.add("fa-chevron-up");
   }
 }
-
 /**
  * Loads the messages of a thread using an XMLHttpRequest.
  * @param {MessageThread} thread - The thread whose messages to load.
@@ -118,34 +123,52 @@ function createChatboxInput(thread, messageContainer) {
   let messageForm = document.createElement("form");
   messageForm.appendChild(inputmessage);
   messageForm.appendChild(submitBox);
+  console.log(thread, "this is a first thread");
+
+  inputmessage.addEventListener("keyup", (e) => {
+    console.log(thread, "this is a thread");
+    console.log(e);
+    if (e.key == "Enter") {
+      submitMessage(e, e.srcElement, thread, messageContainer);
+      inputmessage.value = "";
+    }
+  });
+  messageForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+  });
   // Submit message event
   submitBox.addEventListener("click", (e) => {
-    let xhr = new XMLHttpRequest();
-    var form = new FormData();
-    form.append("message", inputmessage.value);
-    //the current conversation id is added as a conversation thread attribue to the html element
-    form.append("conversationId", thread.parent.getAttribute("data-thread"));
-    form.append("senderId", userId);
-
-    var data = {
-      conversationId: thread.parent.getAttribute("data-thread"),
-      userId: userId,
-    };
-    xhr.onload = () => {
-      response = loadMessages(thread);
-      messageContainer.innerHTML = response;
-    };
-    xhr.open(
-      "POST",
-      "http://localhost/sites/batch19-project/index.php?action=submitMessage"
-    );
-    xhr.send(form);
-    e.preventDefault();
+    submitMessage(e, inputmessage, thread, messageContainer);
+    inputmessage.value = "";
   });
 
   return messageForm;
 }
 
+function submitMessage(e, inputmessage, thread, messageContainer) {
+  let xhr = new XMLHttpRequest();
+  var form = new FormData();
+  console.log(inputmessage);
+  form.append("message", inputmessage.value);
+  //the current conversation id is added as a conversation thread attribue to the html element
+  form.append("conversationId", thread.parent.getAttribute("data-thread"));
+  form.append("senderId", userId);
+
+  var data = {
+    conversationId: thread.parent.getAttribute("data-thread"),
+    userId: userId,
+  };
+  xhr.onload = () => {
+    response = loadMessages(thread);
+    messageContainer.innerHTML = response;
+  };
+  xhr.open(
+    "POST",
+    "http://localhost/sites/batch19-project/index.php?action=submitMessage"
+  );
+  xhr.send(form);
+  e.preventDefault();
+}
 //create the container that contains the response of the AJAX request i.e. the conversation cards
 function createChatboxContainer(thread) {
   let messageContainer = document.createElement("div");
@@ -153,6 +176,23 @@ function createChatboxContainer(thread) {
   let response = loadMessages(thread);
   messageContainer.innerHTML = response;
   return messageContainer;
+}
+
+//Refreshes messages inside a given chatbox
+function refreshMessages(messageContainer, thread) {
+  setInterval(() => {
+    let shouldScroll =
+      Math.abs(
+        messageContainer.scrollHeight -
+          messageContainer.scrollTop -
+          messageContainer.clientHeight
+      ) < 1;
+
+    let response = loadMessages(thread);
+    messageContainer.innerHTML = "";
+    messageContainer.innerHTML = response;
+    if (shouldScroll) scrollDown(messageContainer);
+  }, 2000);
 }
 
 //creates the form that includes the user input for sending a message
@@ -180,4 +220,11 @@ function appendElements(
   console.log(parentElem);
   console.log(newChatbox);
   parentElem.prepend(newChatbox);
+}
+
+function scrollDown(msgsContainer) {
+  msgsContainer.scrollTo({
+    top: msgsContainer.scrollHeight,
+    behavior: "smooth",
+  });
 }

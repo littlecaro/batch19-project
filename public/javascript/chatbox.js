@@ -58,9 +58,12 @@ function newChat() {
             newChat,
             chatboxFooter
           );
+
+          refreshMessages(messageContainer, thread);
           // Toggle chatbox expand
           newChat.firstElementChild.addEventListener("click", () => {
             chatBoxExpand(chatboxElementWrapper, newChatboxHead);
+            scrollDown(messageContainer);
           });
         }
       });

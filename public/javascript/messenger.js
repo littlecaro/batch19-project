@@ -24,10 +24,10 @@ function newChatMessenger(messageCards) {
         let chatBoxTitle = createChatboxTitle();
         // Chatbox actions
         let chatBoxActions = undefined;
-        // Create chatbox input part
-        let messageForm = createChatboxInput();
         // Create chatbox container
         let messageContainer = createChatboxContainer(thread);
+        // Create chatbox input part
+        let messageForm = createChatboxInput(thread, messageContainer);
         // Create chatbox container / form wrapper
         let chatboxElementWrapper = createformMessageContainer(
           messageContainer,
@@ -43,8 +43,11 @@ function newChatMessenger(messageCards) {
           newChat,
           messengerCenter
         );
+        // refreshMessages(messengerCenter, thread);
+        refreshMessages(messageContainer, thread);
         // Toggle chatbox expand
         chatBoxExpand(chatboxElementWrapper);
+        scrollDown(messageContainer);
       });
     });
   }

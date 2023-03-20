@@ -13,13 +13,16 @@ function loadChats()
 {
     $userId = 1;
     // $str = 'SELECT m.message,m.sender_id, m.recipient_id,u.profile_picture,u.first_name,u.last_name,m.conversation_id FROM messages m INNER JOIN users u on m.sender_id=:userId OR m.recipient_id=:userId';
-    $str = 'SELECT m.id AS messageId, m.message, m.sender_id, DAY(m.datetime) AS day, MONTHNAME(m.datetime) as month, m.conversation_id, c.id AS contactId, c.first_name AS contactFirstName, c.last_name AS contactLastName, c.profile_picture AS contactProfilePicture
-FROM messages m
-LEFT JOIN users c
-    ON c.id != :userId AND (c.id = m.sender_id OR c.id = m.recipient_id)
-WHERE m.sender_id = :userId OR m.recipient_id = :userId
-GROUP BY m.conversation_id
-ORDER BY m.datetime DESC;';
+    $str = 'SELECT u.id AS contactId, u.first_name AS contactFirstName, u.last_name AS contactLastName, u.profile_picture AS contactProfilePicture, m.id, m.message, m.sender_id, m.recipient_id, m.conversation_id, day, month
+FROM users u
+INNER JOIN (
+SELECT m1.id, m1.message, m1.sender_id, m1.recipient_id, m1.conversation_id, DAY(m2.datetime) as day, MONTHNAME(m2.datetime) as month
+    FROM messages m1
+  JOIN (SELECT id, MAX(id) AS maxId, conversation_id, datetime FROM messages GROUP BY conversation_id) m2
+    ON m1.id = m2.maxId
+    WHERE m1.sender_id = :userId OR m1.recipient_id = :userId
+) AS m
+ON u.id != :userId AND (u.id = m.sender_id OR u.id = m.recipient_id);';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(':userId', $userId, PDO::PARAM_INT);
@@ -40,17 +43,19 @@ function getMessages($conversationId)
 }
 function submitMessage($conversationId, $senderId, $message)
 {
+    $userId = 1;
     if (is_null($conversationId)) {
         $conversationId = rand(1000, 9999);
     }
-    $str = 'SELECT m.recipient_id FROM messages m INNER JOIN users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId ';
+    $str = 'SELECT m.recipient_id FROM messages m INNER JOIN users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId AND m.recipient_id!=:userId ';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(':ConversationId', $conversationId, PDO::PARAM_INT);
+    $query->bindParam(':userId', $userId, PDO::PARAM_STR);
     $query->execute();
     $response = $query->fetch(PDO::FETCH_OBJ);
     $recipientId = $response->recipient_id;
-    // print_r($response);
+    print_r($response);
     $str = 'INSERT INTO messages (id,sender_id, recipient_id, message,conversation_id) VALUES (NULL, :InsenderId,:Inrecipient_id, :Inmessage, :InConversationId )';
     $db = dbConnect();
     $query = $db->prepare($str);
