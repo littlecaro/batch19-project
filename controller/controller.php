@@ -1,8 +1,8 @@
 <!-- CONTROLLER - connects database (model) and view -->
 <?php
-require ("./model/UserManager.php");
+require_once("./model/UserManager.php");
 
-require "./model/UserManager.php";
+require_once "./model/UserManager.php";
 
 function showIndex()
 {
@@ -29,7 +29,10 @@ function checkUserSignInGoogle($decodedToken)
             $_SESSION['id'] = $user->id;
             $_SESSION['first_name'] = $user->first_name;
             $_SESSION['last_name'] = $user->last_name;
-            header('location: index.php?action=userProfile');
+            $_SESSION['email'] = $userEmail;
+
+            // header('location: index.php?action=userProfile');
+            require "./view/userProfile.php";
             exit;
         } else {
             // if user doesn't exist, prepare an INSERT query // If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
@@ -43,7 +46,7 @@ function checkUserSignInGoogle($decodedToken)
             }
             echo 'user has been added successfully';
         }
-        header('location: index.php?action=userProfile'); // redirect
+        // header('location: index.php?action=userProfile'); // redirect
         exit;
     } else {
         $msg = "invalid login";
@@ -57,41 +60,63 @@ function checkUserSignInGoogle($decodedToken)
     }
 }
 
-function userSignUp($firstName, $lastName, $email, $pwd, $pwd2){
+function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
+{
     //validate data
     $firstNameValid = preg_match("/^[a-z._]+$/", $firstName);
     $lastNameValid = preg_match("/^[a-z._]+$/", $lastName);
     $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
     $emailValid = preg_match("/^[a-z0-9_.@]{3,20}$/i", $_POST['email']);
-    
-    if ($firstNameValid AND $lastNameValid AND $emailValid AND $pwdValid AND $pwd2Valid){
+
+    if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid) {
         //if data good, insert into database w model function
         $userManager = new UserManager();
         $users = $userManager->insertUser($firstName, $lastName, $email, $pwd);
         require "./view/signUpView.php";
-    } else{
+    } else {
         $msg = "Please fill in all inputs.";
         require "./view/signUpView.php";
     }
 }
 
-function userSignIn($email, $pwd){
+function userSignIn($email, $pwd)
+{
     //check if user exists
     $userManager = new UserManager();
-    $user = $userManager->signInUser($email, $pwd);
-    
-    if (!$user){
-        throw new Exception("Invalid Information");
-    }else{
-        //if data good, allow sign in
+    $user = $userManager->getUserByEmail($email);
+
+    //verify the password and then start a session
+    if ($user and password_verify($pwd, $user->password)) {
+        session_start();
+        $_SESSION['email'] = $email;
+        $_SESSION['id'] = $user->id;
+        $_SESSION['first_name'] = $user->first_name;
+        $_SESSION['last_name'] = $user->last_name;
         header("index.php"); //TODO: change header location
+        exit;
+    } else {
+        throw new Exception("Invalid Information");
     }
 }
-function showUserSignUp(){
+function showUserSignUp()
+{
     require "./view/signUpView.php";
 }
 
-function showUserSignIn(){
+function showUserSignIn()
+{
     require "./view/signInView.php";
+}
+
+// function userProfile()
+// {
+//     require "./view/userProfile.php";
+// }
+
+function userProfilePage1()
+{
+    $userProfileManager = new UserProfileManager();
+    $user = $userProfileManager->showUserProfile();
+    require "./view/userProfilePage1.php";
 }
