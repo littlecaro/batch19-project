@@ -1,13 +1,23 @@
-<!-- CONTROLLER - connects database (model) and view -->
 <?php
-require_once("./model/UserManager.php");
+
+
+require_once ("./model/UserManager.php");
+
+require_once "./model/UserManager.php";
+
+require_once "./model/model.php";
+
+// function showIndex()
+// {
+//     require("./view/indexView.php");
+// }
 
 
 function showIndex()
 {
+    $chats = loadChats(); // TODO: move this to signed in view
     require("./view/indexView.php");
 }
-
 
 function checkUserSignInGoogle($decodedToken)
 {
@@ -97,4 +107,39 @@ function showUserSignUp()
 function showUserSignIn()
 {
     require "./view/signInView.php";
+}
+
+function showChats()
+{
+    $chats = loadChats();
+    require("./view/messageView.php");
+}
+
+function showMessages($conversationId)
+{
+    $messages = getMessages($conversationId);
+    if ($messages) {
+        foreach ($messages as $message) {
+            require "view\components\messageCard.php";
+        }
+    }
+    // Set the response headers
+    // header('Content-Type: application/json');
+
+    // // Return the response data as JSON
+    // echo json_encode($messages);
+}
+function addMessage($conversationId, $senderId, $message)
+{
+    // echo "controller start";
+    submitMessage($conversationId, $senderId, $message);
+}
+function searchMessages($term)
+{
+    $chats = searchMessagesGet($term);
+    if (!empty($chats)) {
+        foreach ($chats as $chat) {
+            include('./view/components/chatCard.php');
+        }
+    }
 }

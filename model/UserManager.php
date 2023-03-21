@@ -25,6 +25,7 @@ class UserManager extends Manager
         $req->bindParam('inProfile_picture',  $picture,  PDO::PARAM_STR); // (token, value ,type)               
         return $req->execute();
     }
+
     public function insertUser($firstName, $lastName, $email, $pwd)
     {
         $db = $this->dbConnect();
