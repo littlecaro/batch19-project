@@ -1,9 +1,10 @@
 <?php
     $title = "Calendar";
-    $script = "./public/js/calendar.js";
-    $style = "./public/css/calendar.css";
     ob_start();
 ?>
+<link rel="stylesheet" href="./public/css/calendar.css">
+<script defer src="./public/js/calendar.js"></script>
+
 <div class="cal-container">
     <div class="cal">
         <div>
