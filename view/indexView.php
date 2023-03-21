@@ -4,11 +4,7 @@ ob_start();
 
 // include "./view/chatView.php"; // TODO: move this to logged in view
 ?>
-<head>
-        <link rel="stylesheet" href="../public/css/styleMain.css" />
-</head>
-<html>
-<body>
+
     <div class="header">
         <div class="logo">
             <p>waygukwin</p>
@@ -205,9 +201,6 @@ ob_start();
         >
       </p> -->
     </div>
-</body>
-
-</html>
 
 <?php
 
