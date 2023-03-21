@@ -1,5 +1,5 @@
 <?php
-require "Manager.php";
+require_once "Manager.php";
 class UserManager extends Manager
 {
 
@@ -24,7 +24,7 @@ class UserManager extends Manager
         $req->bindParam('inEmail',  $email,  PDO::PARAM_STR);
         $req->bindParam('inProfile_picture',  $picture,  PDO::PARAM_STR); // (token, value ,type)               
         return $req->execute();
-
+    }
     public function insertUser($firstName, $lastName, $email, $pwd)
     {
         $db = $this->dbConnect();
@@ -44,15 +44,16 @@ class UserManager extends Manager
         $req->execute();
     }
 
-    public function signInUser($email, $pwd){
+    public function signInUser($email, $pwd)
+    {
         $db = $this->dbConnect();
 
         $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
         $req->execute(array($_POST['email']));
         $user = $req->fetch(PDO::FETCH_OBJ);
-        
+
         //verify the password and then start a session
-        if ($user AND password_verify($_POST['pwd'], $user->password)){
+        if ($user and password_verify($_POST['pwd'], $user->password)) {
             session_start();
             $_SESSION['email'] = $_POST['email'];
             exit;

@@ -6,8 +6,8 @@ require("./controller/controller.php");
 try {
     $action = $_REQUEST['action'] ?? null;
 
-    switch ($action){
-                case "userProfile":
+    switch ($action) {
+        case "userProfile":
             require('./view/userProfile.php');
             break;
         case "userSignInGoogle":
@@ -33,7 +33,7 @@ try {
             $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
             $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
 
-            if ($firstName AND $lastName AND $email AND $pwd AND $pwd2){
+            if ($firstName and $lastName and $email and $pwd and $pwd2) {
                 //call a controller function
                 userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
@@ -44,7 +44,7 @@ try {
             $email = isset($_POST['email']);
             $pwd = isset($_POST['pwd']);
 
-            if ($email AND $pwd){
+            if ($email and $pwd) {
                 //call a controller function
                 userSignIn($email, $pwd);
             }
