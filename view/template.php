@@ -19,5 +19,5 @@ $_SESSION["userId"] = 1; ?>
 <body>
     <?= $content; ?>
 </body>
-
 </html>
+

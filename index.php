@@ -26,7 +26,6 @@ try {
             break;
         case "userSignUp":
             //make sure data exists
-
             $firstName = !empty($_POST['firstName']) ? $_POST['firstName'] : null;
             $lastName = !empty($_POST['lastName']) ? $_POST['lastName'] : null;
             $email = !empty($_POST['email']) ? $_POST['email'] : null;
@@ -38,7 +37,6 @@ try {
                 userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
             break;
-
         case "userSignIn":
             //make sure data is set
             $email = isset($_POST['email']);
@@ -49,6 +47,16 @@ try {
                 userSignIn($email, $pwd);
             }
             break;
+            // case "userProfile":
+            //     // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
+            //     // $city = !empty($_POST['city']) ? $_POST['city'] : null;
+            //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
+            //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
+
+            //     userProfile();
+            //     require('./view/userProfile.php');
+
+            //     break;
 
             case "getChatMessages":
                 $conversationId = $_POST['conversationId'] ?? null;
@@ -91,6 +99,7 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
+
         default:
             showIndex();
             break;
