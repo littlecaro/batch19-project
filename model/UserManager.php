@@ -25,6 +25,7 @@ class UserManager extends Manager
         $req->bindParam('inProfile_picture',  $picture,  PDO::PARAM_STR); // (token, value ,type)               
         return $req->execute();
     }
+
     public function insertUser($firstName, $lastName, $email, $pwd)
     {
         $db = $this->dbConnect();
@@ -43,7 +44,10 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
+
     public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+
+    public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
         $userExp = "SELECT p.job_title, p.years_experience, p.company_name FROM user u INNER JOIN professional_experience as p on u.id = p.user_id;
@@ -54,8 +58,21 @@ class UserManager extends Manager
         $req->bindParam('company_name', $companyName, PDO::PARAM_INT);
         $req->execute();
 
+
         $experience = $req->fetchALL(PDO::FETCH_OBJ);
         return $experience;
+
+        $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
+        $req->execute(array($_POST['email']));
+        $user = $req->fetch(PDO::FETCH_OBJ);
+
+        //verify the password and then start a session
+        if ($user and password_verify($_POST['pwd'], $user->password)) {
+            session_start();
+            $_SESSION['email'] = $_POST['email'];
+            exit;
+        }
+
     }
 
 

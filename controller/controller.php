@@ -1,14 +1,23 @@
-<!-- CONTROLLER - connects database (model) and view -->
 <?php
-require_once("./model/UserManager.php");
 
-require_once "./model/UserManager.php";
+
+require_once('./model/calendarManager.php');
+
+require_once ("./model/UserManager.php");
+
+
+require_once "./model/model.php";
+
+// function showIndex()
+// {
+//     require("./view/indexView.php");
+// }
 
 function showIndex()
 {
+    $chats = loadChats(); // TODO: move this to signed in view
     require("./view/indexView.php");
 }
-
 
 function checkUserSignInGoogle($decodedToken)
 {
@@ -84,6 +93,7 @@ function userSignIn($email, $pwd)
 {
     //check if user exists
     $userManager = new UserManager();
+
     $user = $userManager->getUserByEmail($email);
 
     //verify the password and then start a session
@@ -93,6 +103,14 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
+
+    $user = $userManager->signInUser($email, $pwd);
+
+    if (!$user) {
+        throw new Exception("Invalid Information");
+    } else {
+        //if data good, allow sign in
+
         header("index.php"); //TODO: change header location
         exit;
     } else {
@@ -109,6 +127,7 @@ function showUserSignIn()
     require "./view/signInView.php";
 }
 
+
 // function userProfile()
 // {
 //     require "./view/userProfile.php";
@@ -119,4 +138,59 @@ function userProfilePage1()
     $userProfileManager = new UserProfileManager();
     $user = $userProfileManager->showUserProfile();
     require "./view/userProfilePage1.php";
+
+function showChats()
+{
+    $chats = loadChats();
+    require("./view/messageView.php");
+}
+
+function showMessages($conversationId)
+{
+    $messages = getMessages($conversationId);
+    if ($messages) {
+        foreach ($messages as $message) {
+            require "view\components\messageCard.php";
+        }
+    }
+    // Set the response headers
+    // header('Content-Type: application/json');
+
+    // // Return the response data as JSON
+    // echo json_encode($messages);
+}
+function addMessage($conversationId, $senderId, $message)
+{
+    // echo "controller start";
+    submitMessage($conversationId, $senderId, $message);
+}
+function searchMessages($term)
+{
+    $chats = searchMessagesGet($term);
+    if (!empty($chats)) {
+        foreach ($chats as $chat) {
+            include('./view/components/chatCard.php');
+        }
+    }
+}
+
+function addCalendar($data) {
+    for ($i = 0; $i < count($data); $i++) {
+        $date = strip_tags($data[$i]['date']);
+        $hour = strip_tags($data[$i]['hour']);
+
+        $calendarManager = new CalendarManager();
+        $result = $calendarManager->insertCalendar($date, $hour);
+        if (!$result) {
+            throw new Exception("Unable to add entries");
+        }
+        header("location: index.php?action=loadCalendar");
+    }
+}
+
+function showCalendar($user_id) {
+        $calendarManager = new CalendarManager();
+        $result = $calendarManager->loadCalendar($user_id);
+        require('./view/calendarView.php');
+
 }
