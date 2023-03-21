@@ -17,10 +17,10 @@ ob_start();
   <div class="box">
     <img src="./public/images/Saly-25.png" width="300px" />
     <h4>I am a</h4>
-    <button id="boxbiz" onclick="location.href='index.php?action=bizSignUpView'">
+    <button id="boxbiz" style="cursor:auto">
       BUSINESS<br>LOOKING TO HIRE
     </button>
-    <button id="boxuser" style="cursor:auto">
+    <button id="boxuser" onclick="location.href='index.php?action=bizSignUpView'">
       USER<br>LOOKING FOR WORK
     </button>
     <br><br>

@@ -286,8 +286,7 @@ h4 {
   background-color: white;
   box-shadow: 3px 3px 10px rgb(0 0 0 / 0.2);
   border-radius: 12px;
-  padding: 50px 0;
-  width: 50%;
+  padding: 50px 20px;
   margin-bottom: 20px;
 }
 
@@ -298,4 +297,14 @@ input[type="checkbox"] {
 #checkbox {
   width: 16px;
   height: 16px;
+}
+
+.calendar table {
+  border-collapse: collapse;
+  border: 2px solid transparent;
+}
+
+.calendar th {
+  background-color: #28225d;
+  color: white;
 }
