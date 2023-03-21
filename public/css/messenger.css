@@ -1,0 +1,66 @@
+.messengerMain {
+  width: 80vw;
+  background-color: white;
+  height: 90vh;
+  bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: var(--border-radius);
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  bottom: -9.5%;
+  border: 0.4px solid rgba(128, 128, 128, 0.5);
+  box-shadow: var(--box-shadow);
+}
+.messengerMain > div {
+}
+.messengerLeft,
+.messengerRight {
+  flex: 1;
+}
+
+.messengerCenter {
+  border-left: 0.4px solid rgba(128, 128, 128, 0.5);
+  border-right: 0.4px solid rgba(128, 128, 128, 0.5);
+  flex: 1.5;
+}
+.messengerCenter .newChatBox {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  justify-content: flex-start;
+  background-color: white;
+  box-shadow: none;
+}
+.messengerCenter .newChatBox form {
+  width: auto;
+}
+.messengerCenter .newChatBox .expandableWrapper.expand {
+  height: 100%;
+}
+.messengerCenter .chatboxHead {
+  cursor: auto;
+}
+.messengerCenter .chatboxHead p {
+  margin-left: 10px;
+}
+
+.messengerCenter .messagingProfileIco {
+  display: none;
+}
+.messengerActions h3 {
+  margin-left: 20px;
+}
+.messengerLeft .search {
+  display: flex;
+  justify-content: center;
+  height: 30px;
+  width: 100%;
+}
+.messengerLeft .search input {
+  border-radius: 4px;
+  width: 90%;
+  border-color: transparent;
+  background-color: #eef3f8;
+}
