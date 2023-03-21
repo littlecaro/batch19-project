@@ -10,10 +10,9 @@ ob_start();
             <p>waygukwin</p>
         </div>
         <div class="menu">
-            <button id="signup" onclick="location.href='view/start.html'">
-                SIGN UP
+            <button id="signup" onclick="location.href='index.php?action=userSignInView'">SIGN UP
             </button>
-            <button onclick="location.href='view/signin.html'">SIGN IN</button>
+            <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
         </div>
     </div>
     <div class="main">
@@ -27,7 +26,7 @@ ob_start();
                     The perfect job you're looking for is just around the corner with
                     our powerful AI algorithms to guide you through the search process
                 </h4>
-                <button>LEARN MORE</button>
+                <button class="button">LEARN MORE</button>
             </div>
         </div>
     </div>
@@ -39,7 +38,7 @@ ob_start();
             <img src="./public/images/logos/coupang.png" />
             <img src="./public/images/logos/kb.png" />
             <img src="./public/images/logos/naver.png" />
-            <img src="./public/images/logos/twitter.jpg" />
+            <img src="./public/images/logos/twitter.png" />
             <img src="./public/images/logos/facebook.png" />
             <img src="./public/images/logos/netflix.png" />
             <img src="./public/images/logos/Telus-Logo.png" />
@@ -86,7 +85,7 @@ ob_start();
                     </tr>
 
                     <td class="last_line" colspan="4">
-                        <br /><button>FIND&nbsp;MORE&nbsp;JOBS</button>
+                        <br /><button class="button">FIND&nbsp;MORE&nbsp;JOBS</button>
                     </td>
                 </tbody>
             </table>
@@ -142,7 +141,7 @@ ob_start();
                     "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
                     consectetur, adipisci velit..."
                 </h4>
-                <button>TRY FOR FREE</button>
+                <button class="button">TRY FOR FREE</button>
             </div>
         </div>
     </div>
@@ -151,39 +150,63 @@ ob_start();
             <div class="one">
                 <h4>Waygookin</h4>
                 <p>
+                    <img src="./public/images/footer/placeholder.png" width="15px" />
                     1101-ho | IS Biz Tower 2, Room 1101, 23, Seonyu-ro 49-gil,
-                    Yeongdeungpo-gu, Seoul, South Korea
+                    Yeongdeungpo-gu, Seoul, South Korea<br />
                 </p>
-                <p>02-501-6064</p>
-                <p>waygookin@wcoding.com</p>
+                <p>
+                    <img src="./public/images/footer/telephone.png" width="15px" />
+                    02-501-6064
+                </p>
+                <p>
+                    <img src="./public/images/footer/contract.png" width="15px" />
+                    <a href="mailto:waygookin@wcoding.com">waygookin@wcoding.com</a>
+                </p>
             </div>
             <div class="two">
-                <h4>Connect with us</h4>
-                <ul>
-                    <li>Part-time jobs</li>
-                    <li>Full-time jobs</li>
-                </ul>
+                <h4>About Us</h4>
+                <p>
+                    Waygookin is a job networking platform for businesses and
+                    individuals located in Korea.
+                </p>
+                <br><br>
+                <p>
+                    <a href="#">Terms of service</a> | <a href="#">Legal notice</a> |
+                    <a href="#">Privacy policy</a>
+                </p>
             </div>
             <div class="three">
-                <h4>About Us</h4>
-                <ul>
-                    <li>Our story</li>
-                    <li>Contact us</li>
-                </ul>
-            </div>
-
-            <div class="four">
-                <p>Sign up to our newsletter</p>
-                <input placeholder="your email" /><button>GO</button>
+                <h4>Follow Us</h4>
+                <a href="#"><img src="./public/images/footer/facebook.png" width="35" /></a>&nbsp;&nbsp;
+                <a href="#"><img src="./public/images/footer/instagram.png" width="35" /></a>&nbsp;&nbsp;
+                <a href="#"><img src="./public/images/footer/linkedin.png" width="35" /></a>&nbsp;&nbsp;
+                <a href="#"><img src="./public/images/footer/twitter.png" width="35" /></a>
+                <h4>Sign up to our newsletter</h4>
+                <input placeholder="your email" />&nbsp;&nbsp;<button class="button">GO</button>
             </div>
         </div>
-        <p>Terms of service | Legal notice | Privacy policy</p>
+        <!-- <p>
+        <a
+          href="https://www.flaticon.com/free-icons/instagram"
+          title="instagram icons"
+          >Instagram icons created by Pixel perfect - Flaticon</a
+        >
+        <a
+          href="https://www.flaticon.com/free-icons/facebook"
+          title="facebook icons"
+          >Facebook icons created by Freepik - Flaticon</a
+        >
+        <a href="https://www.flaticon.com/free-icons/pin" title="pin icons"
+          >Pin icons created by Freepik - Flaticon</a
+        >
+      </p> -->
     </div>
+</body>
 
+</html>
 
+<?php
 
-    <?php
-    include("./view/components/googleSignIn.php");
-    $content = ob_get_clean();
-    require('./view/template.php');
-    ?>
+$content = ob_get_clean();
+require('./view/template.php');
+?>
