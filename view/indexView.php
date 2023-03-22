@@ -38,55 +38,38 @@ ob_start();
         <img src="./public/images/logos/kb.png" />
         <img src="./public/images/logos/naver.png" />
         <img src="./public/images/logos/twitter.png" />
-        <img src="./public/images/logos/facebook.png" />
-        <img src="./public/images/logos/netflix.png" />
+        <img src="./public/images/logos/microsoft.png" />
+        <img src="./public/images/logos/google.png" />
         <img src="./public/images/logos/Telus-Logo.png" />
     </div>
 </div>
 <div class="feature-new-job">
-    <h3>new job openings</h3>
     <div class="job_table">
+        <h1>
+            <span style="color: white">Need Help Attracting</span><br />
+            <span style="color: darkcyan">Top Global Talent?</span>
+        </h1>
+        <h1>
+            <span style="font-size: 20px; color: white">Waygookin can help you</span>
+        </h1>
         <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <img src="./public/images/logo_3186236735.png_crop_23-03-13" width="50" />
-                    </td>
-                    <td class="job_name">
-                        <strong>Intern, Digital Solutions</strong><br />Visa Korea |
-                        Seoul
-                    </td>
-                    <td><button class="job_type">Internship</button></td>
-                    <td class="expiry_date">Expires: 31 Mar 2023</td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="./public/images/kcggi_f908abbc5a.PNG_crop_23-03-08" width="50" />
-                    </td>
-                    <td class="job_name">
-                        <strong>German Project Intern for Energy Projects in Trade Services
-                            Division</strong><br />
-                        Korean-German Chamber of Commerce and Industry
-                    </td>
-                    <td><button class="job_type">Internship</button></td>
-                    <td class="expiry_date">Expires: 17 Mar 2023</td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="./public/images/logo_3186236735.png_crop_23-03-13" width="50" />
-                    </td>
-                    <td class="job_name">
-                        <strong>Intern, Digital Solutions</strong><br />Visa Korea |
-                        Seoul
-                    </td>
-                    <td><button class="job_type">Internship</button></td>
-                    <td class="expiry_date">Expires: 31 Mar 2023</td>
-                </tr>
-
-                <td class="last_line" colspan="4">
-                    <br /><button class="button">FIND&nbsp;MORE&nbsp;JOBS</button>
+            <tr>
+                <td>
+                    <img src="./public/images/contract.png" width="100" /><br /><br />
+                    <strong>Write a Job Post</strong><br />
+                    That catches talent attention
                 </td>
-            </tbody>
+                <td>
+                    <img src="./public/images/chat.png" width="100" /><br /><br />
+                    <strong>Interview Candidates</strong><br />
+                    To find you the perfect match
+                </td>
+                <td>
+                    <img src="./public/images/shuttle.png" width="100" /><br /><br />
+                    <strong>Onboard Talent</strong><br />
+                    To ensure the best job start
+                </td>
+            </tr>
         </table>
     </div>
 </div>
@@ -200,6 +183,10 @@ ob_start();
         >
       </p> -->
 </div>
+</body>
+
+</html>
+
 <?php
 $content = ob_get_clean();
 require('./view/template.php');

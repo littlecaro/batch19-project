@@ -1,0 +1,94 @@
+* {
+  user-select: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 90%;
+}
+
+td,
+th {
+  border: 1px solid black;
+  width: 20vh;
+  height: 2.5vh;
+  text-align: center;
+}
+
+.hours {
+  width: 5vh;
+}
+
+#confirmedContainer {
+  width: 50vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#confirmedContainer > div {
+  display: flex;
+  gap: 1em;
+}
+
+.cal {
+  display: flex;
+  flex-direction: column;
+}
+
+table:hover {
+  cursor: grab;
+}
+
+div {
+  display: flex;
+  justify-content: center;
+}
+
+.selected {
+  background-color: red;
+}
+
+.selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.selection > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+/* .selection > div > p {
+  margin: 0;
+} */
+
+button {
+  height: 2em;
+  background-color: orange;
+  color: white;
+}
+
+.confirmed {
+  background-color: green;
+}
+
+.cal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-around;
+}
+
+#confirmChoices {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

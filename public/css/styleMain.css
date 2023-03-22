@@ -230,28 +230,26 @@ button {
 }
 
 .job_table {
-  background-color: white;
+  background-color: #1d1954;
   box-shadow: 3px 3px 10px rgb(0 0 0 / 0.4);
   border-radius: 12px;
   padding: 20px;
   width: 75%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   margin-bottom: 70px;
+  color: white;
 }
 
 .job_table table {
   width: 100%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: smaller;
   border-collapse: collapse;
+  text-align: center;
+  color: white;
 }
 
 td {
-  padding: 5px;
-  border-bottom: 2px solid var(--background-color-footer);
+  padding-bottom: 30px;
 }
 
 .job_name {
@@ -295,9 +293,6 @@ td {
 }
 
 .footer h4 {
-  line-height: 0.7em;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
@@ -313,9 +308,8 @@ td {
 .three {
   width: 30%;
   vertical-align: middle;
-  height: 100%;
   font-size: 20px;
-  padding: 0 20px;
+  padding: 10px 20px;
   line-height: 1em;
 }
 

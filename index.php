@@ -75,11 +75,22 @@ try {
             case "search":
                 // print_r($_GET);
                 $term = $_GET['term'] ?? null;
-    
                 searchMessages($term);
                 break;
-
-
+                
+        case "updateCalendar":
+            $data = $_REQUEST['data'] ?? "";
+            if ($data) {
+                $data = json_decode($data,true);
+                addCalendar($data);
+            } else {
+                throw new Exception ("No calender inputs submitted");
+            }
+            break;
+        case "loadCalendar":
+            $user_id = $_SESSION['user_id'] ?? 1;
+            showCalendar($user_id);
+            break;
         default:
             showIndex();
             break;
