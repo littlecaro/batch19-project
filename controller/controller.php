@@ -118,7 +118,6 @@ function userSignIn($email, $pwd)
             exit;
             }
         }
-}
 
 function showUserSignUp()
 {
