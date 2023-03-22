@@ -4,6 +4,7 @@
 
 table {
   border-collapse: collapse;
+  width: 90%;
 }
 
 td,
@@ -67,6 +68,8 @@ div {
 
 button {
   height: 2em;
+  background-color: orange;
+  color: white;
 }
 
 .confirmed {
@@ -76,6 +79,7 @@ button {
 .cal-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .bottom {

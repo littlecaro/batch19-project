@@ -3,7 +3,6 @@ $title = "TODO:change";
 ob_start();
 
 ?>
-
 <div class="header">
     <div class="logo">
         <p>waygukwin</p>
@@ -38,12 +37,40 @@ ob_start();
         <img src="./public/images/logos/kb.png" />
         <img src="./public/images/logos/naver.png" />
         <img src="./public/images/logos/twitter.png" />
+        <img src="./public/images/logos/microsoft.png" />
+        <img src="./public/images/logos/google.png" />
         <img src="./public/images/logos/facebook.png" />
         <img src="./public/images/logos/netflix.png" />
         <img src="./public/images/logos/Telus-Logo.png" />
     </div>
 </div>
 <div class="feature-new-job">
+    <div class="job_table">
+        <h1>
+            <span style="color: white">Need Help Attracting</span><br />
+            <span style="color: darkcyan">Top Global Talent?</span>
+        </h1>
+        <h1>
+            <span style="font-size: 20px; color: white">Waygookin can help you</span>
+        </h1>
+        <table>
+            <tr>
+                <td>
+                    <img src="./public/images/contract.png" width="100" /><br /><br />
+                    <strong>Write a Job Post</strong><br />
+                    That catches talent attention
+                </td>
+                <td>
+                    <img src="./public/images/chat.png" width="100" /><br /><br />
+                    <strong>Interview Candidates</strong><br />
+                    To find you the perfect match
+                </td>
+                <td>
+                    <img src="./public/images/shuttle.png" width="100" /><br /><br />
+                    <strong>Onboard Talent</strong><br />
+                    To ensure the best job start
+                </td>
+            </tr>
     <h3>new job openings</h3>
     <div class="job_table">
         <table>
@@ -102,6 +129,30 @@ ob_start();
             <img src="./public/images/users/first.jpg" alt="sample1" />
             <div class="author">
                 <h5>Tom Green <span>- CEO of Doordash</span></h5>
+            </div>
+        </figure>
+        <figure class="snip1139 hover">
+            <blockquote>
+                Within a few hours I had the top players in the tech industry asking
+                me for an interview. Waygookin is awesome!
+                <div class="arrow"></div>
+            </blockquote>
+            <img src="./public/images/users/second.jpg" alt="sample2" />
+            <div class="author">
+                <h5>Anna Karina<span>- Data Analyst</span></h5>
+            </div>
+        </figure>
+        <figure class="snip1139">
+            <blockquote>
+                Move over, LinkedIn. Waygookin is where the cool cats are at. Job
+                hunting has never been easier.
+                <div class="arrow"></div>
+            </blockquote>
+            <img src="./public/images/users/third.jpg" alt="sample3" />
+            <div class="author">
+                <h5>John Cho<span>- Programmer</span></h5>
+            </div>
+        </figure>
             </div>
         </figure>
         <figure class="snip1139 hover">
@@ -203,7 +254,9 @@ ob_start();
 
 <?php
 include "./view/chatView.php"; // TODO: move this to logged in view
+?>
 
+<?php
 $content = ob_get_clean();
 require('./view/template.php');
 ?>
