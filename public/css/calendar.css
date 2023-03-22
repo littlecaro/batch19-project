@@ -14,7 +14,7 @@ th {
   text-align: center;
 }
 
-.hours {
+.times {
   width: 5vh;
 }
 
@@ -26,6 +26,7 @@ th {
 
 #confirmedContainer > div {
   display: flex;
+  align-items: center;
   gap: 1em;
 }
 

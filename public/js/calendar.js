@@ -40,7 +40,7 @@ function displayCal(x = 0) {
       // setting up the most left column
       if (j == 1) {
         const th = document.createElement("th");
-        th.setAttribute("class", "hours");
+        th.setAttribute("class", "times");
         if (i >= 8) {
           th.textContent = i;
           tr.appendChild(th);
@@ -75,9 +75,9 @@ function displayCal(x = 0) {
         td.setAttribute("data-php", `${year}-${month}-${day}`);
         td.setAttribute("data-dateStr", datestr);
         if (i < 10) {
-          td.setAttribute("data-hour", `0${i}:00:00`);
+          td.setAttribute("data-time", `0${i}:00:00`);
         } else {
-          td.setAttribute("data-hour", `${i}:00:00`);
+          td.setAttribute("data-time", `${i}:00:00`);
         }
         tr.appendChild(td);
       }
@@ -148,9 +148,9 @@ function displayChoices() {
     let date = document.createElement("p");
     date.textContent = `Date: ${each.dataset.datestr}`;
     div.appendChild(date);
-    let hour = document.createElement("p");
-    hour.textContent = `Time: ${each.dataset.hour.slice(0, 5)}`;
-    div.appendChild(hour);
+    let time = document.createElement("p");
+    time.textContent = `Time: ${each.dataset.time.slice(0, 5)}`;
+    div.appendChild(time);
     selection.appendChild(div);
   }
   const confirm = document.createElement("button");
@@ -166,7 +166,7 @@ function sendIt() {
   for (let each of selected) {
     selectArr.push({
       date: `${each.dataset.php}`,
-      hour: `${each.dataset.hour}`,
+      time: `${each.dataset.time}`,
     });
   }
   const calendar = JSON.stringify(selectArr);
@@ -184,9 +184,9 @@ function inputEntries(entries) {
   const tds = document.querySelectorAll("td");
   for (let td of tds) {
     let date = td.getAttribute("data-php");
-    let hour = td.getAttribute("data-hour");
+    let time = td.getAttribute("data-time");
     for (let entry of entries) {
-      if ((date === entry.date) & (hour === entry.time_start)) {
+      if ((date === entry.date) & (time === entry.time_start)) {
         td.className = "confirmed";
       }
     }
@@ -199,6 +199,7 @@ function displayConfirmed(entries) {
   confirmedContainer.appendChild(h1);
   for (let entry of entries) {
     let div = document.createElement("div");
+    div.setAttribute("class", "confirmedAvail");
     let date = document.createElement("p");
     let dateArr = dateStrToArr(entry.date);
     // let year = dateArr[0];
@@ -208,11 +209,14 @@ function displayConfirmed(entries) {
     // date.textContent = `Date: ${month} ${day}, ${year}`;
     date.textContent = `Date: ${month} ${day}`;
     div.appendChild(date);
-    let hour = document.createElement("p");
-    hour.textContent = `Time: ${entry.time_start.slice(0, 5)}`;
-    div.appendChild(hour);
+    let time = document.createElement("p");
+    time.textContent = `Time: ${entry.time_start.slice(0, 5)}`;
+    div.appendChild(time);
     let deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
+    deleteBtn.textContent = "Delete entry";
+    deleteBtn.setAttribute("data-date", `${entry.date}`);
+    deleteBtn.setAttribute("data-time", `${entry.time_start}`);
+    deleteBtn.addEventListener("click", deleteDateEntry);
     div.appendChild(deleteBtn);
     confirmedContainer.appendChild(div);
   }
@@ -232,4 +236,25 @@ function dayToTh(day) {
   } else {
     return `${day}th`;
   }
+}
+
+function deleteDateEntry(e) {
+  // console.log(e.target.dataset.date);
+  // console.log(e.target.dataset.time);
+  const enteredArr = [];
+  enteredArr.push({
+    date: `${e.target.dataset.date}`,
+    time: `${e.target.dataset.time}`,
+  });
+  // console.log(enteredArr);
+  const entry = JSON.stringify(enteredArr);
+  // console.log(entry);
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", `./index.php?action=deleteEntry&entry=${entry}`);
+
+  xhr.addEventListener("load", function () {
+    location.reload();
+  });
+
+  xhr.send(null);
 }

@@ -12,7 +12,7 @@
             <button class="next">-></button>
         </div>
     
-        <table class="calendar"></table>
+        <table class="calendar"></table>›
     
         <div>
             <button class="undo">undo all</button>

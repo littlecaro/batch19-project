@@ -45,10 +45,7 @@ class UserManager extends Manager
         $req->execute();
     }
 
-    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
-
-    public function signInUser($email, $pwd)
-    {
+    public function getUserExperience($jobTitle, $yearsExperience, $companyName) {
         $db = $this->dbConnect();
         $userExp = "SELECT p.job_title, p.years_experience, p.company_name FROM user u INNER JOIN professional_experience as p on u.id = p.user_id;
         VALUES (:job_title, :years_experience, :comapny_name)";
@@ -61,7 +58,11 @@ class UserManager extends Manager
 
         $experience = $req->fetchALL(PDO::FETCH_OBJ);
         return $experience;
-
+    }
+    
+    public function signInUser($email, $pwd)
+    {
+        $db = $this->dbConnect();
         $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
         $req->execute(array($_POST['email']));
         $user = $req->fetch(PDO::FETCH_OBJ);
@@ -72,7 +73,6 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
-
     }
 
 
