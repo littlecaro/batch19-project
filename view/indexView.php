@@ -2,14 +2,13 @@
 $title = "TODO:change";
 ob_start();
 
-// include "./view/chatView.php"; // TODO: move this to logged in view
 ?>
 <div class="header">
     <div class="logo">
         <p>waygukwin</p>
     </div>
     <div class="menu">
-        <button id="signup" onclick="location.href='index.php?action=userSignUpView'">SIGN UP
+        <button id="signup" onclick="location.href='index.php?action=userSignInView'">SIGN UP
         </button>
         <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
     </div>
@@ -40,6 +39,8 @@ ob_start();
         <img src="./public/images/logos/twitter.png" />
         <img src="./public/images/logos/microsoft.png" />
         <img src="./public/images/logos/google.png" />
+        <img src="./public/images/logos/facebook.png" />
+        <img src="./public/images/logos/netflix.png" />
         <img src="./public/images/logos/Telus-Logo.png" />
     </div>
 </div>
@@ -70,6 +71,49 @@ ob_start();
                     To ensure the best job start
                 </td>
             </tr>
+    <h3>new job openings</h3>
+    <div class="job_table">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="./public/images/logo_3186236735.png_crop_23-03-13" width="50" />
+                    </td>
+                    <td class="job_name">
+                        <strong>Intern, Digital Solutions</strong><br />Visa Korea |
+                        Seoul
+                    </td>
+                    <td><button class="job_type">Internship</button></td>
+                    <td class="expiry_date">Expires: 31 Mar 2023</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="./public/images/kcggi_f908abbc5a.PNG_crop_23-03-08" width="50" />
+                    </td>
+                    <td class="job_name">
+                        <strong>German Project Intern for Energy Projects in Trade Services
+                            Division</strong><br />
+                        Korean-German Chamber of Commerce and Industry
+                    </td>
+                    <td><button class="job_type">Internship</button></td>
+                    <td class="expiry_date">Expires: 17 Mar 2023</td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="./public/images/logo_3186236735.png_crop_23-03-13" width="50" />
+                    </td>
+                    <td class="job_name">
+                        <strong>Intern, Digital Solutions</strong><br />Visa Korea |
+                        Seoul
+                    </td>
+                    <td><button class="job_type">Internship</button></td>
+                    <td class="expiry_date">Expires: 31 Mar 2023</td>
+                </tr>
+
+                <td class="last_line" colspan="4">
+                    <br /><button class="button">FIND&nbsp;MORE&nbsp;JOBS</button>
+                </td>
+            </tbody>
         </table>
     </div>
 </div>
@@ -85,6 +129,30 @@ ob_start();
             <img src="./public/images/users/first.jpg" alt="sample1" />
             <div class="author">
                 <h5>Tom Green <span>- CEO of Doordash</span></h5>
+            </div>
+        </figure>
+        <figure class="snip1139 hover">
+            <blockquote>
+                Within a few hours I had the top players in the tech industry asking
+                me for an interview. Waygookin is awesome!
+                <div class="arrow"></div>
+            </blockquote>
+            <img src="./public/images/users/second.jpg" alt="sample2" />
+            <div class="author">
+                <h5>Anna Karina<span>- Data Analyst</span></h5>
+            </div>
+        </figure>
+        <figure class="snip1139">
+            <blockquote>
+                Move over, LinkedIn. Waygookin is where the cool cats are at. Job
+                hunting has never been easier.
+                <div class="arrow"></div>
+            </blockquote>
+            <img src="./public/images/users/third.jpg" alt="sample3" />
+            <div class="author">
+                <h5>John Cho<span>- Programmer</span></h5>
+            </div>
+        </figure>
             </div>
         </figure>
         <figure class="snip1139 hover">
@@ -183,9 +251,10 @@ ob_start();
         >
       </p> -->
 </div>
-</body>
 
-</html>
+<?php
+include "./view/chatView.php"; // TODO: move this to logged in view
+?>
 
 <?php
 $content = ob_get_clean();

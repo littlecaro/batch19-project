@@ -8,7 +8,8 @@ try {
 
     switch ($action) {
         case "userProfile":
-            require('./view/userProfile.php');
+            showUserProfile();
+            // require('./view/userProfile.php');
             break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
@@ -26,7 +27,6 @@ try {
             break;
         case "userSignUp":
             //make sure data exists
-
             $firstName = !empty($_POST['firstName']) ? $_POST['firstName'] : null;
             $lastName = !empty($_POST['lastName']) ? $_POST['lastName'] : null;
             $email = !empty($_POST['email']) ? $_POST['email'] : null;
@@ -38,7 +38,6 @@ try {
                 userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
             break;
-
         case "userSignIn":
             //make sure data is set
             $email = isset($_POST['email']);
@@ -49,48 +48,59 @@ try {
                 userSignIn($email, $pwd);
             }
             break;
+            // case "userProfile":
+            //     // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
+            //     // $city = !empty($_POST['city']) ? $_POST['city'] : null;
+            //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
+            //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
-            case "getChatMessages":
-                $conversationId = $_POST['conversationId'] ?? null;
-                if (!empty($conversationId)) {
-                    showMessages($conversationId);
-                }
-                break;
-            case "submitMessage":
-    
-                $conversationId = $_POST['conversationId'] ?? null;
-                $senderId = $_POST['senderId'];
-                $message = $_POST['message'];
-                // echo $message, $senderId, $conversationId;
-                if (!empty($senderId)  and !empty($message)) {
-                    // echo "<br>";
-                    // echo "getting controller";
-                    addMessage($conversationId, $senderId, $message);
-                }
-                break;
-            case "messenger":
-                showChats();
-    
-                break;
-            case "search":
-                // print_r($_GET);
-                $term = $_GET['term'] ?? null;
-                searchMessages($term);
-                break;
-                
+            //     userProfile();
+            //     require('./view/userProfile.php');
+
+            //     break;
+
+        case "getChatMessages":
+            $conversationId = $_POST['conversationId'] ?? null;
+            if (!empty($conversationId)) {
+                showMessages($conversationId);
+            }
+            break;
+        case "submitMessage":
+
+            $conversationId = $_POST['conversationId'] ?? null;
+            $senderId = $_POST['senderId'];
+            $message = $_POST['message'];
+            // echo $message, $senderId, $conversationId;
+            if (!empty($senderId)  and !empty($message)) {
+                // echo "<br>";
+                // echo "getting controller";
+                addMessage($conversationId, $senderId, $message);
+            }
+            break;
+        case "messenger":
+            showChats();
+
+            break;
+        case "search":
+            // print_r($_GET);
+            $term = $_GET['term'] ?? null;
+            searchMessages($term);
+            break;
+
         case "updateCalendar":
             $data = $_REQUEST['data'] ?? "";
             if ($data) {
-                $data = json_decode($data,true);
+                $data = json_decode($data, true);
                 addCalendar($data);
             } else {
-                throw new Exception ("No calender inputs submitted");
+                throw new Exception("No calender inputs submitted");
             }
             break;
         case "loadCalendar":
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
+
         default:
             showIndex();
             break;
