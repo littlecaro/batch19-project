@@ -5,11 +5,10 @@ ob_start();
 
 <div class="header">
   <div class="logo">
-    <p>waygukwin</p>
+    <p><a href="index.php">waygukwin</a></p>
   </div>
   <div class="menu">
-    <button id="home" onclick="location.href='index.php'">HOME</button>
-    <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
+    <button class="topbutton"><a href="index.php?action=userSignInView">SIGN IN</a></button>
   </div>
 </div>
 <h3>Let's get started</h3>
