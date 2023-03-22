@@ -250,10 +250,11 @@ function deleteDateEntry(e) {
   const entry = JSON.stringify(enteredArr);
   // console.log(entry);
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", `./index.php?action=deleteEntry&entry=${entry}`);
+  xhr.open("GET", `./index.php?action=deleteEntry&entry=${entry}`);
 
   xhr.addEventListener("load", function () {
     location.reload();
+    // console.log(xhr.responseText);
   });
 
   xhr.send(null);

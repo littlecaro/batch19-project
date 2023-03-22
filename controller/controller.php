@@ -197,8 +197,10 @@ function showCalendar($user_id) {
 }
 
 function deleteEntry($entry) {
-    $date = strip_tags($entry['date']);
-    $time = strip_tags($entry['time']);
+    $date = strip_tags($entry[0]['date']);
+    $time = strip_tags($entry[0]['time']);
+    // echo $date;
+    // echo $time;
 
     $calendarManager = new CalendarManager();
     $result = $calendarManager->updateDeletion($date, $time);
