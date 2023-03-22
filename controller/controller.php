@@ -1,9 +1,10 @@
 <?php
 
 
+require_once('./model/calendarManager.php');
+
 require_once ("./model/UserManager.php");
 
-require_once "./model/UserManager.php";
 
 require_once "./model/model.php";
 
@@ -11,7 +12,6 @@ require_once "./model/model.php";
 // {
 //     require("./view/indexView.php");
 // }
-
 
 function showIndex()
 {
@@ -38,7 +38,10 @@ function checkUserSignInGoogle($decodedToken)
             $_SESSION['id'] = $user->id;
             $_SESSION['first_name'] = $user->first_name;
             $_SESSION['last_name'] = $user->last_name;
-            header('location: index.php?action=userProfile');
+            $_SESSION['email'] = $userEmail;
+
+            // header('location: index.php?action=userProfile');
+            require "./view/userProfile.php";
             exit;
         } else {
             // if user doesn't exist, prepare an INSERT query // If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
@@ -52,7 +55,7 @@ function checkUserSignInGoogle($decodedToken)
             }
             echo 'user has been added successfully';
         }
-        header('location: index.php?action=userProfile'); // redirect
+        // header('location: index.php?action=userProfile'); // redirect
         exit;
     } else {
         $msg = "invalid login";
@@ -90,13 +93,28 @@ function userSignIn($email, $pwd)
 {
     //check if user exists
     $userManager = new UserManager();
+
+    $user = $userManager->getUserByEmail($email);
+
+    //verify the password and then start a session
+    if ($user and password_verify($pwd, $user->password)) {
+        session_start();
+        $_SESSION['email'] = $email;
+        $_SESSION['id'] = $user->id;
+        $_SESSION['first_name'] = $user->first_name;
+        $_SESSION['last_name'] = $user->last_name;
+
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
         throw new Exception("Invalid Information");
     } else {
         //if data good, allow sign in
+
         header("index.php"); //TODO: change header location
+        exit;
+    } else {
+        throw new Exception("Invalid Information");
     }
 }
 function showUserSignUp()
@@ -108,6 +126,18 @@ function showUserSignIn()
 {
     require "./view/signInView.php";
 }
+
+
+// function userProfile()
+// {
+//     require "./view/userProfile.php";
+// }
+
+function userProfilePage1()
+{
+    $userProfileManager = new UserProfileManager();
+    $user = $userProfileManager->showUserProfile();
+    require "./view/userProfilePage1.php";
 
 function showChats()
 {
@@ -142,4 +172,25 @@ function searchMessages($term)
             include('./view/components/chatCard.php');
         }
     }
+}
+
+function addCalendar($data) {
+    for ($i = 0; $i < count($data); $i++) {
+        $date = strip_tags($data[$i]['date']);
+        $hour = strip_tags($data[$i]['hour']);
+
+        $calendarManager = new CalendarManager();
+        $result = $calendarManager->insertCalendar($date, $hour);
+        if (!$result) {
+            throw new Exception("Unable to add entries");
+        }
+        header("location: index.php?action=loadCalendar");
+    }
+}
+
+function showCalendar($user_id) {
+        $calendarManager = new CalendarManager();
+        $result = $calendarManager->loadCalendar($user_id);
+        require('./view/calendarView.php');
+
 }

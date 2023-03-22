@@ -6,7 +6,7 @@ class UserManager extends Manager
     public function getUserByEmail($userEmail)
     {
         $db = $this->dbConnect();
-        $sqlEmail = $db->prepare('SELECT id, email, first_name, last_name FROM users WHERE email = ?'); // query prepare the DB to see if the user exists - asking data from the users table 
+        $sqlEmail = $db->prepare('SELECT * FROM users WHERE email = ?'); // query prepare the DB to see if the user exists - asking data from the users table 
         $sqlEmail->execute([$userEmail]); // ^ asking for the id, email... info ^
         $user = $sqlEmail->fetch(PDO::FETCH_OBJ);
         return $user;
@@ -15,7 +15,7 @@ class UserManager extends Manager
     public function insertUserGoogle($firstName, $lastName, $email, $picture)
     {
         $db = $this->dbConnect();
-        // if user doesn't exist, prepare an INSERT query // TODO: If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
+        // if user doesn't exist, prepare an INSERT query // If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
         $insertUser = 'INSERT INTO users (first_name, last_name, email, profile_picture, login_type) VALUES (:inFirst_name, :inLast_name, :inEmail, :inProfile_picture, 0)';
         $req = $db->prepare($insertUser);
         // your value is the decodedToken from the JSon and -> selecting the specific title from there
@@ -45,9 +45,22 @@ class UserManager extends Manager
         $req->execute();
     }
 
+    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+
     public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
+        $userExp = "SELECT p.job_title, p.years_experience, p.company_name FROM user u INNER JOIN professional_experience as p on u.id = p.user_id;
+        VALUES (:job_title, :years_experience, :comapny_name)";
+        $req = $db->prepare($userExp);
+        $req->bindParam('job_title', $jobTitle, PDO::PARAM_STR);
+        $req->bindParam('years_experience', $yearsExperience, PDO::PARAM_STR);
+        $req->bindParam('company_name', $companyName, PDO::PARAM_INT);
+        $req->execute();
+
+
+        $experience = $req->fetchALL(PDO::FETCH_OBJ);
+        return $experience;
 
         $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
         $req->execute(array($_POST['email']));
@@ -59,5 +72,21 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
+
     }
+
+
+    public function getUserEducation()
+    {
+    }
+    // public function signInUser($email, $pwd)
+    // {
+    //     $db = $this->dbConnect();
+
+    //     $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
+    //     $req->execute(array($_POST['email']));
+    //     $user = $req->fetch(PDO::FETCH_OBJ);
+
+    //     return $user;
+    // }
 }
