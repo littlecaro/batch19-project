@@ -207,6 +207,7 @@ function deleteEntry($entry)
         throw new Exception("Unable to delete entry");
     }
     header("location: index.php?action=loadCalendar");
+}
 
 function showCalendar($user_id)
 {
