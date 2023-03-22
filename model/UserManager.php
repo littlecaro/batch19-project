@@ -46,7 +46,8 @@ class UserManager extends Manager
     }
 
     public function getUserExperience($jobTitle, $yearsExperience, $companyName)
-
+    {
+    }
     public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
@@ -72,7 +73,6 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
-
     }
 
 

@@ -82,3 +82,104 @@ function searchMessagesGet($term)
     // print_r($chats);
     return $chats;
 }
+
+function getAllTalents()
+{
+    $str = 'SELECT DISTINCT
+    users.id
+FROM
+    users';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->execute();
+    $allTalents = $query->fetchAll(PDO::FETCH_OBJ);
+    // print_r($query);
+    return $allTalents;
+}
+
+function getTalentSkills($userId)
+{
+    $str = 'SELECT
+    user_skill_map.skill_id,
+    skills.skills_fixed
+FROM
+    users INNER JOIN
+    user_skill_map On user_skill_map.user_id = users.id INNER JOIN
+    skills On user_skill_map.skill_id = skills.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+function getTalentInfo($userId)
+{
+    $str = 'SELECT
+    users.id,
+    users.first_name,
+    users.last_name,
+    users.profile_picture
+FROM
+    users
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentInfo = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentInfo;
+}
+function getTalentDesiredPosition($userId)
+{
+    $str = 'SELECT
+    desired_position.desired_position,
+    users.id
+From
+    desired_position Inner Join
+    users On desired_position.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $desiredPosition = $query->fetchAll(PDO::FETCH_OBJ);
+    return $desiredPosition;
+}
+function getTalentYearsExperience($userId)
+{
+    $str = 'SELECT
+    users.id,
+    Sum(professional_experience.years_experience) As years_experience1
+From
+    users Inner Join
+    professional_experience On professional_experience.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $yearsExperience = $query->fetchAll(PDO::FETCH_OBJ);
+    return $yearsExperience;
+}
+
+function getTalentHighestDegree($userId)
+{
+    $str = 'SELECT
+    education.institution,
+    education.degree,
+    MAX(education.degree_level) as highestDegree,
+    users.id
+From
+    education Inner Join
+    users On education.user_id = users.id
+    WHERE users.id = :userId
+    ';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentHighestDegree = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentHighestDegree;
+}

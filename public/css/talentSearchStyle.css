@@ -1,0 +1,102 @@
+body,
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  font-size: 16px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.talentHeader {
+  position: absolute;
+  width: 100%;
+  background-color: var(--header-color-primary);
+  display: flex;
+  height: 60px;
+  z-index: 2;
+}
+.talentMain {
+  font-size: 1rem;
+  display: flex;
+  background-color: var(--background-color-secondary);
+  width: 100vw;
+  height: 100%;
+}
+.talentSide {
+  height: 100%;
+  width: 16%;
+  background-color: var(--business-color-primary);
+  z-index: 1;
+}
+.talentSearchMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  top: 10%;
+  position: relative;
+  height: fit-content;
+  padding-bottom: 10%;
+}
+.talentCenter {
+  width: 84%;
+  top: 10%;
+  position: relative;
+
+  overflow-y: scroll;
+}
+.talentCard {
+  margin: 30px;
+  width: 80%;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px gray;
+}
+.talentCardMain {
+  display: flex;
+  justify-content: space-between;
+}
+.messageProfileImg img {
+  width: 40px;
+  height: 40px;
+  /* border-radius: 50%; */
+  margin-right: 10px;
+}
+.talentCardHead {
+  display: flex;
+}
+.talentCard li {
+  list-style-type: none;
+}
+.talentCard ul {
+  padding: 0;
+  margin: 0;
+}
+.skillIssue {
+  display: inline-block;
+  margin-right: 5px;
+  background-color: var(--background-color-footer);
+  padding: 1.5px 3px;
+  min-width: 26px;
+  font-size: 1rem;
+  text-align: center;
+  box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
+}
+.talentSkills p {
+  display: flex;
+  flex-wrap: wrap;
+}
+.talentBasicInfo {
+  flex: 1.2;
+}
+.talentDesiredPosition {
+  flex: 1;
+}
+.talentSkills {
+  flex: 1;
+}

@@ -1,5 +1,5 @@
-<?php session_start();
-$_SESSION["userId"] = 1; ?>
+<!-- <?php session_start();
+        $_SESSION["userId"] = 1; ?> -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +10,7 @@ $_SESSION["userId"] = 1; ?>
     <script src="https://kit.fontawesome.com/9d1def913c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./public/css/styleMain.css" />
     <link rel="stylesheet" href="./public/css/messenger.css">
+    <link rel="stylesheet" href="./public/css/talentSearchStyle.css">
     <script>
         const userId = <?= $_SESSION["userId"] ?>
     </script>
@@ -19,5 +20,5 @@ $_SESSION["userId"] = 1; ?>
 <body>
     <?= $content; ?>
 </body>
-</html>
 
+</html>

@@ -3,7 +3,7 @@
 
 require_once('./model/calendarManager.php');
 
-require_once ("./model/UserManager.php");
+require_once("./model/UserManager.php");
 
 
 require_once "./model/model.php";
@@ -103,7 +103,7 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-
+    }
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
@@ -113,8 +113,6 @@ function userSignIn($email, $pwd)
 
         header("index.php"); //TODO: change header location
         exit;
-    } else {
-        throw new Exception("Invalid Information");
     }
 }
 function showUserSignUp()
@@ -138,7 +136,7 @@ function userProfilePage1()
     $userProfileManager = new UserProfileManager();
     $user = $userProfileManager->showUserProfile();
     require "./view/userProfilePage1.php";
-
+}
 function showChats()
 {
     $chats = loadChats();
@@ -174,7 +172,8 @@ function searchMessages($term)
     }
 }
 
-function addCalendar($data) {
+function addCalendar($data)
+{
     for ($i = 0; $i < count($data); $i++) {
         $date = strip_tags($data[$i]['date']);
         $hour = strip_tags($data[$i]['hour']);
@@ -188,9 +187,34 @@ function addCalendar($data) {
     }
 }
 
-function showCalendar($user_id) {
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->loadCalendar($user_id);
-        require('./view/calendarView.php');
+function showCalendar($user_id)
+{
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadCalendar($user_id);
+    require('./view/calendarView.php');
+}
+function showTalents()
+{
+    $allTalents = getAllTalents();
+    // print_r($allTalents);
+    ob_start();
+    if (!empty($allTalents)) {
+        foreach ($allTalents as $talentID => $key) {
+            $yearsExperience = getTalentYearsExperience($key->id);
+            $skills = getTalentSkills($key->id);
+            $talentInfo = getTalentInfo($key->id);
+            $desiredPositions = getTalentDesiredPosition($key->id);
+            $highestDegree = getTalentHighestDegree($key->id);
+            // $talents = loadTalents($key);
+            include('./view/components/talendCard.php');
+        }
+    }
+    $talentCards = ob_get_clean();
+    require('./view/filterView.php');
 
+    // print_r($talents);
+}
+function loadTalentCards()
+{
+    require("./view/filterView.php");
 }

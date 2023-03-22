@@ -19,7 +19,8 @@ body {
   background-size: cover;
   margin: 70px 0;
 }
-
+/* TODO:I think the body containing everything creates problems in other pages. We should
+contain the landing page in a wrapper... HTML and body should have width and heights of 100vw/vh */
 .header {
   position: fixed;
   display: flex;

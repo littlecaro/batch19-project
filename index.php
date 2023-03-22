@@ -58,48 +58,50 @@ try {
 
             //     break;
 
-            case "getChatMessages":
-                $conversationId = $_POST['conversationId'] ?? null;
-                if (!empty($conversationId)) {
-                    showMessages($conversationId);
-                }
-                break;
-            case "submitMessage":
-    
-                $conversationId = $_POST['conversationId'] ?? null;
-                $senderId = $_POST['senderId'];
-                $message = $_POST['message'];
-                // echo $message, $senderId, $conversationId;
-                if (!empty($senderId)  and !empty($message)) {
-                    // echo "<br>";
-                    // echo "getting controller";
-                    addMessage($conversationId, $senderId, $message);
-                }
-                break;
-            case "messenger":
-                showChats();
-    
-                break;
-            case "search":
-                // print_r($_GET);
-                $term = $_GET['term'] ?? null;
-                searchMessages($term);
-                break;
-                
+        case "getChatMessages":
+            $conversationId = $_POST['conversationId'] ?? null;
+            if (!empty($conversationId)) {
+                showMessages($conversationId);
+            }
+            break;
+        case "submitMessage":
+
+            $conversationId = $_POST['conversationId'] ?? null;
+            $senderId = $_POST['senderId'];
+            $message = $_POST['message'];
+            // echo $message, $senderId, $conversationId;
+            if (!empty($senderId)  and !empty($message)) {
+                // echo "<br>";
+                // echo "getting controller";
+                addMessage($conversationId, $senderId, $message);
+            }
+            break;
+        case "messenger":
+            showChats();
+
+            break;
+        case "search":
+            // print_r($_GET);
+            $term = $_GET['term'] ?? null;
+            searchMessages($term);
+            break;
+
         case "updateCalendar":
             $data = $_REQUEST['data'] ?? "";
             if ($data) {
-                $data = json_decode($data,true);
+                $data = json_decode($data, true);
                 addCalendar($data);
             } else {
-                throw new Exception ("No calender inputs submitted");
+                throw new Exception("No calender inputs submitted");
             }
             break;
         case "loadCalendar":
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
-
+        case "talentSearch":
+            showTalents();
+            break;
         default:
             showIndex();
             break;
