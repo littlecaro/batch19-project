@@ -3,7 +3,7 @@
 
 require_once('./model/calendarManager.php');
 
-require_once ("./model/UserManager.php");
+require_once("./model/UserManager.php");
 
 
 require_once "./model/model.php";
@@ -33,39 +33,37 @@ function checkUserSignInGoogle($decodedToken)
 
         $user = $userManager->getUserByEmail($userEmail);
 
-        if ($user) { // if $user exits // echo "user exists"; // echo "<pre>";
-            // Save their id and names in session variables and redirect them
-            $_SESSION['id'] = $user->id;
-            $_SESSION['first_name'] = $user->first_name;
-            $_SESSION['last_name'] = $user->last_name;
-            $_SESSION['email'] = $userEmail;
-
-            // header('location: index.php?action=userProfile');
-            require "./view/userProfile.php";
-            exit;
-        } else {
+        if (!$user) {
             // if user doesn't exist, prepare an INSERT query // If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
             $firstName = $decodedToken->given_name;
             $lastName = $decodedToken->family_name;
             $email = $decodedToken->email;
             $picture = $decodedToken->picture;
             $result = $userManager->insertUserGoogle($firstName, $lastName, $email, $picture);
+            $user = $userManager->getUserByEmail($userEmail);
+
             if (!$result) {
                 throw new Exception("Cannot add user.");
             }
-            echo 'user has been added successfully';
         }
-        // header('location: index.php?action=userProfile'); // redirect
+        // Save their id and names in session variables and redirect them
+        $_SESSION['id'] = $user->id;
+        $_SESSION['first_name'] = $user->first_name;
+        $_SESSION['last_name'] = $user->last_name;
+        $_SESSION['email'] = $userEmail;
+
+        header("Location: index.php?action=userProfile");
         exit;
     } else {
-        $msg = "invalid login";
-        echo "aud:" . $audValid;
-        echo '<br>';
-        echo "iss:" . $issValid;
-        echo '<br>';
-        echo "exp:" . $expValid;
-        header('location:index.php?error=' . urlencode($msg));
-        exit();
+        // $msg = "invalid login";
+        // echo "aud:" . $audValid;
+        // echo '<br>';
+        // echo "iss:" . $issValid;
+        // echo '<br>';
+        // echo "exp:" . $expValid;
+        // header('location:index.php?error=' . urlencode($msg));
+        // exit();
+        throw new Exception("invalid login");
     }
 }
 
@@ -103,6 +101,11 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
+        header("Location: index.php?action=userProfile");
+        exit;
+    } else {
+        throw new Exception("Invalid Information");
+    }
 
     $user = $userManager->signInUser($email, $pwd);
 
@@ -115,7 +118,7 @@ function userSignIn($email, $pwd)
             exit;
             }
         }
-}
+
 function showUserSignUp()
 {
     require "./view/signUpView.php";
@@ -176,7 +179,8 @@ function searchMessages($term)
     }
 }
 
-function addCalendar($data) {
+function addCalendar($data)
+{
     for ($i = 0; $i < count($data); $i++) {
         $date = strip_tags($data[$i]['date']);
         $time = strip_tags($data[$i]['time']);
@@ -190,13 +194,8 @@ function addCalendar($data) {
     }
 }
 
-function showCalendar($user_id) {
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->loadCalendar($user_id);
-        require('./view/calendarView.php');
-}
-
-function deleteEntry($entry) {
+function deleteEntry($entry) 
+{
     $date = strip_tags($entry[0]['date']);
     $time = strip_tags($entry[0]['time']);
     // echo $date;
@@ -208,4 +207,22 @@ function deleteEntry($entry) {
         throw new Exception("Unable to delete entry");
     }
     header("location: index.php?action=loadCalendar");
+
+function showCalendar($user_id)
+{
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadCalendar($user_id);
+    require('./view/calendarView.php');
+}
+
+function showUserProfile()
+{
+    session_start();
+    $userManager = new UserManager();
+    $user = $userManager->getUserProfile($_SESSION['id']);
+    $experience = $userManager->getUserExperience($_SESSION['id']);
+    // $education = $userManager->getUserEducation($_SESSION['id']);
+    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    require("./view/userProfile.php");
 }
