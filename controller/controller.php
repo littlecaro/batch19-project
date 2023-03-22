@@ -106,16 +106,15 @@ function userSignIn($email, $pwd)
 
     $user = $userManager->signInUser($email, $pwd);
 
-    if (!$user) {
-        throw new Exception("Invalid Information");
-    } else {
-        //if data good, allow sign in
+        if (!$user) {
+            throw new Exception("Invalid Information");
+        } else {
+            //if data good, allow sign in
 
-        header("index.php"); //TODO: change header location
-        exit;
-    } else {
-        throw new Exception("Invalid Information");
-    }
+            header("index.php"); //TODO: change header location
+            exit;
+            }
+        }
 }
 function showUserSignUp()
 {
@@ -138,6 +137,7 @@ function userProfilePage1()
     $userProfileManager = new UserProfileManager();
     $user = $userProfileManager->showUserProfile();
     require "./view/userProfilePage1.php";
+}
 
 function showChats()
 {
@@ -159,11 +159,13 @@ function showMessages($conversationId)
     // // Return the response data as JSON
     // echo json_encode($messages);
 }
+
 function addMessage($conversationId, $senderId, $message)
 {
     // echo "controller start";
     submitMessage($conversationId, $senderId, $message);
 }
+
 function searchMessages($term)
 {
     $chats = searchMessagesGet($term);

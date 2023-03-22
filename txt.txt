@@ -1,0 +1,4 @@
+use template for template
+put link and script in own files.
+
+login page -> session_ID
