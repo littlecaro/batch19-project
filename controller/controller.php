@@ -183,16 +183,30 @@ function addCalendar($data)
 {
     for ($i = 0; $i < count($data); $i++) {
         $date = strip_tags($data[$i]['date']);
-        $hour = strip_tags($data[$i]['hour']);
+        $time = strip_tags($data[$i]['time']);
 
         $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $hour);
+        $result = $calendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
         header("location: index.php?action=loadCalendar");
     }
 }
+
+function deleteEntry($entry) 
+{
+    $date = strip_tags($entry[0]['date']);
+    $time = strip_tags($entry[0]['time']);
+    // echo $date;
+    // echo $time;
+
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->updateDeletion($date, $time);
+    if (!$result) {
+        throw new Exception("Unable to delete entry");
+    }
+    header("location: index.php?action=loadCalendar");
 
 function showCalendar($user_id)
 {

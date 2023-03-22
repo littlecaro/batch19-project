@@ -100,6 +100,17 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
+        case "deleteEntry":
+            $entry = $_REQUEST['entry'] ?? "";
+            if ($entry) {
+                // echo $entry;
+                $entry = json_decode($entry,true);
+                // print_r($entry);
+                deleteEntry($entry);
+            } else {
+                throw new Exception ("No calender inputs submitted");
+            }
+            break;
 
         default:
             showIndex();
