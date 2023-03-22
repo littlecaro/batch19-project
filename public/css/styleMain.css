@@ -17,7 +17,7 @@ body {
     rgba(101, 90, 223, 0.5) 100%
   );
   background-size: cover;
-  margin: 70px 0;
+  margin: 70px 0 0 0;
 }
 
 .header {
@@ -280,8 +280,9 @@ td {
   background: var(--background-color-footer);
   margin: 0;
   width: 100%;
-  position: absolute;
+  position: relative;
   left: 0;
+  bottom: -47px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

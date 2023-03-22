@@ -8,6 +8,7 @@ $_SESSION["userId"] = 1; ?>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/9d1def913c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./public/css/chatStyle.css">
     <link rel="stylesheet" href="./public/css/styleMain.css" />
     <link rel="stylesheet" href="./public/css/messenger.css">
     <script>
@@ -19,5 +20,5 @@ $_SESSION["userId"] = 1; ?>
 <body>
     <?= $content; ?>
 </body>
-</html>
 
+</html>
