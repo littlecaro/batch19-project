@@ -45,23 +45,33 @@ class UserManager extends Manager
         $req->execute();
     }
 
-    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+    public function getUserProfile($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT * FROM users WHERE id = ? ");
+        $req->execute([$userId]);
+        $user = $req->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
+
+    public function getUserExperience($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get experience WHERE user id matches;
+        $userExp = "SELECT job_title, years_experience, company_name FROM professional_experience WHERE user_id = ?";
+        $req = $db->prepare($userExp);
+        $req->execute([$userId]);
+        $experience = $req->fetchALL(PDO::FETCH_OBJ);
+        return $experience;
+    }
+
+    public function getUserEducation()
+    {
+    }
 
     public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
-        $userExp = "SELECT p.job_title, p.years_experience, p.company_name FROM user u INNER JOIN professional_experience as p on u.id = p.user_id;
-        VALUES (:job_title, :years_experience, :comapny_name)";
-        $req = $db->prepare($userExp);
-        $req->bindParam('job_title', $jobTitle, PDO::PARAM_STR);
-        $req->bindParam('years_experience', $yearsExperience, PDO::PARAM_STR);
-        $req->bindParam('company_name', $companyName, PDO::PARAM_INT);
-        $req->execute();
-
-
-        $experience = $req->fetchALL(PDO::FETCH_OBJ);
-        return $experience;
-
         $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
         $req->execute(array($_POST['email']));
         $user = $req->fetch(PDO::FETCH_OBJ);
@@ -72,13 +82,9 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
-
     }
 
 
-    public function getUserEducation()
-    {
-    }
     // public function signInUser($email, $pwd)
     // {
     //     $db = $this->dbConnect();

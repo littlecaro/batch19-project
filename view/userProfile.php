@@ -34,6 +34,7 @@
 
     <div id="personal">
         <form action="index.php?action=userProfilePersonal" method="POST">
+            <h2>Personal</h2>
             <label for="phonenb">Phone Number:</label>
             <input type="text" name="phoneNb" value="<?= $user->phone_number; ?>" />
             <br />
@@ -115,16 +116,9 @@
 
 
     <div id="resume"></div>
+
     <div id="education">
-        <form action="index.php?action=userProfileResume" method="POST">
-            <h2>Experience</h2>
-            <!-- labels -->
-            <label for="jobTitle">Job Title</label>
-            <input type="text" name="jobTitle" id="jobTitle" value="<?= $experience->job_title; ?>"><br /><br />
-            <label for="yearsExperience">Years Experience</label>
-            <input type="number" name="yearsExperience" id="yearsExperience" min="1" max="40" value="<?= $experience->years_experience; ?>"><br /><br />
-            <label for="company">Company Name</label>
-            <input type="text" name="company" id="company" value="<?= $experience->company_name; ?>" /><br /><br />
+        <form action="index.php?action=userProfileEducation&Experience" method="POST">
 
             <h2>Education Level</h2>
             <label for="degree">Level of Education</label>
@@ -138,6 +132,21 @@
             <label for="major">Subject of study</label>
             <input type="text" name="major" id="major" placeholder="BSc Computer Science..."><br /><br />
 
+            <h2>Experience</h2>
+            <!-- labels -->
+            <label for="jobTitle">Job Title</label>
+            <input type="text" name="jobTitle" id="jobTitle" value="<?= $experience->job_title; ?>"><br /><br />
+            <label for="yearsExperience">Years Experience</label>
+            <input type="number" name="yearsExperience" id="yearsExperience" min="1" max="40" value="<?= $experience->years_experience; ?>"><br /><br />
+            <label for="company">Company Name</label>
+            <input type="text" name="company" id="company" value="<?= $experience->company_name; ?>" /><br /><br />
+
+        </form>
+    </div>
+
+    <div id="skills">
+        <form action="index.php?action=userProfileSkills" method="POST">
+            <h2>Skills</h2>
             <label for="programming">Programming Languages & Proficiency</label>
             <input type="text" name="skillset" id="skillset" placeholder="Programming Language Proficiencies">
             <select name="yearsProgramming" id="yearsProgramming">
@@ -164,7 +173,6 @@
             </select><br /><br />
         </form>
     </div>
-    <div id="skills"></div>
     <div id="avail"></div>
 
 </body>
