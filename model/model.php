@@ -33,7 +33,7 @@ ON u.id != :userId AND (u.id = m.sender_id OR u.id = m.recipient_id);';
 function getMessages($conversationId)
 {
 
-    $str = 'SELECT u.profile_picture,u.first_name,u.last_name,m.conversation_id, m.id, m.sender_id, m.message, DATE_FORMAT(m.datetime, "%M %d %h:%i" ) as datetime FROM messages m INNER JOIN users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId ';
+    $str = 'SELECT u.profile_picture,u.first_name,u.last_name,m.conversation_id, m.id, m.sender_id, m.message, DATE_FORMAT(m.datetime, "%M %d %h:%i" ) as datetime FROM messages m INNER  users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId ';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(':ConversationId', $conversationId, PDO::PARAM_INT);
