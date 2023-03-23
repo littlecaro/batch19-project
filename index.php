@@ -6,10 +6,12 @@ require("./controller/controller.php");
 try {
     $action = $_REQUEST['action'] ?? null;
 
+    session_start();
+
     switch ($action) {
         case "userProfile":
             showUserProfile();
-            // require('./view/userProfile.php');
+            // require('./view/userProfileView.php');
             break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
@@ -55,7 +57,7 @@ try {
             //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
             //     userProfile();
-            //     require('./view/userProfile.php');
+            //     require('./view/userProfileView.php');
 
             //     break;
 
@@ -106,10 +108,31 @@ try {
                 $entry = json_decode($entry,true);
                 deleteCalendarEntry($entry);
             } else {
-                throw new Exception ("No calender inputs submitted");
+                throw new Exception("No calender inputs submitted");
             }
             break;
-
+        case "userProfileView":
+            require("./view/userProfileView.php");
+            break;
+        case "companyDashboard":
+            require("./view/companyDashboard.php");
+            break;
+        case "addNewJob":
+            require("./view/addNewJobView.php");
+            break;
+        case "employeeInfo":
+            require("./view/employeeInfoView.php");
+            break;
+        case "jobListings":
+            require("./view/jobListingsView.php");
+            break;
+        case "savedProfiles":
+            require("./view/savedProfilesView.php");
+            break;
+        case "bookedMeetings":
+            require("./view/bookedMeetingsView.php");
+            break;
+            
         default:
             showIndex();
             break;

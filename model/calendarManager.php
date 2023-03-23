@@ -1,6 +1,5 @@
 <?php
 require_once('./model/Manager.php');
-// session_start();
 
 class CalendarManager extends Manager
 {
