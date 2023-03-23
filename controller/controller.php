@@ -1,7 +1,7 @@
 <?php
 
 
-require_once('./model/calendarManager.php');
+require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
 
@@ -185,8 +185,8 @@ function addCalendar($data)
         $date = strip_tags($data[$i]['date']);
         $time = strip_tags($data[$i]['time']);
 
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $time);
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
@@ -196,23 +196,26 @@ function addCalendar($data)
 
 function deleteEntry($entry) 
 {
-    $date = strip_tags($entry[0]['date']);
-    $time = strip_tags($entry[0]['time']);
-    // echo $date;
-    // echo $time;
+    // echo count($entry);
+    for ($i = 0; $i < count($entry); $i++) {
+    $date = strip_tags($entry[$i]['date']);
+    $time = strip_tags($entry[$i]['time']);
+    echo $date;
+    echo $time;
 
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->updateDeletion($date, $time);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->updateDeletion($date, $time);
     if (!$result) {
         throw new Exception("Unable to delete entry");
     }
     header("location: index.php?action=loadCalendar");
+    }
 }
 
 function showCalendar($user_id)
 {
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->loadCalendar($user_id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->loadCalendar($user_id);
     require('./view/calendarView.php');
 }
 

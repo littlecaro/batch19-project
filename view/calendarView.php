@@ -20,6 +20,7 @@
             <div id="dynaUpdate"></div>
         </div>
         <div id="confirmedContainer">
+            <!-- <h1>Confirmed availability: </h1> -->
         </div>
     </div>
 </div>

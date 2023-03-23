@@ -208,7 +208,7 @@ function inputEntries(entries) {
 
 function displayConfirmed(entries) {
   let h1 = document.createElement("h1");
-  h1.textContent = "Confirmed availability";
+  h1.textContent = "Confirmed availability: ";
   confirmedContainer.appendChild(h1);
   for (let entry of entries) {
     let div = document.createElement("div");
@@ -227,12 +227,40 @@ function displayConfirmed(entries) {
     div.appendChild(time);
     let deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete entry";
+    deleteBtn.classList.add("delete");
     deleteBtn.setAttribute("data-date", `${entry.date}`);
     deleteBtn.setAttribute("data-time", `${entry.time_start}`);
     deleteBtn.addEventListener("click", deleteDateEntry);
     div.appendChild(deleteBtn);
     confirmedContainer.appendChild(div);
   }
+  let deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete all entries";
+  deleteBtn.addEventListener("click", deleteAllEntries);
+  confirmedContainer.appendChild(deleteBtn);
+}
+
+function deleteAllEntries() {
+  const entries = document.querySelectorAll(".delete");
+  let entriesArr = [];
+  for (let entry of entries) {
+    entriesArr.push({
+      date: `${entry.dataset.date}`,
+      time: `${entry.dataset.time}`,
+    });
+  }
+
+  entriesArr = JSON.stringify(entriesArr);
+  // console.log(entriesArr);
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", `./index.php?action=deleteEntry&entry=${entriesArr}`);
+
+  xhr.addEventListener("load", function () {
+    location.reload();
+    // console.log(xhr.responseText);
+  });
+
+  xhr.send(null);
 }
 
 function dateStrToArr(date) {

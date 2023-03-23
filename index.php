@@ -102,6 +102,8 @@ try {
             break;
         case "deleteEntry":
             $entry = $_REQUEST['entry'] ?? "";
+            // print_r($entry);
+            // echo $entry;
             if ($entry) {
                 // echo $entry;
                 $entry = json_decode($entry,true);
