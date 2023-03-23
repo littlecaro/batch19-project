@@ -1,0 +1,3 @@
+TODO:
+Organise the entries (will be same view for company user profile viewing candidate)
+Control for duplicate entries. SELECTED -> USER-SELECT NONE. control for duplicates anyway in insert.

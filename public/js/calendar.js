@@ -14,20 +14,6 @@ nextWeek.addEventListener("click", () => {
   displayCal(offset);
 });
 
-const undo = document.querySelector(".undo");
-undo.addEventListener("click", () => {
-  displayCal(offset);
-  let selection = document.querySelector(".selection");
-  if (selection) {
-    selection.remove();
-  }
-});
-
-const submit = document.querySelector(".submit");
-submit.addEventListener("click", () => {
-  displayChoices();
-});
-
 function displayCal(x = 0) {
   calendar.innerHTML = "";
   confirmedContainer.innerHTML = "";
@@ -79,6 +65,7 @@ function displayCal(x = 0) {
         } else {
           td.setAttribute("data-time", `${i}:00:00`);
         }
+        td.innerHTML = `${td.dataset.time.slice(0, 5)}`;
         tr.appendChild(td);
       }
     }
@@ -100,10 +87,11 @@ function monthStr(month) {
   return months[month];
 }
 
+let isMouseUp = true;
 function highlight() {
   let table = document.querySelector("table");
   let tds = document.querySelectorAll("td");
-  let isMouseUp = true;
+  // let isMouseUp = true;
   table.addEventListener("mousedown", function (e) {
     isMouseUp = false;
     table.style.cursor = "grabbing";
@@ -120,8 +108,9 @@ function highlight() {
   });
   for (let td of tds) {
     td.addEventListener("mousemove", function (e) {
-      if (!isMouseUp) {
+      if (!isMouseUp && !td.classList.contains("confirmed")) {
         td.className = "selected";
+        displayChoices();
       }
       // TODO: Be able to unselect.
       // if (td.classList.contains("selected")) {
@@ -138,10 +127,7 @@ function displayChoices() {
   }
   const selection = document.createElement("div");
   selection.setAttribute("class", "selection");
-  const h1 = document.createElement("h1");
-  h1.textContent = "Please confirm your selection:";
-  selection.appendChild(h1);
-
+  dynaUpdate.appendChild(selection);
   const selected = document.querySelectorAll(".selected");
   for (let each of selected) {
     let div = document.createElement("div");
@@ -151,13 +137,40 @@ function displayChoices() {
     let time = document.createElement("p");
     time.textContent = `Time: ${each.dataset.time.slice(0, 5)}`;
     div.appendChild(time);
+    let deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Undo";
+    deleteBtn.setAttribute("data-php", `${each.dataset.php}`);
+    deleteBtn.setAttribute("data-time", `${each.dataset.time}`);
+    deleteBtn.addEventListener("click", unselect);
+    div.appendChild(deleteBtn);
     selection.appendChild(div);
   }
+  let div = document.createElement("div");
+  const undoAll = document.createElement("button");
+  undoAll.textContent = "Undo all";
+  undoAll.addEventListener("click", () => {
+    displayCal(offset);
+    let selection = document.querySelector(".selection");
+    if (selection) {
+      selection.remove();
+    }
+  });
+  div.appendChild(undoAll);
   const confirm = document.createElement("button");
   confirm.textContent = "Confirm";
   confirm.addEventListener("click", sendIt);
-  selection.appendChild(confirm);
-  confirmChoices.appendChild(selection);
+  div.appendChild(confirm);
+  selection.appendChild(div);
+}
+
+function unselect(e) {
+  let tds = document.querySelectorAll("td");
+  for (let td of tds) {
+    if (td.dataset.php == e.target.dataset.php && td.dataset.time == e.target.dataset.time && td.classList.contains("selected")) {
+      td.classList.remove("selected");
+      e.target.parentNode.remove();
+    }
+  }
 }
 
 function sendIt() {
