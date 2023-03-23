@@ -2,7 +2,7 @@
   --button-color-primary: #d66238;
   --button-color-secondary: hwb(302 51% 21%);
   --text-color-primary: #86cfd0;
-  --text-color-hover: #4a999a;
+  --text-color-hover: #13c2c5;
   --header-color-primary: #28225d;
   --business-color-primary: hsl(280, 37%, 52%);
   --background-color-secondary: rgba(101, 90, 223, 0.5);
@@ -82,13 +82,13 @@ body {
   text-decoration: none;
 }
 
-.menu a:hover {
+.menu a:visited {
   color: white;
   text-decoration: none;
 }
 
-.menu a:visited {
-  color: white;
+.menu a:hover {
+  color: #28225d;
   text-decoration: none;
 }
 
@@ -112,7 +112,8 @@ input {
 }
 
 .topbutton:hover {
-  background-color: darkslateblue;
+  background-color: white;
+  color: #1d1954;
 }
 
 .main {
@@ -212,8 +213,9 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-bottom: 70px;
+  margin-bottom: 100px;
 }
+
 .feature-new-job {
   display: flex;
   flex-direction: column;
@@ -240,7 +242,7 @@ button {
 .middle {
   display: flex;
   justify-content: center;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
 }
 
 .middle_box {
@@ -285,28 +287,6 @@ button {
 
 td {
   padding-bottom: 30px;
-}
-
-.job_name {
-  width: 50%;
-  text-align: left;
-}
-
-.job_type {
-  background-color: var(--button-color-secondary);
-}
-
-.expiry_date {
-  width: 145px;
-}
-
-.second_last {
-  border-bottom: none;
-}
-
-.last_line {
-  border-bottom: none;
-  text-align: center;
 }
 
 .footer {
