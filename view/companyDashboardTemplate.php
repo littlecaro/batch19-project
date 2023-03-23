@@ -13,5 +13,8 @@
     <title><?= $title ?></title>
 
 <body>
+
+    <?php require("./view/components/companyHeader.php"); ?>
+    <?php require("./view/components/companySidebar.php"); ?>
     <?= $content; ?>
 </body>
