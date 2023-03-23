@@ -2,13 +2,18 @@
 $title = "company dashboard";
 ob_start();
 ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js" integrity="sha512-UOJe4paV6hYWBnS0c9GnIRH8PLm2nFK22uhfAvsTIqd3uwnWsVri1OPn5fJYdLtGY3wB11LGHJ4yPU1WFJeBYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    const cities = <?= json_encode($cities); ?>;
+</script>
+<script src="./public/javascript/multi-selector.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" integrity="sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- main -->
 
 <div class="main">
     <h3>Add a Job</h3>
     <br>
-    <form action="#" method="POST">
+    <form action="./index.php?action=addNewJob" method="POST">
         <table id="table">
             <tr>
                 <th>Job title</th>
@@ -20,28 +25,33 @@ ob_start();
             <tr>
                 <th id="jobdescription">Job description</th>
                 <td>
-                    <textarea id="jobstory" name="jobstory" rows="6" cols="33" placeholder="Enter a job description"></textarea>
+                    <textarea id="jobStory" name="jobStory" rows="6" cols="33" placeholder="Enter a job description"></textarea>
                     <span class="required" id="demo2"></span>
                 </td>
             </tr>
             <tr>
-                <th>City</th>
-                <td>
-                    <input type="text" name="city" id="city" placeholder="City" />
-                    <span class="required" id="demo4"></span>
+                <th id="salary"><br>Salary</th>
+                <td><br>
+                    <div id="slider"></div>
+                    <span class="required" id="demo5"></span>
                 </td>
+                <input id="salaryMin" type="hidden" name="salaryMin">
+                <input id="salaryMax" type="hidden" name="salaryMax">
             </tr>
             <tr>
-                <th>Salary</th>
+                <th>City</th>
                 <td>
-                    <input type="text" name="salary" id="salary" placeholder="Salary" />
-                    <span class="required" id="demo5"></span>
+                    <?php
+                    $containerId = "cities";
+                    require("./view/components/multiSelector.php");
+                    ?>
+                    <span class="required" id="demo4"></span>
                 </td>
             </tr>
             <tr>
                 <th>Job deadline</th>
                 <td>
-                    <input type="text" name="deadline" id="deadline" placeholder="Date of job deadline" />
+                    <input type="date" name="deadline" id="deadline" placeholder="Date of job deadline" />
                     <span class="required" id="demo6"></span>
                 </td>
             </tr>
@@ -51,6 +61,48 @@ ob_start();
         </span>
     </form>
 </div>
+<script>
+    createMultiSelector(cities, 'cities', 1);
+    var arbitraryValuesSlider = document.getElementById('slider');
+
+    var arbitraryValuesForSlider = ['₩0', '₩10M', '₩20M', '₩30M', '₩40M', '₩50M', '₩60M', '₩70M', '₩80M+'];
+
+    var format = {
+        to: function(value) {
+            return arbitraryValuesForSlider[Math.round(value)];
+        },
+        from: function(value) {
+            return arbitraryValuesForSlider.indexOf(value);
+        }
+    };
+
+    noUiSlider.create(arbitraryValuesSlider, {
+        // start values are parsed by 'format'
+        start: ['₩30M', '₩50M'],
+        connect: true,
+        range: {
+            min: 0,
+            max: arbitraryValuesForSlider.length - 1
+        },
+        step: 1,
+        tooltips: true,
+        format: format,
+        // pips: {
+        //     mode: 'steps',
+        //     format: format,
+        //     density: 50
+        // },
+    });
+
+    const form = document.querySelector("form");
+    form.addEventListener('submit', function(e) {
+        const salaries = slider.noUiSlider.get();
+        console.log(salaries);
+        salaryMin.value = salaries[0];
+        salaryMax.value = salaries[1];
+        // e.preventDefault();
+    })
+</script>
 
 <?php
 $content = ob_get_clean();

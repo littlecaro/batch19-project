@@ -7,8 +7,7 @@ ob_start();
 
 <div class="main">
     <h3>Job Listings</h3><br>
-    <h4>asd</h4>
-    <a href="./index.php?action=addNewJob">
+    <a href="./index.php?action=createJobForm">
         <button class="button">ADD A JOB</button>
     </a>
 </div>
