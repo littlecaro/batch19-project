@@ -11,7 +11,10 @@
     <!-- We need to choose better font-family: googlefonts?! -->
     <script defer src="./public/js/scriptUserProfile.js"></script>
     <title>WaygukIn</title>
+</head>
 
 <body>
     <?= $content; ?>
 </body>
+
+</html>

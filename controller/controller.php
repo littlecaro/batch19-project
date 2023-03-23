@@ -27,7 +27,6 @@ function checkUserSignInGoogle($decodedToken)
     $expValid = $decodedToken->exp > time() ? true : false;
     if ($audValid && $issValid && $expValid) { // if they are valid
 
-        session_start();
         $userEmail = $decodedToken->email; // $userEmail is the email taken from the credential json file 
         $userManager = new UserManager();
 
@@ -96,7 +95,6 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        session_start();
         $_SESSION['email'] = $email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
@@ -109,15 +107,14 @@ function userSignIn($email, $pwd)
 
     $user = $userManager->signInUser($email, $pwd);
 
-        if (!$user) {
-            throw new Exception("Invalid Information");
-        } else {
-            //if data good, allow sign in
+    if (!$user) {
+        throw new Exception("Invalid Information");
+    } else {
+        //if data good, allow sign in
 
-            header("index.php"); //TODO: change header location
-            exit;
-            }
-        }
+        header("index.php"); //TODO: change header location
+        exit;
+    }
 }
 
 function showUserSignUp()
@@ -133,7 +130,7 @@ function showUserSignIn()
 
 // function userProfile()
 // {
-//     require "./view/userProfile.php";
+//     require "./view/userProfileView.php";
 // }
 
 function userProfilePage1()
@@ -204,12 +201,11 @@ function showCalendar($user_id)
 
 function showUserProfile()
 {
-    session_start();
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
     // $education = $userManager->getUserEducation($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $experience = $userManager->getUserExperience($_SESSION['id']);
-    require("./view/userProfile.php");
+    require("./view/userProfileView.php");
 }

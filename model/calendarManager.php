@@ -1,11 +1,12 @@
 <?php
 require_once('./model/Manager.php');
-session_start();
 
-class CalendarManager extends Manager{
-    public function loadCalendar($user_id) {
+class CalendarManager extends Manager
+{
+    public function loadCalendar($user_id)
+    {
         $db = $this->dbConnect();
-        
+
         $user_id = strip_tags($user_id);
 
         $req = $db->prepare('SELECT * FROM user_availability WHERE user_id = :user_id ORDER BY date ASC');
@@ -18,9 +19,10 @@ class CalendarManager extends Manager{
         return $entries;
     }
 
-    public function insertCalendar($date, $hour) {
+    public function insertCalendar($date, $hour)
+    {
         $db = $this->dbConnect();
-        
+
         $user_id = $_SESSION['user_id'] ?? 1;
 
         $query = 'INSERT INTO user_availability (user_id, date, time_start, is_active) VALUES (:user_id,:date_str,:time_str,1)';
