@@ -115,17 +115,20 @@ button:hover {
 }
 
 #boxbiz {
-  background-color: rgb(220, 170, 152);
+  background-color: #d66238;
   border: 0;
+  box-shadow: 2px 2px 3px grey;
 }
 
 #boxuser {
   background-color: #d66238;
   border: 0;
+  box-shadow: 2px 2px 3px grey;
 }
 
-#boxbiz:hover {
-  background-color: #d66238;
+#boxbiz:hover,
+#boxuser:hover {
+  background-color: rgb(220, 170, 152);
   border: 0;
 }
 
@@ -298,4 +301,13 @@ input[type="checkbox"] {
 #checkbox {
   width: 16px;
   height: 16px;
+}
+
+/* css for javascript validation: added by caro */
+.green {
+  border: 3px solid greenyellow;
+}
+
+.red {
+  border: 3px solid red;
 }

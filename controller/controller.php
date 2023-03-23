@@ -1,17 +1,7 @@
 <?php
-
-
 require_once ("./model/UserManager.php");
-
-require_once "./model/UserManager.php";
-
-require_once "./model/model.php";
-
-// function showIndex()
-// {
-//     require("./view/indexView.php");
-// }
-
+require_once ("./model/UserManager.php");
+require_once ("./model/model.php");
 
 function showIndex()
 {
@@ -96,7 +86,7 @@ function userSignIn($email, $pwd)
         throw new Exception("Invalid Information");
     } else {
         //if data good, allow sign in
-        header("index.php"); //TODO: change header location
+        header("indexView.php"); //TODO: change header location
     }
 }
 function showUserSignUp()

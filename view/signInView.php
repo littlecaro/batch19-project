@@ -8,6 +8,7 @@ ob_start();
     <p>waygukwin</p>
   </div>
   <div class="menu">
+    <!-- TODO:CHANGE -->
     <button id="home" onclick="location.href='index.php'">HOME</button>
     <button onclick="location.href='index.php?action=userSignUpView'">SIGN UP</button>
   </div>
@@ -81,5 +82,5 @@ ob_start();
 </div>
 <?php
 $content = ob_get_clean();
-require('./view/signUpSignInTemplate.php');
+require('./view/signInTemplate.php');
 ?>

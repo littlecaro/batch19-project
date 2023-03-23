@@ -17,10 +17,11 @@ ob_start();
   <div class="box">
     <img src="./public/images/Saly-25.png" width="300px" />
     <h4>I am a</h4>
-    <button id="boxbiz" onclick="location.href='bizSignup.html'">
+    <!-- TODO:CHANGE -->
+    <button id="boxbiz" onclick="showSignUp('company')">
       BUSINESS<br>LOOKING TO HIRE
     </button>
-    <button id="boxuser" style="cursor:auto">
+    <button id="boxuser" onclick="showSignUp('user')">
       USER<br>LOOKING FOR WORK
     </button>
     <br><br>
@@ -28,20 +29,22 @@ ob_start();
     <h4>Don't want to create an account?<br>Register with Google</h4>
     <?php include("./view/components/googleSignIn.php"); ?>
     <br><br>
+    <div id="company" style="display: none">
+    <!-- <div id="singleUser" style="display: none"> -->
     <h3>CREATE AN ACCOUNT</h3>
-    <form action="index.php?action=userSignUp" method="POST">
-      <table id="table">
-        <tr>
-          <th>First name</th>
+      <form action="index.php?action=userSignUp" method="POST">
+        <table id="table">
+          <tr>
+            <th>First name</th>
           <td>
-            <input type="text" name="firstName" id="firstName" placeholder="First name">
+            <input type="text" name="fName" id="fName" placeholder="First name">
             <span class="required" id="demo1"></span>
           </td>
         </tr>
         <tr>
           <th>Last name</th>
           <td>
-            <input type="text" name="lastName" id="lastName" placeholder="Last name">
+            <input type="text" name="lName" id="lName" placeholder="Last name">
             <span class="required" id="demo2"></span>
           </td>
         </tr>
@@ -66,18 +69,33 @@ ob_start();
             <span class="required" id="demo6"></span>
           </td>
         </tr>
+            <!-- </div> -->
+        <tr class="company-input">
+          <th>Company Name</th>
+          <td>
+            <input type="text" name="companyname" id="companyname" class="companyonly" placeholder="Company Name" />
+            <span class="required" id="demo6"></span>
+          </td>
+        </tr>
+        <tr class="company-input">
+          <th>Company Job Title</th>
+          <td>
+            <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role within the company." />
+            <span class="required" id="demo6"></span>
+          </td>
+        </tr>
         <tr>
           <th> </th>
           <td id="newsletter">
             <label><input type="checkbox" id="checkbox" />
-              I want to receive the newsletter!</label>
+            I want to receive the newsletter!</label>
           </td>
         </tr>
         <tr>
           <th> </th>
           <td id="policy">
             <label><input type="checkbox" id="checkbox" />
-              I Agree to the Privacy Policy.</label>
+            I Agree to the Privacy Policy.</label>
           </td>
         </tr>
       </table><br>
@@ -85,6 +103,7 @@ ob_start();
       <button type="reset" class="button" value="RESET" id="reset">RESET</button>
     </form>
   </div>
+</div>
 </div>
 <div class="footer">
   <div class="links">
@@ -131,5 +150,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-require('./view/signUpSignInTemplate.php');
+require('./view/signUpTemplate.php');
 ?>
