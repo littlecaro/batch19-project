@@ -2,7 +2,7 @@
   --button-color-primary: #d66238;
   --button-color-secondary: hwb(302 51% 21%);
   --text-color-primary: #86cfd0;
-  --text-color-hover: #4a999a;
+  --text-color-hover: #13c2c5;
   --header-color-primary: #28225d;
   --business-color-primary: hsl(280, 37%, 52%);
   --background-color-secondary: rgba(101, 90, 223, 0.5);
@@ -92,13 +92,12 @@ body {
   text-decoration: none;
 }
 
-.menu a:hover {
+.menu a:visited {
   color: white;
   text-decoration: none;
 }
-
-.menu a:visited {
-  color: white;
+.menu a:hover {
+  color: #28225d;
   text-decoration: none;
 }
 
@@ -119,7 +118,6 @@ body {
 input {
   height: 30px;
   border-radius: 20px;
-  border: 0;
   padding: 0 10px;
   /* width: 220px; */
   /* margin-right: px; */
@@ -168,13 +166,13 @@ button:hover {
 
 .menu button {
   background-color: transparent;
-  color: white;
   border: 2px solid white;
   height: 30px;
 }
 
 .topbutton:hover {
-  background-color: var(--header-color-primary);
+  background-color: white;
+  color: #1d1954;
 }
 
 .template button {
@@ -319,6 +317,7 @@ h4 {
   border-radius: 12px;
   padding: 50px 20px;
   margin-bottom: 20px;
+  min-width: 50%;
 }
 
 input[type="checkbox"] {
@@ -337,5 +336,20 @@ input[type="checkbox"] {
 
 .calendar th {
   background-color: #28225d;
+  color: white;
+}
+
+.buttonlink a {
+  text-decoration: none;
+  color: white;
+}
+
+.buttonlink a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.buttonlink a:visited {
+  text-decoration: none;
   color: white;
 }
