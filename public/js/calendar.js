@@ -36,6 +36,7 @@ function displayCal(x = 0) {
         }
       }
       const tableDate = new Date(Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000);
+      const dateNow = Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000;
       let datestr = `${monthStr(tableDate.getMonth())} ${dayToTh(tableDate.getDate())}`;
       if (i == 6) {
         const th = document.createElement("th");
@@ -60,6 +61,7 @@ function displayCal(x = 0) {
         }
         td.setAttribute("data-php", `${year}-${month}-${day}`);
         td.setAttribute("data-dateStr", datestr);
+        td.setAttribute("data-unix", dateNow);
         if (i < 10) {
           td.setAttribute("data-time", `0${i}:00:00`);
         } else {
@@ -129,7 +131,13 @@ function displayChoices() {
   selection.setAttribute("class", "selection");
   dynaUpdate.appendChild(selection);
   const selected = document.querySelectorAll(".selected");
-  for (let each of selected) {
+  // sort selection by date instead of time
+  const selectedArr = Array.from(selected);
+  let sorted = selectedArr.sort(sorter);
+  function sorter(a, b) {
+    return a.dataset.unix.localeCompare(b.dataset.unix);
+  }
+  for (let each of sorted) {
     let div = document.createElement("div");
     let date = document.createElement("p");
     date.textContent = `Date: ${each.dataset.datestr}`;
@@ -227,11 +235,11 @@ function displayConfirmed(entries) {
     div.appendChild(time);
     let deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete entry";
-    deleteBtn.classList.add("delete");
-    deleteBtn.setAttribute("data-date", `${entry.date}`);
-    deleteBtn.setAttribute("data-time", `${entry.time_start}`);
     deleteBtn.addEventListener("click", deleteDateEntry);
     div.appendChild(deleteBtn);
+    div.classList.add("delete");
+    div.setAttribute("data-date", `${entry.date}`);
+    div.setAttribute("data-time", `${entry.time_start}`);
     confirmedContainer.appendChild(div);
   }
   let deleteBtn = document.createElement("button");
@@ -253,7 +261,7 @@ function deleteAllEntries() {
   entriesArr = JSON.stringify(entriesArr);
   // console.log(entriesArr);
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", `./index.php?action=deleteEntry&entry=${entriesArr}`);
+  xhr.open("POST", `./index.php?action=deleteCalendarEntry&entry=${entriesArr}`);
 
   xhr.addEventListener("load", function () {
     location.reload();
@@ -284,14 +292,14 @@ function deleteDateEntry(e) {
   // console.log(e.target.dataset.time);
   const enteredArr = [];
   enteredArr.push({
-    date: `${e.target.dataset.date}`,
-    time: `${e.target.dataset.time}`,
+    date: `${e.target.parentNode.dataset.date}`,
+    time: `${e.target.parentNode.dataset.time}`,
   });
   // console.log(enteredArr);
   const entry = JSON.stringify(enteredArr);
   // console.log(entry);
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", `./index.php?action=deleteEntry&entry=${entry}`);
+  xhr.open("GET", `./index.php?action=deleteCalendarEntry&entry=${entry}`);
 
   xhr.addEventListener("load", function () {
     location.reload();

@@ -100,15 +100,11 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
-        case "deleteEntry":
+        case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
-            // print_r($entry);
-            // echo $entry;
             if ($entry) {
-                // echo $entry;
                 $entry = json_decode($entry,true);
-                // print_r($entry);
-                deleteEntry($entry);
+                deleteCalendarEntry($entry);
             } else {
                 throw new Exception ("No calender inputs submitted");
             }

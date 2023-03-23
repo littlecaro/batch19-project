@@ -194,14 +194,11 @@ function addCalendar($data)
     }
 }
 
-function deleteEntry($entry) 
+function deleteCalendarEntry($entry) 
 {
-    // echo count($entry);
     for ($i = 0; $i < count($entry); $i++) {
     $date = strip_tags($entry[$i]['date']);
     $time = strip_tags($entry[$i]['time']);
-    echo $date;
-    echo $time;
 
     $CalendarManager = new CalendarManager();
     $result = $CalendarManager->updateDeletion($date, $time);
