@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="./public/css/styleUserProfile.css" />
     <!-- We need to choose better font-family: googlefonts?! -->
     <script defer src="./public/js/scriptUserProfile.js"></script>
-    <title>WaygukIn</title>
+    <title><?= $title ?></title>
 
 <body>
+
+    <?php require("./view/components/companyHeader.php"); ?>
+    <?php require("./view/components/companySidebar.php"); ?>
     <?= $content; ?>
 </body>
-
-</html>

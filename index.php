@@ -102,11 +102,39 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
-
         case "userProfileView":
             require("./view/userProfileView.php");
             break;
-
+        case "deleteEntry":
+            $entry = $_REQUEST['entry'] ?? "";
+            if ($entry) {
+                // echo $entry;
+                $entry = json_decode($entry, true);
+                // print_r($entry);
+                deleteEntry($entry);
+            } else {
+                throw new Exception("No calender inputs submitted");
+            }
+            break;
+        case "companyDashboard":
+            require("./view/companyDashboard.php");
+            break;
+        case "addNewJob":
+            require("./view/addNewJobView.php");
+            break;
+        case "employeeInfo":
+            require("./view/employeeInfoView.php");
+            break;
+        case "jobListings":
+            require("./view/jobListingsView.php");
+            break;
+        case "savedProfiles":
+            require("./view/savedProfilesView.php");
+            break;
+        case "bookedMeetings":
+            require("./view/bookedMeetingsView.php");
+            break;
+            
         default:
             showIndex();
             break;
