@@ -36,7 +36,7 @@ function displayCal(x = 0) {
         }
       }
       const tableDate = new Date(Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000);
-      const dateNow = Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000;
+      const unix = Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000;
       let datestr = `${monthStr(tableDate.getMonth())} ${dayToTh(tableDate.getDate())}`;
       if (i == 6) {
         const th = document.createElement("th");
@@ -61,7 +61,7 @@ function displayCal(x = 0) {
         }
         td.setAttribute("data-php", `${year}-${month}-${day}`);
         td.setAttribute("data-dateStr", datestr);
-        td.setAttribute("data-unix", dateNow);
+        td.setAttribute("data-unix", unix);
         if (i < 10) {
           td.setAttribute("data-time", `0${i}:00:00`);
         } else {
@@ -93,7 +93,7 @@ let isMouseUp = true;
 function highlight() {
   let table = document.querySelector("table");
   let tds = document.querySelectorAll("td");
-  // let isMouseUp = true;
+  // is user leaves the table with
   table.addEventListener("mousedown", function (e) {
     isMouseUp = false;
     table.style.cursor = "grabbing";
@@ -103,10 +103,17 @@ function highlight() {
       }
       table.style.cursor = "grabbing";
     });
+    // stop grabbing if user moves outside the table.
+    table.addEventListener("mouseleave", function () {
+      table.style.cursor = "grab";
+      isMouseUp = true;
+      return;
+    });
   });
   table.addEventListener("mouseup", function () {
     table.style.cursor = "grab";
     isMouseUp = true;
+    return;
   });
   for (let td of tds) {
     td.addEventListener("mousemove", function (e) {
@@ -137,18 +144,18 @@ function displayChoices() {
   function sorter(a, b) {
     return a.dataset.unix.localeCompare(b.dataset.unix);
   }
-  for (let each of sorted) {
+  for (let i = 0; i < sorted.length; i++) {
     let div = document.createElement("div");
     let date = document.createElement("p");
-    date.textContent = `Date: ${each.dataset.datestr}`;
+    date.textContent = `Date: ${sorted[i].dataset.datestr}`;
     div.appendChild(date);
     let time = document.createElement("p");
-    time.textContent = `Time: ${each.dataset.time.slice(0, 5)}`;
+    time.textContent = `Time: ${sorted[i].dataset.time.slice(0, 5)}`;
     div.appendChild(time);
     let deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Undo";
-    deleteBtn.setAttribute("data-php", `${each.dataset.php}`);
-    deleteBtn.setAttribute("data-time", `${each.dataset.time}`);
+    deleteBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
+    deleteBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
     deleteBtn.addEventListener("click", unselect);
     div.appendChild(deleteBtn);
     selection.appendChild(div);
