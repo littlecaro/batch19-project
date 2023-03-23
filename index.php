@@ -6,10 +6,12 @@ require("./controller/controller.php");
 try {
     $action = $_REQUEST['action'] ?? null;
 
+    session_start();
+
     switch ($action) {
         case "userProfile":
             showUserProfile();
-            // require('./view/userProfile.php');
+            // require('./view/userProfileView.php');
             break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
@@ -55,7 +57,7 @@ try {
             //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
             //     userProfile();
-            //     require('./view/userProfile.php');
+            //     require('./view/userProfileView.php');
 
             //     break;
 
@@ -100,6 +102,9 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
+        case "userProfileView":
+            require("./view/userProfileView.php");
+            break;
         case "deleteEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -129,6 +134,7 @@ try {
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
             break;
+            
         default:
             showIndex();
             break;
