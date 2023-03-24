@@ -45,6 +45,11 @@ class UserManager extends Manager
         $req->execute();
     }
 
+
+    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+    {
+    }
+
     public function getUserProfile($userId)
     {
         $db = $this->dbConnect();
