@@ -2,6 +2,7 @@
   --button-color-primary: #d66238;
   --button-color-secondary: hwb(302 51% 21%);
   --text-color-primary: #86cfd0;
+  --text-color-hover: #13c2c5;
   --header-color-primary: #28225d;
   --business-color-primary: hsl(280, 37%, 52%);
   --background-color-secondary: rgba(101, 90, 223, 0.5);
@@ -64,11 +65,40 @@ body {
   line-height: 80%;
 }
 
+.logo a {
+  text-decoration: none;
+  color: var(--text-color-primary);
+}
+
+.logo a:visited {
+  text-decoration: none;
+  color: var(--text-color-primary);
+}
+
+.logo a:hover {
+  text-decoration: none;
+  color: var(--text-color-hover);
+}
+
 .menu {
   display: inline-block;
   position: relative;
   height: 80px;
   padding: 25px 5% 0 0;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu a:visited {
+  color: white;
+  text-decoration: none;
+}
+.menu a:hover {
+  color: #28225d;
+  text-decoration: none;
 }
 
 #firstname,
@@ -88,7 +118,6 @@ body {
 input {
   height: 30px;
   border-radius: 20px;
-  border: 0;
   padding: 0 10px;
   /* width: 220px; */
   /* margin-right: px; */
@@ -137,9 +166,13 @@ button:hover {
 
 .menu button {
   background-color: transparent;
-  color: white;
   border: 2px solid white;
   height: 30px;
+}
+
+.topbutton:hover {
+  background-color: white;
+  color: #1d1954;
 }
 
 .template button {
@@ -258,9 +291,6 @@ h4 {
 }
 
 .footer h4 {
-  line-height: 0.7em;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
@@ -276,9 +306,8 @@ h4 {
 .three {
   width: 30%;
   vertical-align: middle;
-  height: 100%;
   font-size: 20px;
-  padding: 0 20px;
+  padding: 10px 20px;
   line-height: 1em;
 }
 
@@ -286,9 +315,9 @@ h4 {
   background-color: white;
   box-shadow: 3px 3px 10px rgb(0 0 0 / 0.2);
   border-radius: 12px;
-  padding: 50px 0;
-  width: 50%;
+  padding: 50px 20px;
   margin-bottom: 20px;
+  min-width: 50%;
 }
 
 input[type="checkbox"] {
@@ -298,4 +327,29 @@ input[type="checkbox"] {
 #checkbox {
   width: 16px;
   height: 16px;
+}
+
+.calendar table {
+  border-collapse: collapse;
+  border: 2px solid transparent;
+}
+
+.calendar th {
+  background-color: #28225d;
+  color: white;
+}
+
+.buttonlink a {
+  text-decoration: none;
+  color: white;
+}
+
+.buttonlink a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.buttonlink a:visited {
+  text-decoration: none;
+  color: white;
 }

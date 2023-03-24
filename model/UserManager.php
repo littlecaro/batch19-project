@@ -84,6 +84,17 @@ class UserManager extends Manager
         return $experience;
     }
 
+    public function getUserSkills($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get experience WHERE user id matches;
+        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
+        $req = $db->prepare($userSkills);
+        $req->execute([$userId]);
+        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        return $skill;
+    }
+
     public function getUserEducation($userId)
     {
         $db = $this->dbConnect();
@@ -102,7 +113,6 @@ class UserManager extends Manager
 
         //verify the password and then start a session
         if ($user and password_verify($_POST['pwd'], $user->password)) {
-            session_start();
             $_SESSION['email'] = $_POST['email'];
             exit;
         }

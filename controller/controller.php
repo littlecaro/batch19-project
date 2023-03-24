@@ -27,7 +27,6 @@ function checkUserSignInGoogle($decodedToken)
     $expValid = $decodedToken->exp > time() ? true : false;
     if ($audValid && $issValid && $expValid) { // if they are valid
 
-        session_start();
         $userEmail = $decodedToken->email; // $userEmail is the email taken from the credential json file 
         $userManager = new UserManager();
 
@@ -53,7 +52,7 @@ function checkUserSignInGoogle($decodedToken)
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['email'] = $userEmail;
 
-        header("Location: index.php?action=userProfile");
+        header("Location: index.php?action=userProfileView");
         exit;
     } else {
         // $msg = "invalid login";
@@ -97,7 +96,6 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        session_start();
         $_SESSION['email'] = $email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
@@ -120,6 +118,7 @@ function userSignIn($email, $pwd)
     }
 }
 
+
 function showUserSignUp()
 {
     require "./view/signUpView.php";
@@ -133,15 +132,15 @@ function showUserSignIn()
 
 // function userProfile()
 // {
-//     require "./view/userProfile.php";
+//     require "./view/userProfileView.php";
 // }
 
-function userProfilePage1()
-{
-    $userProfileManager = new UserProfileManager();
-    $user = $userProfileManager->showUserProfile();
-    require "./view/userProfilePage1.php";
-}
+// function userProfilePage1()
+// {
+//     $userProfileManager = new UserProfileManager();
+//     $user = $userProfileManager->showUserProfileView();
+//     require "./view/userProfilePage1.php";
+// }
 
 function showChats()
 {
@@ -184,15 +183,30 @@ function addCalendar($data)
 {
     for ($i = 0; $i < count($data); $i++) {
         $date = strip_tags($data[$i]['date']);
-        $hour = strip_tags($data[$i]['hour']);
+        $time = strip_tags($data[$i]['time']);
 
         $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $hour);
+        $result = $calendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
         header("location: index.php?action=loadCalendar");
     }
+}
+
+function deleteEntry($entry)
+{
+    $date = strip_tags($entry[0]['date']);
+    $time = strip_tags($entry[0]['time']);
+    // echo $date;
+    // echo $time;
+
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->updateDeletion($date, $time);
+    if (!$result) {
+        throw new Exception("Unable to delete entry");
+    }
+    header("location: index.php?action=loadCalendar");
 }
 
 function showCalendar($user_id)
@@ -202,15 +216,13 @@ function showCalendar($user_id)
     require('./view/calendarView.php');
 }
 
-function showUserProfile()
+function showUserProfileView()
 {
-    session_start();
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
-    $education = $userManager->getUserEducation($_SESSION['id']);
-    // $experience = $userManager->getUserSkills($_SESSION['id']);
-    // $experience = $userManager->getUserResume($_SESSION['id']);
-    // $experience = $userManager->getUserAvailability($_SESSION['id']);
-    require("./view/userProfile.php");
+    // $education = $userManager->getUserEducation($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
+    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    require("./view/userProfileView.php");
 }

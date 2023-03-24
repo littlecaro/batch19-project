@@ -5,10 +5,11 @@ ob_start();
 
 <div class="header">
   <div class="logo">
-    <p><a href="index.php">waygukwin</a></p>
+    <p>waygukwin</p>
   </div>
   <div class="menu">
-    <a href="index.php?action=userSignInView"><button class="topbutton">SIGN IN</button></a>
+    <button id="home" onclick="location.href='index.php'">HOME</button>
+    <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
   </div>
 </div>
 <h3>Let's get started</h3>
@@ -16,13 +17,10 @@ ob_start();
   <div class="box">
     <img src="./public/images/Saly-25.png" width="300px" />
     <h4>I am a</h4>
-    <button id="boxbiz">
-      <span class="buttonlink">
-        <a href="#">
-          BUSINESS<br>LOOKING TO HIRE</a>
-      </span>
+    <button id="boxbiz" style="cursor:auto">
+      BUSINESS<br>LOOKING TO HIRE
     </button>
-    <button id="boxuser" style="cursor:auto">
+    <button id="boxuser" onclick="location.href='index.php?action=bizSignUpView'">
       USER<br>LOOKING FOR WORK
     </button>
     <br><br>
@@ -83,8 +81,8 @@ ob_start();
           </td>
         </tr>
       </table><br>
-      <input type="submit" value="SUBMIT" class="button" id="submit">
-      <input type="reset" value="RESET" class="button" id="reset">
+      <button type="submit" value="SUBMIT" class="button" id="submit">SUBMIT</button>
+      <button type="reset" class="button" value="RESET" id="reset">RESET</button>
     </form>
   </div>
 </div>
