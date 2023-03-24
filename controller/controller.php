@@ -4,6 +4,7 @@
 require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
+require_once("./model/CompanyManager.php");
 
 
 require_once "./model/model.php";
@@ -111,12 +112,11 @@ function userSignIn($email, $pwd)
         throw new Exception("Invalid Information");
     } else {
         //if data good, allow sign in
-        
+
         header("index.php"); //TODO: change header location
         exit;
     }
 }
-
 
 function showUserSignUp()
 {
@@ -193,18 +193,18 @@ function addCalendar($data)
     }
 }
 
-function deleteCalendarEntry($entry) 
+function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
-    $date = strip_tags($entry[$i]['date']);
-    $time = strip_tags($entry[$i]['time']);
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
 
-    $CalendarManager = new CalendarManager();
-    $result = $CalendarManager->updateDeletion($date, $time);
-    if (!$result) {
-        throw new Exception("Unable to delete entry");
-    }
-    header("location: index.php?action=loadCalendar");
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
     }
 }
 
@@ -224,4 +224,29 @@ function showUserProfile()
     $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
+}
+
+function createJobForm()
+{
+    $userManager = new UserManager();
+    $cities = $userManager->getCitiesList();
+    require("./view/addNewJobView.php");
+}
+
+function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline)
+{
+    $salaryMin = trim($salaryMin, "₩M");
+    $salaryMax = trim($salaryMax, "₩M");
+
+    $cities = explode("|", $cities)[1]; // seoul|142 => ["seoul", "142"]
+    $cities = (int)$cities;
+
+    $companyManager = new CompanyManager();
+    $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+    if ($result) {
+        // TODO: finish this bish!
+        echo "Success! New job created. Get your tax money";
+    } else {
+        echo "FAIL!!! U DUN MESSED UP";
+    }
 }

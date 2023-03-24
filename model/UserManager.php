@@ -94,6 +94,15 @@ class UserManager extends Manager
         }
     }
 
+    public function getCitiesList()
+    {
+        $db = $this->dbConnect();
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cities;
+    }
+
 
     // public function signInUser($email, $pwd)
     // {
