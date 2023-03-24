@@ -1,13 +1,15 @@
 body,
 html {
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0;
   font-size: 16px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
-
+* {
+  /* outline: red 1px solid; */
+}
 .talentHeader {
   position: absolute;
   width: 100%;
@@ -20,8 +22,9 @@ html {
   font-size: 1rem;
   display: flex;
   background-color: var(--background-color-secondary);
-  width: 100vw;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 .talentSide {
   height: 100%;
@@ -36,7 +39,7 @@ html {
   justify-content: center;
   width: 100%;
   height: 100%;
-  top: 10%;
+  top: 8%;
   position: relative;
   height: fit-content;
   padding-bottom: 10%;
@@ -69,6 +72,7 @@ html {
 }
 .talentCardHead {
   display: flex;
+  justify-content: space-between;
 }
 .talentCard li {
   list-style-type: none;
@@ -88,6 +92,7 @@ html {
   box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
 }
 .talentSkills p {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
 }
@@ -99,4 +104,181 @@ html {
 }
 .talentSkills {
   flex: 1;
+}
+.editSearch.hidden {
+  display: none;
+}
+.editSearch {
+  position: fixed;
+  top: 8%;
+  right: 0;
+  z-index: 1040;
+  width: 84%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+}
+.editSearchMain {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  padding-left: 70px;
+  height: 83%;
+  background-color: white;
+  position: relative;
+  /* box-shadow: 1px 1px 12px rgba(128, 128, 128, 1); */
+}
+.editSearchMain form {
+  width: 50%;
+}
+.editSearch h1 {
+}
+.editSearchMain form > div,
+.editSearchMain form > label {
+  /* width: 100%; */
+  margin: 1em;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+#slider {
+  width: 300px;
+}
+#slider-hide .noUi-tooltip {
+  display: none;
+}
+#slider-hide .noUi-active .noUi-tooltip {
+  display: block;
+}
+.editSearchLeft {
+}
+.editSearchLeft p {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+
+  height: 50px;
+}
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggle-switch {
+  display: inline-block;
+  background: #ccc;
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.toggle-switch:before,
+.toggle-switch:after {
+  content: "";
+}
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: #56c080;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+
+.toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+}
+.SearchFormInputsWrapper {
+  padding-top: 50px;
+
+  display: grid;
+  grid-template-columns: 0.3fr 1.5fr;
+  grid-template-rows: repeat(5, 50px);
+}
+.saveSearch {
+  margin: 10px;
+  width: 80px;
+  border-radius: 0%;
+}
+.saveSearchWrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  background-color: gainsboro;
+  width: 100%;
+}
+label[for="slider"] {
+  margin-left: 45px;
+}
+#saveBtn {
+  background-color: #1e87f0;
+}
+.searchTags {
+  display: flex;
+}
+.talentCardHeadLeft {
+  display: flex;
+}
+.talentMatch {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+.talentMatch p {
+  padding: 0;
+  margin: 0;
+}
+
+.searchTags {
+  /* border: 1px solid #1e87f0; */
+  box-sizing: border-box;
+  margin: 1em;
+  padding: 0em 0.5em;
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.searchTags > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+.searchTags ul li {
+  margin: 0.5em 0.2em;
+  padding: 0.2em;
+  color: #fff;
+  background-color: #1e87f0;
+  border-radius: 5px;
 }

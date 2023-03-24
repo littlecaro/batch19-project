@@ -100,7 +100,11 @@ try {
             showCalendar($user_id);
             break;
         case "talentSearch":
-            showTalents();
+            if (!empty($_GET['filter'])) {
+                showTalents(true);
+            } else {
+                showTalents();
+            }
             break;
         default:
             showIndex();

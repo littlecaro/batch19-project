@@ -168,7 +168,7 @@ function searchMessages($term)
     if (!empty($chats)) {
         foreach ($chats as $chat) {
             include('./view/components/chatCard.php');
-        }
+        } //TODO:Limit messages
     }
 }
 
@@ -193,11 +193,13 @@ function showCalendar($user_id)
     $result = $calendarManager->loadCalendar($user_id);
     require('./view/calendarView.php');
 }
-function showTalents()
-{
+function showTalents($filter = false)
+{ //TODO:improve flow of loop
+    ob_start();
+    if (!$filter) {
+    }
     $allTalents = getAllTalents();
     // print_r($allTalents);
-    ob_start();
     if (!empty($allTalents)) {
         foreach ($allTalents as $talentID => $key) {
             $yearsExperience = getTalentYearsExperience($key->id);
@@ -205,16 +207,177 @@ function showTalents()
             $talentInfo = getTalentInfo($key->id);
             $desiredPositions = getTalentDesiredPosition($key->id);
             $highestDegree = getTalentHighestDegree($key->id);
-            // $talents = loadTalents($key);
-            include('./view/components/talendCard.php');
+            $talentLanguages = getTalentLanguages($key->id);
+            if ($filter) {
+                // ob_start();
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages);
+
+                include('./view/components/talentCard.php'); //TODO:Limit talent cards
+                $talentCard = ob_get_contents();
+                $id = $key->id;
+                $CandidateRatingData[$key->id] = $talentCard;
+                $scale[$key->id] = $rating;
+                ob_clean();
+                // echo $talentCard;
+                // echo $key->id;
+            } else {
+                include('./view/components/talentCard.php');
+            }
         }
     }
-    $talentCards = ob_get_clean();
-    require('./view/filterView.php');
+    if (!$filter) {
+        $talentCards = ob_get_clean();
+        require('./view/filterView.php');
+    } else {
+        ob_end_clean();
+        // print_r($scale);
+        arsort($scale);
+        // print_r($scale);
+        // print_r($CandidateRatingData);
+        foreach ($scale as $key => $value) {
+            // echo $key;
+            echo $CandidateRatingData[$key];
+        }
 
-    // print_r($talents);
+        // ob_end_clean();
+        // echo "test";
+        parseTalentFilter();
+    }
 }
 function loadTalentCards()
 {
     require("./view/filterView.php");
+}
+function parseTalentFilter()
+{
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    $arr = array(
+        'filteredYearsMin' => $filteredYearsMin,
+        'filteredYearsMax' => $filteredYearsMax,
+        'filteredSkills' => $filteredSkills,
+        'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredHighestDegrees' => $filteredHighestDegrees,
+        'filteredLanguages' => $filteredLanguages,
+
+    );
+    $arr = json_encode($arr);
+    saveTalentFilter($arr);
+}
+function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language)
+{   //TODO:Case for any tags
+    //TODO:add filter for city]
+    $score  = 1;
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    // echo $filteredYearsMax;
+    if (is_numeric($filteredYearsMax) and is_numeric($filteredYearsMin)) {
+        // echo "starting";
+        if ($yearsExperience > $filteredYearsMin && $yearsExperience < $filteredYearsMax) {
+            $score = $score * 1;
+            // echo "test";
+        } else if ($yearsExperience < $filteredYearsMin) {
+            // echo "test2";
+
+            $score = $score * (1 / (1 + ($filteredYearsMin - $yearsExperience) / 10));
+        } else if ($yearsExperience > $filteredYearsMax) {
+            // echo "test3" . $yearsExperience;
+            // echo $yearsExperience - $filteredYearsMax;
+            $score = $score * (1 / (1 + ($yearsExperience - $filteredYearsMax) / 10));
+        }
+    }
+    if (!empty($filteredSkills)) {
+        $ratings = array();
+        foreach ($filteredSkills as $key => $value) {
+            foreach ($skills as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->skills_fixed, $perc);
+                // echo $twoValue->skills_fixed;
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        // print_r($tmp);
+        // echo $tmp;
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredDesiredPositions)) {
+        $ratings = array();
+        foreach ($filteredDesiredPositions as $key => $value) {
+            foreach ($desiredPositions as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->desired_position, $perc);
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            // echo $score;
+            $tmp = array_product($ratings);
+            // echo $tmp;
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredHighestDegrees)) {
+        $ratings = array();
+        foreach ($filteredHighestDegrees as $key => $value) {
+            foreach ($highestDegree as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredLanguages)) {
+        $ratings = array();
+        foreach ($filteredLanguages as $key => $value) {
+            foreach ($language as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->language, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+
+
+    return $score;
 }

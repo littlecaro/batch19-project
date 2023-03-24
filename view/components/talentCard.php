@@ -1,10 +1,19 @@
 <div class="talentCard">
     <div class="talentCardHead">
-        <div class="messageProfileImg">
-            <img src="<?= $talentInfo[0]->profile_picture ?>" alt="">
+        <div class="talentCardHeadLeft">
+            <div class="messageProfileImg">
+                <img src="<?= $talentInfo[0]->profile_picture ?>" alt="">
+            </div>
+            <p><?= $talentInfo[0]->first_name . " " . $talentInfo[0]->last_name; ?></p>
         </div>
-        <p><?= $talentInfo[0]->first_name . " " . $talentInfo[0]->last_name; ?></p>
-        <div class="talentMatch"></div>
+        <div class="talentMatch"><?php
+                                    if (!empty($rating)) {
+                                    ?><p>Match rating:<?php
+                                                        echo floor($rating * 100) . "%";
+                                                        ?></p>
+                <progress id="matchperc" value=<?= $rating * 100 ?> max="100"></progress>
+            <?php }  ?>
+        </div>
     </div>
     <div class="talentCardMain">
         <div class="talentBasicInfo">
