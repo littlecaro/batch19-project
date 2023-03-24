@@ -42,6 +42,7 @@ function checkUserSignInGoogle($decodedToken)
             $result = $userManager->insertUserGoogle($firstName, $lastName, $email, $picture);
             $user = $userManager->getUserByEmail($userEmail);
 
+            // add user into users, prof_exp, education & skills 
             if (!$result) {
                 throw new Exception("Cannot add user.");
             }
@@ -109,15 +110,14 @@ function userSignIn($email, $pwd)
 
     $user = $userManager->signInUser($email, $pwd);
 
-        if (!$user) {
-            throw new Exception("Invalid Information");
-        } else {
-            //if data good, allow sign in
+    if (!$user) {
+        throw new Exception("Invalid Information");
+    } else {
+        //if data good, allow sign in
 
-            header("index.php"); //TODO: change header location
-            exit;
-            }
-        }
+        header("index.php"); //TODO: change header location
+        exit;
+    }
 }
 
 function showUserSignUp()
@@ -208,8 +208,9 @@ function showUserProfile()
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $education = $userManager->getUserEducation($_SESSION['id']);
-    // $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    $education = $userManager->getUserEducation($_SESSION['id']);
+    // $experience = $userManager->getUserSkills($_SESSION['id']);
+    // $experience = $userManager->getUserResume($_SESSION['id']);
+    // $experience = $userManager->getUserAvailability($_SESSION['id']);
     require("./view/userProfile.php");
 }

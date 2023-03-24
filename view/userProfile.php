@@ -41,8 +41,8 @@
             <p>
                 <span class="tooltip">Please select a city: </span>
                 <!-- change all placeholders to $user->... -->
-                <select name="city" id="city" value="<?= $user->city_id; ?>">
-                    <option value="">Select your city of residence</option>
+                <select name="city" id="city">
+                    <option value="city">Select your city of residence</option>
                     <option value="Andong">Andong</option>
                     <option value="Ansan">Ansan</option>
                     <option value="Anyang">Anyang</option>
@@ -123,6 +123,7 @@
             <h2>Education Level</h2>
             <label for="degree">Level of Education</label>
             <select name="degree" id="degree">
+                <option value="educationLevel">Select your education level</option>
                 <option value="highschool">High School</option>
                 <option value="associates">Associates Degree</option>
                 <option value="undergraduate">Undergraduate</option>
@@ -130,16 +131,16 @@
                 <option value="phD">PhD</option>
             </select><br /><br />
             <label for="major">Subject of study</label>
-            <input type="text" name="major" id="major" placeholder="BSc Computer Science..."><br /><br />
+            <input type="text" name="major" id="major" value="<?php $education->degree; ?>"><br /><br />
 
             <h2>Experience</h2>
             <!-- labels -->
             <label for="jobTitle">Job Title</label>
-            <input type="text" name="jobTitle" id="jobTitle" value="<?= $experience->job_title; ?>"><br /><br />
+            <input type="text" name="jobTitle" id="jobTitle" value="<?php if (isset($experience->job_title) ? $experience->job_title : "");  ?>"><br /><br />
             <label for="yearsExperience">Years Experience</label>
-            <input type="number" name="yearsExperience" id="yearsExperience" min="1" max="40" value="<?= $experience->years_experience; ?>"><br /><br />
+            <input type="number" name="yearsExperience" id="yearsExperience" min="1" max="40" value="<?php if (isset($experience->years_experience) ? $experience->years_experience : "");  ?>"><br /><br />
             <label for="company">Company Name</label>
-            <input type="text" name="company" id="company" value="<?= $experience->company_name; ?>" /><br /><br />
+            <input type="text" name="company" id="company" value="<?php if (isset($experience->company_name) ? $experience->company_name : ""); ?>" /><br /><br />
 
         </form>
     </div>
