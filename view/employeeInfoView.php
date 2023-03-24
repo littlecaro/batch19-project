@@ -4,11 +4,11 @@ ob_start();
 ?>
 
 <!-- main -->
-
-<div class="main">
-    <h3>Employee Info</h3><br>
+<div class="userProfile">
+    <div class="main">
+        <h3>Employee Info</h3><br>
+    </div>
 </div>
-
 <?php
 $content = ob_get_clean();
 require('./view/companyDashboardTemplate.php');
