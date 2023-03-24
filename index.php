@@ -9,8 +9,8 @@ try {
     session_start();
 
     switch ($action) {
-        case "userProfile":
-            showUserProfile();
+        case "userProfileView":
+            showUserProfileView();
             // require('./view/userProfileView.php');
             break;
         case "userSignInGoogle":
@@ -134,7 +134,7 @@ try {
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
             break;
-            
+
         default:
             showIndex();
             break;

@@ -69,7 +69,7 @@ class UserManager extends Manager
     {
         $db = $this->dbConnect();
         //TODO: get experience WHERE user id matches;
-        $userSkills = "SELECT id, skills_fixed FROM skills";
+        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
         $req = $db->prepare($userSkills);
         $req->execute([$userId]);
         $skill = $req->fetchALL(PDO::FETCH_OBJ);

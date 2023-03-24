@@ -21,12 +21,12 @@ $cities = $response->fetchAll(PDO::FETCH_ASSOC);
 <!--  -->
 <form autocomplete="off" action="index.php?action=userProfileSkillsSubmit.php" method="POST">
 
-  <h2>Skills:</h2>
+  <h2> Programming Skills:</h2>
   <?php
   $userProfileSkills = "skills";
   require("./view/userProfileSkillsMultiSelector.php");
   ?>
-  <h2>Languages:</h2>
+  <h2>Spoken and Written Languages:</h2>
   <?php
   $userProfileSkills = "languages";
   require("./view/userProfileSkillsMultiSelector.php");

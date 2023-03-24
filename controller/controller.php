@@ -51,7 +51,7 @@ function checkUserSignInGoogle($decodedToken)
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['email'] = $userEmail;
 
-        header("Location: index.php?action=userProfile");
+        header("Location: index.php?action=userProfileView");
         exit;
     } else {
         // $msg = "invalid login";
@@ -111,7 +111,7 @@ function userSignIn($email, $pwd)
         throw new Exception("Invalid Information");
     } else {
         //if data good, allow sign in
-        
+
         header("index.php"); //TODO: change header location
         exit;
     }
@@ -134,12 +134,12 @@ function showUserSignIn()
 //     require "./view/userProfileView.php";
 // }
 
-function userProfilePage1()
-{
-    $userProfileManager = new UserProfileManager();
-    $user = $userProfileManager->showUserProfile();
-    require "./view/userProfilePage1.php";
-}
+// function userProfilePage1()
+// {
+//     $userProfileManager = new UserProfileManager();
+//     $user = $userProfileManager->showUserProfileView();
+//     require "./view/userProfilePage1.php";
+// }
 
 function showChats()
 {
@@ -193,7 +193,7 @@ function addCalendar($data)
     }
 }
 
-function deleteEntry($entry) 
+function deleteEntry($entry)
 {
     $date = strip_tags($entry[0]['date']);
     $time = strip_tags($entry[0]['time']);
@@ -215,7 +215,7 @@ function showCalendar($user_id)
     require('./view/calendarView.php');
 }
 
-function showUserProfile()
+function showUserProfileView()
 {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
