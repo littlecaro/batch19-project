@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="./public/css/styleUserProfile.css" />
     <!-- We need to choose better font-family: googlefonts?! -->
     <script defer src="./public/js/scriptUserProfile.js"></script>
-    <title><?= $title ?></title>
+    <title>WaygukIn</title>
 
 <body>
     <?= $content; ?>
 </body>
+
+</html>

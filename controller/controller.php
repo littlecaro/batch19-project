@@ -1,7 +1,7 @@
 <?php
 
 
-require_once('./model/calendarManager.php');
+require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
 require_once("./model/CompanyManager.php");
@@ -28,7 +28,6 @@ function checkUserSignInGoogle($decodedToken)
     $expValid = $decodedToken->exp > time() ? true : false;
     if ($audValid && $issValid && $expValid) { // if they are valid
 
-        session_start();
         $userEmail = $decodedToken->email; // $userEmail is the email taken from the credential json file 
         $userManager = new UserManager();
 
@@ -97,7 +96,6 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        session_start();
         $_SESSION['email'] = $email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
@@ -133,7 +131,7 @@ function showUserSignIn()
 
 // function userProfile()
 // {
-//     require "./view/userProfile.php";
+//     require "./view/userProfileView.php";
 // }
 
 function userProfilePage1()
@@ -186,8 +184,8 @@ function addCalendar($data)
         $date = strip_tags($data[$i]['date']);
         $time = strip_tags($data[$i]['time']);
 
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $time);
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
@@ -195,38 +193,37 @@ function addCalendar($data)
     }
 }
 
-function deleteEntry($entry)
+function deleteCalendarEntry($entry)
 {
-    $date = strip_tags($entry[0]['date']);
-    $time = strip_tags($entry[0]['time']);
-    // echo $date;
-    // echo $time;
+    for ($i = 0; $i < count($entry); $i++) {
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
 
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->updateDeletion($date, $time);
-    if (!$result) {
-        throw new Exception("Unable to delete entry");
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
     }
-    header("location: index.php?action=loadCalendar");
 }
 
 function showCalendar($user_id)
 {
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->loadCalendar($user_id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->loadCalendar($user_id);
     require('./view/calendarView.php');
 }
 
 function showUserProfile()
 {
-    session_start();
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
     // $education = $userManager->getUserEducation($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $experience = $userManager->getUserExperience($_SESSION['id']);
-    require("./view/userProfile.php");
+    require("./view/userProfileView.php");
 }
 
 function createJobForm()
