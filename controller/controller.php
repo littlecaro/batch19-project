@@ -1,9 +1,10 @@
 <?php
 
 
-require_once('./model/calendarManager.php');
+require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
+require_once("./model/CompanyManager.php");
 
 
 require_once "./model/model.php";
@@ -118,7 +119,6 @@ function userSignIn($email, $pwd)
     }
 }
 
-
 function showUserSignUp()
 {
     require "./view/signUpView.php";
@@ -185,8 +185,8 @@ function addCalendar($data)
         $date = strip_tags($data[$i]['date']);
         $time = strip_tags($data[$i]['time']);
 
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $time);
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
@@ -194,25 +194,25 @@ function addCalendar($data)
     }
 }
 
-function deleteEntry($entry)
+function deleteCalendarEntry($entry)
 {
-    $date = strip_tags($entry[0]['date']);
-    $time = strip_tags($entry[0]['time']);
-    // echo $date;
-    // echo $time;
+    for ($i = 0; $i < count($entry); $i++) {
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
 
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->updateDeletion($date, $time);
-    if (!$result) {
-        throw new Exception("Unable to delete entry");
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
     }
-    header("location: index.php?action=loadCalendar");
 }
 
 function showCalendar($user_id)
 {
-    $calendarManager = new CalendarManager();
-    $result = $calendarManager->loadCalendar($user_id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->loadCalendar($user_id);
     require('./view/calendarView.php');
 }
 
@@ -225,4 +225,29 @@ function showUserProfileView()
     $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
+}
+
+function createJobForm()
+{
+    $userManager = new UserManager();
+    $cities = $userManager->getCitiesList();
+    require("./view/addNewJobView.php");
+}
+
+function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline)
+{
+    $salaryMin = trim($salaryMin, "₩M");
+    $salaryMax = trim($salaryMax, "₩M");
+
+    $cities = explode("|", $cities)[1]; // seoul|142 => ["seoul", "142"]
+    $cities = (int)$cities;
+
+    $companyManager = new CompanyManager();
+    $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+    if ($result) {
+        // TODO: finish this bish!
+        echo "Success! New job created. Get your tax money";
+    } else {
+        echo "FAIL!!! U DUN MESSED UP";
+    }
 }
