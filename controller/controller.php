@@ -1,9 +1,11 @@
 <?php
 
 
-require_once('./model/calendarManager.php');
+require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
+
+require_once("./model/CompanyManager.php");
 
 
 require_once "./model/model.php";
@@ -27,45 +29,42 @@ function checkUserSignInGoogle($decodedToken)
     $expValid = $decodedToken->exp > time() ? true : false;
     if ($audValid && $issValid && $expValid) { // if they are valid
 
-        session_start();
         $userEmail = $decodedToken->email; // $userEmail is the email taken from the credential json file 
         $userManager = new UserManager();
 
         $user = $userManager->getUserByEmail($userEmail);
 
-        if ($user) { // if $user exits // echo "user exists"; // echo "<pre>";
-            // Save their id and names in session variables and redirect them
-            $_SESSION['id'] = $user->id;
-            $_SESSION['first_name'] = $user->first_name;
-            $_SESSION['last_name'] = $user->last_name;
-            $_SESSION['email'] = $userEmail;
-
-            // header('location: index.php?action=userProfile');
-            require "./view/userProfile.php";
-            exit;
-        } else {
+        if (!$user) {
             // if user doesn't exist, prepare an INSERT query // If they are NOT in the DB, insert them [firstname, lastname, email, profile photo];
             $firstName = $decodedToken->given_name;
             $lastName = $decodedToken->family_name;
             $email = $decodedToken->email;
             $picture = $decodedToken->picture;
             $result = $userManager->insertUserGoogle($firstName, $lastName, $email, $picture);
+            $user = $userManager->getUserByEmail($userEmail);
+
             if (!$result) {
                 throw new Exception("Cannot add user.");
             }
-            echo 'user has been added successfully';
         }
-        // header('location: index.php?action=userProfile'); // redirect
+        // Save their id and names in session variables and redirect them
+        $_SESSION['id'] = $user->id;
+        $_SESSION['first_name'] = $user->first_name;
+        $_SESSION['last_name'] = $user->last_name;
+        $_SESSION['email'] = $userEmail;
+
+        header("Location: index.php?action=userProfile");
         exit;
     } else {
-        $msg = "invalid login";
-        echo "aud:" . $audValid;
-        echo '<br>';
-        echo "iss:" . $issValid;
-        echo '<br>';
-        echo "exp:" . $expValid;
-        header('location:index.php?error=' . urlencode($msg));
-        exit();
+        // $msg = "invalid login";
+        // echo "aud:" . $audValid;
+        // echo '<br>';
+        // echo "iss:" . $issValid;
+        // echo '<br>';
+        // echo "exp:" . $expValid;
+        // header('location:index.php?error=' . urlencode($msg));
+        // exit();
+        throw new Exception("invalid login");
     }
 }
 
@@ -98,12 +97,17 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        session_start();
         $_SESSION['email'] = $email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
     }
+        header("Location: index.php?action=userProfile");
+        exit;
+    } else {
+        throw new Exception("Invalid Information");
+    }
+
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
@@ -115,6 +119,7 @@ function userSignIn($email, $pwd)
         exit;
     }
 }
+
 function showUserSignUp()
 {
     require "./view/signUpView.php";
@@ -128,7 +133,7 @@ function showUserSignIn()
 
 // function userProfile()
 // {
-//     require "./view/userProfile.php";
+//     require "./view/userProfileView.php";
 // }
 
 function userProfilePage1()
@@ -137,6 +142,7 @@ function userProfilePage1()
     $user = $userProfileManager->showUserProfile();
     require "./view/userProfilePage1.php";
 }
+
 function showChats()
 {
     $chats = loadChats();
@@ -157,11 +163,13 @@ function showMessages($conversationId)
     // // Return the response data as JSON
     // echo json_encode($messages);
 }
+
 function addMessage($conversationId, $senderId, $message)
 {
     // echo "controller start";
     submitMessage($conversationId, $senderId, $message);
 }
+
 function searchMessages($term)
 {
     $chats = searchMessagesGet($term);
@@ -176,10 +184,10 @@ function addCalendar($data)
 {
     for ($i = 0; $i < count($data); $i++) {
         $date = strip_tags($data[$i]['date']);
-        $hour = strip_tags($data[$i]['hour']);
+        $time = strip_tags($data[$i]['time']);
 
-        $calendarManager = new CalendarManager();
-        $result = $calendarManager->insertCalendar($date, $hour);
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->insertCalendar($date, $time);
         if (!$result) {
             throw new Exception("Unable to add entries");
         }
@@ -380,4 +388,61 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
 
 
     return $score;
+}
+function deleteCalendarEntry($entry)
+{
+    for ($i = 0; $i < count($entry); $i++) {
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
+
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
+    }
+}
+
+function showCalendar($user_id)
+{
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->loadCalendar($user_id);
+    require('./view/calendarView.php');
+}
+
+function showUserProfile()
+{
+    $userManager = new UserManager();
+    $user = $userManager->getUserProfile($_SESSION['id']);
+    $experience = $userManager->getUserExperience($_SESSION['id']);
+    // $education = $userManager->getUserEducation($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
+    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    require("./view/userProfileView.php");
+}
+
+function createJobForm()
+{
+    $userManager = new UserManager();
+    $cities = $userManager->getCitiesList();
+    require("./view/addNewJobView.php");
+}
+
+function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline)
+{
+    $salaryMin = trim($salaryMin, "₩M");
+    $salaryMax = trim($salaryMax, "₩M");
+
+    $cities = explode("|", $cities)[1]; // seoul|142 => ["seoul", "142"]
+    $cities = (int)$cities;
+
+    $companyManager = new CompanyManager();
+    $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+    if ($result) {
+        // TODO: finish this bish!
+        echo "Success! New job created. Get your tax money";
+    } else {
+        echo "FAIL!!! U DUN MESSED UP";
+    }
 }

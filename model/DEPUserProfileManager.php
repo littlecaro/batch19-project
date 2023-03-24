@@ -1,6 +1,5 @@
 <?php
 require_once "Manager.php";
-session_start();
 class UserProfileManager extends Manager
 {
 

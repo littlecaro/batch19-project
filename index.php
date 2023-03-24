@@ -6,9 +6,12 @@ require("./controller/controller.php");
 try {
     $action = $_REQUEST['action'] ?? null;
 
+    session_start();
+
     switch ($action) {
         case "userProfile":
-            require('./view/userProfile.php');
+            showUserProfile();
+            // require('./view/userProfileView.php');
             break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
@@ -54,7 +57,7 @@ try {
             //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
             //     userProfile();
-            //     require('./view/userProfile.php');
+            //     require('./view/userProfileView.php');
 
             //     break;
 
@@ -104,6 +107,47 @@ try {
                 showTalents(true);
             } else {
                 showTalents();
+        case "deleteCalendarEntry":
+            $entry = $_REQUEST['entry'] ?? "";
+            if ($entry) {
+                $entry = json_decode($entry, true);
+                deleteCalendarEntry($entry);
+            } else {
+                throw new Exception("No calender inputs submitted");
+            }
+            break;
+        case "userProfileView":
+            require("./view/userProfileView.php");
+            break;
+        case "companyDashboard":
+            require("./view/companyDashboard.php");
+            break;
+        case "createJobForm":
+            createJobForm();
+            break;
+        case "employeeInfo":
+            require("./view/employeeInfoView.php");
+            break;
+        case "jobListings":
+            require("./view/jobListingsView.php");
+            break;
+        case "savedProfiles":
+            require("./view/savedProfilesView.php");
+            break;
+        case "bookedMeetings":
+            require("./view/bookedMeetingsView.php");
+            break;
+        case "addNewJob":
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $jobStory = $_POST['jobStory'] ?? null;
+            $salaryMin = $_POST['salaryMin'] ?? null;
+            $salaryMax = $_POST['salaryMax'] ?? null;
+            $cities = $_POST['cities'] ?? null;
+            $deadline = $_POST['deadline'] ?? null;
+            if ($jobTitle and $jobStory and $salaryMin and $salaryMax and $cities and $deadline) {
+                addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+            } else {
+                throw new Exception("missing data");
             }
             break;
         default:

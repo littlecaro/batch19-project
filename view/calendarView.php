@@ -12,19 +12,15 @@
             <button class="next">-></button>
         </div>
     
-        <table class="calendar"></table>
-    
-        <div>
-            <button class="undo">undo all</button>
-            <button class="submit">submit</button>
-        </div>
+        <table class="calendar"></table>›
     </div>
     <div class="bottom">
         <div id="confirmChoices">
-            <h1>Please confirm your selection:</h1>
-            <p>TODO: Update dynamically</p>
+            <h1>Your selection: </h1>
+            <div id="dynaUpdate"></div>
         </div>
         <div id="confirmedContainer">
+            <!-- <h1>Confirmed availability: </h1> -->
         </div>
     </div>
 </div>

@@ -45,40 +45,70 @@ class UserManager extends Manager
         $req->execute();
     }
 
+
     public function getUserExperience($jobTitle, $yearsExperience, $companyName)
     {
     }
+
+    public function getUserProfile($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT * FROM users WHERE id = ? ");
+        $req->execute([$userId]);
+        $user = $req->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
+
+    public function getUserExperience($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get experience WHERE user id matches;
+        $userExp = "SELECT job_title, years_experience, company_name FROM professional_experience WHERE user_id = ?";
+        $req = $db->prepare($userExp);
+        $req->execute([$userId]);
+        $experience = $req->fetchALL(PDO::FETCH_OBJ);
+        return $experience;
+    }
+
+    public function getUserSkills($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get experience WHERE user id matches;
+        $userSkills = "SELECT id, skills_fixed FROM skills";
+        $req = $db->prepare($userSkills);
+        $req->execute([$userId]);
+        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        return $skill;
+    }
+
+    public function getUserEducation()
+    {
+    }
+
     public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
-        $userExp = "SELECT p.job_title, p.years_experience, p.company_name FROM user u INNER JOIN professional_experience as p on u.id = p.user_id;
-        VALUES (:job_title, :years_experience, :comapny_name)";
-        $req = $db->prepare($userExp);
-        $req->bindParam('job_title', $jobTitle, PDO::PARAM_STR);
-        $req->bindParam('years_experience', $yearsExperience, PDO::PARAM_STR);
-        $req->bindParam('company_name', $companyName, PDO::PARAM_INT);
-        $req->execute();
-
-
-        $experience = $req->fetchALL(PDO::FETCH_OBJ);
-        return $experience;
-
         $req = $db->prepare("SELECT email, password FROM users WHERE email = ?");
         $req->execute(array($_POST['email']));
         $user = $req->fetch(PDO::FETCH_OBJ);
 
         //verify the password and then start a session
         if ($user and password_verify($_POST['pwd'], $user->password)) {
-            session_start();
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
     }
 
-
-    public function getUserEducation()
+    public function getCitiesList()
     {
+        $db = $this->dbConnect();
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cities;
     }
+
+
     // public function signInUser($email, $pwd)
     // {
     //     $db = $this->dbConnect();
