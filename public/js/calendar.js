@@ -37,6 +37,11 @@ function displayCal(x = 0) {
       }
       const tableDate = new Date(Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000);
       const unix = Date.now() - (dayOfWeek + x - j) * 24 * 60 * 60 * 1000;
+      // sometimes the unix will change by a single digit at different times each day depending on when queried(?)
+      // used later to organise the selected dates.
+      const compare = unix.toString().slice(0, 11);
+      // console.log(unix);
+      // console.log(compare);
       let datestr = `${monthStr(tableDate.getMonth())} ${dayToTh(tableDate.getDate())}`;
       if (i == 6) {
         const th = document.createElement("th");
@@ -62,6 +67,7 @@ function displayCal(x = 0) {
         td.setAttribute("data-php", `${year}-${month}-${day}`);
         td.setAttribute("data-dateStr", datestr);
         td.setAttribute("data-unix", unix);
+        td.setAttribute("data-compare", compare);
         if (i < 10) {
           td.setAttribute("data-time", `0${i}:00:00`);
         } else {
@@ -80,7 +86,7 @@ function displayCal(x = 0) {
 displayCal();
 
 function dayStr(day) {
-  const days = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   return days[day];
 }
 
@@ -106,6 +112,9 @@ function highlight() {
     // stop grabbing if user moves outside the table.
     table.addEventListener("mouseleave", function () {
       table.style.cursor = "grab";
+      if (!isMouseUp) {
+        displayChoices();
+      }
       isMouseUp = true;
       return;
     });
@@ -113,18 +122,14 @@ function highlight() {
   table.addEventListener("mouseup", function () {
     table.style.cursor = "grab";
     isMouseUp = true;
+    displayChoices();
     return;
   });
   for (let td of tds) {
     td.addEventListener("mousemove", function (e) {
       if (!isMouseUp && !td.classList.contains("confirmed")) {
         td.className = "selected";
-        displayChoices();
       }
-      // TODO: Be able to unselect.
-      // if (td.classList.contains("selected")) {
-      //   td.className = "";
-      // }
     });
   }
 }
@@ -142,25 +147,61 @@ function displayChoices() {
   const selectedArr = Array.from(selected);
   let sorted = selectedArr.sort(sorter);
   function sorter(a, b) {
-    return a.dataset.unix.localeCompare(b.dataset.unix);
+    return a.dataset.compare.localeCompare(b.dataset.compare);
   }
   for (let i = 0; i < sorted.length; i++) {
-    let div = document.createElement("div");
-    let date = document.createElement("p");
-    date.textContent = `Date: ${sorted[i].dataset.datestr}`;
-    div.appendChild(date);
-    let time = document.createElement("p");
-    time.textContent = `Time: ${sorted[i].dataset.time.slice(0, 5)}`;
-    div.appendChild(time);
-    let deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Undo";
-    deleteBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
-    deleteBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
-    deleteBtn.addEventListener("click", unselect);
-    div.appendChild(deleteBtn);
-    selection.appendChild(div);
+    console.log("i:", i);
+    console.log(sorted[i].dataset.datestr);
+    console.log(sorted[i].dataset.time);
+    console.log(sorted[i].dataset.compare);
+    console.log(typeof sorted[i].dataset.compare);
+    console.log(sorted[i].dataset.unix);
+    console.log(typeof sorted[i].dataset.unix);
+    if (i == 0 || sorted[i].dataset.compare > sorted[i - 1].dataset.compare) {
+      const sortDiv = document.createElement("div");
+      sortDiv.setAttribute("class", "sortedEntry");
+      sortDiv.setAttribute("data-id", `${sorted[i].dataset.compare}`);
+      let titleDiv = document.createElement("div");
+      titleDiv.setAttribute("class", "titleDate");
+      let titleDateNow = new Date(parseInt(sorted[i].dataset.unix));
+      let titleDay = document.createElement("p");
+      titleDay.textContent = `${dayStr(titleDateNow.getDay())}, `;
+      titleDiv.appendChild(titleDay);
+      let titleDate = document.createElement("p");
+      titleDate.textContent = `${sorted[i].dataset.datestr}`;
+      titleDiv.appendChild(titleDate);
+      sortDiv.appendChild(titleDiv);
+      let timeDiv = document.createElement("div");
+      timeDiv.setAttribute("class", "timeDiv");
+      let time = document.createElement("p");
+      time.textContent = `Time: ${sorted[i].dataset.time.slice(0, 5)}`;
+      timeDiv.appendChild(time);
+      sortDiv.appendChild(timeDiv);
+      let undoBtn = document.createElement("button");
+      undoBtn.textContent = "X";
+      undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
+      undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
+      undoBtn.addEventListener("click", unselect);
+      timeDiv.appendChild(undoBtn);
+      selection.appendChild(sortDiv);
+    } else if (sorted[i].dataset.compare == sorted[i - 1].dataset.compare) {
+      const sortDiv = document.querySelector(`[data-id=${CSS.escape(sorted[i].dataset.compare)}]`);
+      let timeDiv = document.createElement("div");
+      timeDiv.setAttribute("class", "timeDiv");
+      let time = document.createElement("p");
+      time.textContent = `Time: ${sorted[i].dataset.time.slice(0, 5)}`;
+      timeDiv.appendChild(time);
+      let undoBtn = document.createElement("button");
+      undoBtn.textContent = "X";
+      undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
+      undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
+      undoBtn.addEventListener("click", unselect);
+      timeDiv.appendChild(undoBtn);
+      sortDiv.appendChild(timeDiv);
+    }
   }
   let div = document.createElement("div");
+  div.setAttribute("id", "bottomButtons");
   const undoAll = document.createElement("button");
   undoAll.textContent = "Undo all";
   undoAll.addEventListener("click", () => {
@@ -222,9 +263,13 @@ function inputEntries(entries) {
 }
 
 function displayConfirmed(entries) {
+  console.log(entries);
   let h1 = document.createElement("h1");
   h1.textContent = "Confirmed availability: ";
   confirmedContainer.appendChild(h1);
+  if (entries.length == 0) {
+    return;
+  }
   for (let entry of entries) {
     let div = document.createElement("div");
     div.setAttribute("class", "confirmedAvail");

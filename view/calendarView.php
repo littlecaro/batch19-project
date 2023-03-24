@@ -16,11 +16,14 @@
     </div>
     <div class="bottom">
         <div id="confirmChoices">
-            <h1>Your selection: </h1>
+            <h1>Confirm your selection: </h1>
             <div id="dynaUpdate"></div>
         </div>
         <div id="confirmedContainer">
             <!-- <h1>Confirmed availability: </h1> -->
+        </div>
+        <div id="confirmedInterviews">
+            <h1>Confirmed interviews: </h1>
         </div>
     </div>
 </div>

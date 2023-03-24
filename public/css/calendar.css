@@ -63,15 +63,37 @@ div {
   gap: 1em;
 }
 
-.selection > div {
+.sortedEntry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0em;
+}
+
+.sortedEntry > .titleDate {
+  display: flex;
+  gap: 0.5em;
+  border-bottom: 1px solid black;
+}
+
+.titleDate > p,
+.timeDiv > p {
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.timeDiv {
   display: flex;
   align-items: center;
   gap: 1em;
+  /* padding-bottom: 0;
+  margin-bottom: 0; */
 }
 
-/* .selection > div > p {
-  margin: 0;
-} */
+#bottomButtons {
+  display: flex;
+  flex-direction: row;
+}
 
 button {
   height: 2em;
@@ -91,7 +113,12 @@ button {
 
 .bottom {
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  width: 100%;
+}
+
+.bottom > div {
+  text-align: center;
 }
 
 #confirmChoices {
