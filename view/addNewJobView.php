@@ -40,7 +40,7 @@ ob_start();
                     <input id="salaryMax" type="hidden" name="salaryMax">
                 </tr>
                 <tr>
-                    <th>City</th>
+                    <th>City<br><br></th>
                     <td>
                         <?php
                         $containerId = "cities";

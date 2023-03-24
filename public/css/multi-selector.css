@@ -1,5 +1,5 @@
 :root {
-  --primaryColor: #4c50d3;
+  --primaryColor: #b7bde1;
   --secondaryColor: #ffce00;
   --fontColor: #1e1e1e;
   --whiteColor: #fff;
@@ -19,13 +19,12 @@
 
 .multi-selector {
   min-width: 250px;
-  height: 30px;
+  height: 50px;
   margin: 0 auto;
 }
 
 .multi-selector > .input-container {
   width: 250px;
-  height: 40px;
   position: relative;
   margin-bottom: 5px;
 }
@@ -57,7 +56,7 @@
 }
 
 .multi-selector .autocomplete-results > div:hover {
-  background-color: var(--whiteColor);
+  background-color: var(--primaryColor);
 }
 
 .multi-selector .selected-items-container {
@@ -68,7 +67,7 @@
 
 .multi-selector .selected-items-container > div {
   width: fit-content;
-  height: 35px;
+  height: 25px;
   padding-left: 5px;
   border-radius: 10px;
   background-color: seagreen;
@@ -76,6 +75,7 @@
   display: flex;
   align-items: center;
   margin: 2px;
+  font-size: 12px;
 }
 
 .multi-selector .selected-items-container > div > button {
@@ -84,7 +84,6 @@
   outline: none;
   /* margin-left: 8px; */
   color: black;
-  font-size: 1.1rem;
   cursor: pointer;
   padding: 10px;
 }
