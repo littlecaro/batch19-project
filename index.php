@@ -124,7 +124,8 @@ try {
             require("./view/employeeInfoView.php");
             break;
         case "jobListings":
-            require("./view/jobListingsView.php");
+            fetchJobPostings();
+
             break;
         case "savedProfiles":
             require("./view/savedProfilesView.php");

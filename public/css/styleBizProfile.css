@@ -11,7 +11,10 @@
   --softYellow: #fff5cc;
   --softRed: #ffcbc8;
 }
-
+html,
+body {
+  height: 100vh;
+}
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -106,17 +109,21 @@ h4 {
 
 .userProfile {
   margin-left: 300px;
+  height: 100%;
 }
 
 .main {
-  height: auto;
+  height: 80%;
   min-width: 65%;
-  padding: 40px 20px;
+  /* padding: 40px 20px; */
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
   text-align: center;
   margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .main #personal {
   height: 80vh;
@@ -148,6 +155,7 @@ body {
   background-color: white;
   background-size: cover;
   margin-top: 80px;
+  overflow: hidden;
 }
 
 .biz {
@@ -507,4 +515,62 @@ input[type="checkbox"] {
 
 .noUi-tooltip {
   font-size: 10px;
+}
+.addaJobBtn {
+}
+/* Styles for job listing cards*/
+.jobListingWrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  align-items: center;
+  width: 50%;
+  padding-left: 20rem;
+  padding-right: 20rem;
+  background-color: var(--greyColor);
+}
+.jobListingWrapper a {
+  text-decoration: none;
+  color: black;
+  width: 90%;
+}
+.jobPostingCard {
+  background-color: white;
+  height: fit-content;
+  width: 90%;
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.jobPostingCardHead {
+  /* width: 100%; */
+  height: 100px;
+  position: relative;
+  left: 0;
+  /* display: flex; */
+  /* align-items: center; */
+}
+.jobPostingCardCompanyLogo img {
+  width: 154px;
+}
+.jobPostingCard .jobPostingTitle {
+  color: #0a66c2;
+
+  font-size: 1.5em;
+}
+.jobPostingCard p {
+  text-align: start;
+}
+#addaJobBtn {
+  position: relative;
+  padding-top: 50px;
+  margin-bottom: -50px;
+  /* margin-left: 300px; */
+}
+#addaJobBtn button {
+  margin: auto;
 }

@@ -250,3 +250,10 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
         echo "FAIL!!! U DUN MESSED UP";
     }
 }
+
+
+function fetchJobPostings()
+{
+    $listings = getJobPostings();
+    require("./view/jobListingsView.php");
+}
