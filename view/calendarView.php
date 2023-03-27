@@ -12,7 +12,7 @@
             <button class="next">-></button>
         </div>
     
-        <table class="calendar"></table>›
+        <table class="calendar"></table>
     </div>
     <div class="bottom">
         <div id="confirmChoices">
@@ -33,5 +33,5 @@
 
 <?php 
 $content = ob_get_clean();
-require('./view/template.php');
+require('./view/userProfileTemplate.php');
 ?>

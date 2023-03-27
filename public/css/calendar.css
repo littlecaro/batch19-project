@@ -1,4 +1,4 @@
-* {
+.calendar {
   user-select: none;
 }
 
@@ -17,7 +17,7 @@ th {
 
 td {
   text-align: center;
-  color: var(--text-color-primary);
+  color: white;
 }
 
 .times {
