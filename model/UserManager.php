@@ -46,9 +46,9 @@ class UserManager extends Manager
     }
 
 
-    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
-    {
-    }
+    // public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+    // {
+    // }
 
     public function getUserProfile($userId)
     {

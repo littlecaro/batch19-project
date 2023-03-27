@@ -102,11 +102,6 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
-        case "talentSearch":
-            if (!empty($_GET['filter'])) {
-                showTalents(true);
-            } else {
-                showTalents();
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -114,6 +109,13 @@ try {
                 deleteCalendarEntry($entry);
             } else {
                 throw new Exception("No calender inputs submitted");
+            }
+            break;
+        case "talentSearch":
+            if (!empty($_GET['filter'])) {
+                showTalents(true);
+            } else {
+                showTalents();
             }
             break;
         case "userProfileView":
