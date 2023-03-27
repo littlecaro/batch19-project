@@ -31,11 +31,11 @@ td {
   justify-content: flex-start;
 }
 
-#confirmedContainer > div {
+/* #confirmedContainer > div {
   display: flex;
   align-items: center;
   gap: 1em;
-}
+} */
 
 .cal {
   display: flex;
@@ -55,7 +55,8 @@ div {
   background-color: red;
 }
 
-.selection {
+.selection,
+.confirmedCont {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,15 +64,43 @@ div {
   gap: 1em;
 }
 
-.selection > div {
+.sortedEntry,
+.confirmedAvail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0em;
+}
+
+.titleDate {
+  display: flex;
+  gap: 0.5em;
+  border-bottom: 1px solid black;
+}
+
+.times {
+  margin-bottom: 1vh;
+  border-bottom: 1px solid black;
+}
+
+.titleDate > p,
+.timeDiv > p {
+  padding-bottom: 0;
+  margin: 0;
+}
+
+.timeDiv {
   display: flex;
   align-items: center;
   gap: 1em;
+  /* padding-bottom: 0;
+  margin-bottom: 0; */
 }
 
-/* .selection > div > p {
-  margin: 0;
-} */
+#bottomButtons {
+  display: flex;
+  flex-direction: row;
+}
 
 button {
   height: 2em;
@@ -91,11 +120,18 @@ button {
 
 .bottom {
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  width: 100%;
 }
 
-#confirmChoices {
+.bottom > div {
+  text-align: center;
+}
+
+#confirmChoices,
+#confirmedContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
 }

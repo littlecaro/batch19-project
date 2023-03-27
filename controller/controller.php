@@ -101,7 +101,6 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-    }
         header("Location: index.php?action=userProfile");
         exit;
     } else {
@@ -201,6 +200,22 @@ function showCalendar($user_id)
     $result = $calendarManager->loadCalendar($user_id);
     require('./view/calendarView.php');
 }
+
+function deleteCalendarEntry($entry)
+{
+    for ($i = 0; $i < count($entry); $i++) {
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
+
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
+    }
+}
+
 function showTalents($filter = false)
 { //TODO:improve flow of loop
     ob_start();
@@ -388,27 +403,6 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
 
 
     return $score;
-}
-function deleteCalendarEntry($entry)
-{
-    for ($i = 0; $i < count($entry); $i++) {
-        $date = strip_tags($entry[$i]['date']);
-        $time = strip_tags($entry[$i]['time']);
-
-        $CalendarManager = new CalendarManager();
-        $result = $CalendarManager->updateDeletion($date, $time);
-        if (!$result) {
-            throw new Exception("Unable to delete entry");
-        }
-        header("location: index.php?action=loadCalendar");
-    }
-}
-
-function showCalendar($user_id)
-{
-    $CalendarManager = new CalendarManager();
-    $result = $CalendarManager->loadCalendar($user_id);
-    require('./view/calendarView.php');
 }
 
 function showUserProfile()
