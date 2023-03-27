@@ -1,9 +1,19 @@
 //use if statements to check if inputs exist bc this might be used on other pages
 
 function showSignUp(userType) {
-  var company = document.getElementById("company");
-  company.style.display = "block";
-  console.log(userType);
+  // var company = document.getElementById("company");
+  // company.style.display = "block";
+  // console.log(userType);
+
+  const account = document.getElementById("createAccount");
+  if (account.style.maxHeight == 0) {
+    if (userType === "company") {
+      account.style.maxHeight = "600px";
+    } else {
+      account.style.maxHeight = "500px";
+    }
+  }
+
   const companyInputs = document.querySelectorAll(".company-input");
   if (userType !== "company") {
     for (let companyInput of companyInputs) {
@@ -13,16 +23,9 @@ function showSignUp(userType) {
     for (let companyInput of companyInputs) {
       companyInput.style.display = "table-row";
     }
+    account.style.maxHeight = "600px";
   }
 }
-// function showSignUp() {
-//   var singleUserSignUp = document.getElementById("singleUserSignUp");
-//   if (singleUserSignUp.style.display == "none") {
-//     singleUserSignUp.style.display = "block";
-//   } else {
-//     singleUserSignUp.style.display = "none";
-//   }
-// }
 
 // // check if pwd are same
 const userPwd = document.querySelector("#pwd");
@@ -38,13 +41,11 @@ if (userPwd && userPwd2) {
 userPwd.addEventListener("keyup", checkPwd);
 
 function checkPwd() {
-  if (userPwd.value == userPwd2.value) {
-    console.log("nice it works");
+  if (userPwd.value.length >= 4 && userPwd.value.length <= 16) {
     userPwd.className = "green";
     userPwd2.className = "green";
     return true;
   } else {
-    console.log("it doesn't work");
     userPwd.className = "red";
     userPwd2.className = "red";
     return false;
@@ -54,19 +55,19 @@ function checkPwd() {
 userPwd2.addEventListener("keyup", checkPwd2);
 
 function checkPwd2() {
-  if (userPwd.value == userPwd2.value) {
+  if (userPwd.value && userPwd.value == userPwd2.value) {
     userPwd.className = "green";
     userPwd2.className = "green";
     return true;
   } else {
     userPwd.className = "red";
-    userPwd2.target.className = "red";
+    userPwd2.className = "red";
     return false;
   }
 }
 
-let submit = document.querySelector("button[type='submit']");
-submit.addEventListener("click", handleSubmit);
+let form = document.querySelector("form");
+form.addEventListener("submit", handleSubmit);
 // function to check first name
 // call that function on keyup inside the firstname input
 // ALSO call that function on submit
@@ -92,11 +93,38 @@ function lastName() {
   const validName = nameRegex.test(userName);
   if (validName) {
     document.querySelector("#lName").className = "green";
-    console.log("nameworks");
     return true;
   } else {
     document.querySelector("#lName").className = "red";
-    console.log("namenotworks");
+    return false;
+  }
+}
+
+//use name regex
+document.querySelector("#companyname").addEventListener("keyup", companyName);
+
+function companyName() {
+  const companyName1 = document.querySelector("#companyname").value;
+  const validCompany = nameRegex.test(companyName1);
+  if (validCompany) {
+    document.querySelector("#companyname").className = "green";
+    return true;
+  } else {
+    document.querySelector("#companyname").className = "red";
+    return false;
+  }
+}
+
+document.querySelector("#companytitle").addEventListener("keyup", companyTitle);
+
+function companyTitle() {
+  const companyTitle1 = document.querySelector("#companytitle").value;
+  const validCompany = nameRegex.test(companyTitle1);
+  if (validCompany) {
+    document.querySelector("#companytitle").className = "green";
+    return true;
+  } else {
+    document.querySelector("#companytitle").className = "red";
     return false;
   }
 }
@@ -107,24 +135,35 @@ function checkEmail() {
   const email = document.querySelector("#email").value;
   const validEmail = emailRegex.test(email);
   if (validEmail) {
-    console.log("works");
     document.querySelector("#email").className = "green";
     return true;
   } else {
     document.querySelector("#email").className = "red";
-    console.log("NAWTworks");
     return false;
   }
 }
 
 // // submit
-let tooltip = document.querySelectorAll(".tooltip");
 function handleSubmit(e) {
-  if (lastName() && firstName() && checkEmail() && checkPwd() && checkPwd2()) {
+  const lastNameGood = lastName();
+  const firstNameGood = firstName();
+  const checkEmailGood = checkEmail();
+  const checkPwdGood = checkPwd();
+  const checkPwd2Good = checkPwd2();
+  const companyCheckGood = companyName();
+  const companyTitleGood = companyTitle();
+
+  if (
+    lastNameGood &&
+    firstNameGood &&
+    checkEmailGood &&
+    checkPwdGood &&
+    checkPwd2Good &&
+    companyCheckGood &&
+    companyTitleGood
+  ) {
     console.log("send");
   } else {
-    // TODO: fix this
-    // document.getElementsByClassName("span") = "input.red";
     e.preventDefault();
   }
 }

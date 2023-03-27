@@ -104,7 +104,7 @@ button {
 }
 
 button:hover {
-  background-color: #b63c5f; /* Green */
+  background-color: var(--button-color-secondary); /* Green */
 }
 
 .button {
@@ -305,9 +305,18 @@ input[type="checkbox"] {
 
 /* css for javascript validation: added by caro */
 .green {
-  border: 3px solid greenyellow;
+  outline: 3px solid greenyellow;
 }
 
 .red {
-  border: 3px solid red;
+  outline: 3px solid red;
+}
+.indexreturn {
+  cursor: grab;
+}
+
+#createAccount {
+  max-height: 0;
+  transition: max-height 1s;
+  overflow: hidden;
 }

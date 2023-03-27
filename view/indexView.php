@@ -10,7 +10,7 @@ ob_start();
             <p>waygukwin</p>
         </div>
         <div class="menu">
-            <button id="signup" onclick="location.href='index.php?action=userSignInView'">SIGN UP
+            <button id="signup" onclick="location.href='index.php?action=userSignUpView'">SIGN UP
             </button>
             <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
         </div>

@@ -82,3 +82,6 @@ function searchMessagesGet($term)
     // print_r($chats);
     return $chats;
 }
+
+
+

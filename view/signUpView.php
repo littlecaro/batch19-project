@@ -5,10 +5,9 @@ ob_start();
 
 <div class="header">
   <div class="logo">
-    <p>waygukwin</p>
+    <p class="indexreturn" onclick="location.href='index.php'">waygukwin</p>
   </div>
   <div class="menu">
-    <button id="home" onclick="location.href='index.php'">HOME</button>
     <button onclick="location.href='index.php?action=userSignInView'">SIGN IN</button>
   </div>
 </div>
@@ -17,7 +16,6 @@ ob_start();
   <div class="box">
     <img src="./public/images/Saly-25.png" width="300px" />
     <h4>I am a</h4>
-    <!-- TODO:CHANGE -->
     <button id="boxbiz" onclick="showSignUp('company')">
       BUSINESS<br>LOOKING TO HIRE
     </button>
@@ -29,59 +27,51 @@ ob_start();
     <h4>Don't want to create an account?<br>Register with Google</h4>
     <?php include("./view/components/googleSignIn.php"); ?>
     <br><br>
-    <div id="company" style="display: none">
-    <!-- <div id="singleUser" style="display: none"> -->
-    <h3>CREATE AN ACCOUNT</h3>
-      <form action="index.php?action=userSignUp" method="POST">
-        <table id="table">
-          <tr>
-            <th>First name</th>
-          <td>
-            <input type="text" name="fName" id="fName" placeholder="First name">
-            <span class="required" id="demo1"></span>
-          </td>
-        </tr>
-        <tr>
-          <th>Last name</th>
-          <td>
-            <input type="text" name="lName" id="lName" placeholder="Last name">
-            <span class="required" id="demo2"></span>
-          </td>
-        </tr>
-        <tr>
-          <th>E-mail</th>
-          <td>
+<div id="createAccount">
+
+  <h3>CREATE AN ACCOUNT</h3>
+  <form action="index.php?action=companySignUp" method="POST">
+    <table id="table">
+      <tr>
+        <th>First name</th>
+        <td>
+          <input type="text" name="fName" id="fName" placeholder="First name">
+        </td>
+      </tr>
+      <tr>
+        <th>Last name</th>
+        <td>
+          <input type="text" name="lName" id="lName" placeholder="Last name">
+        </td>
+      </tr>
+      <tr>
+        <th>E-mail</th>
+        <td>
             <input type="text" name="email" id="email" placeholder="E-mail" />
-            <span class="required" id="demo4"></span>
           </td>
         </tr>
         <tr>
           <th>Password</th>
           <td>
             <input type="text" name="pwd" id="pwd" placeholder="Password" />
-            <span class="required" id="demo5"></span>
           </td>
         </tr>
         <tr>
           <th>Password confirmation</th>
           <td>
             <input type="text" name="pwdconf" id="pwdconf" placeholder="Type your password again" />
-            <span class="required" id="demo6"></span>
           </td>
         </tr>
-            <!-- </div> -->
         <tr class="company-input">
           <th>Company Name</th>
           <td>
             <input type="text" name="companyname" id="companyname" class="companyonly" placeholder="Company Name" />
-            <span class="required" id="demo6"></span>
           </td>
         </tr>
         <tr class="company-input">
           <th>Company Job Title</th>
           <td>
-            <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role within the company." />
-            <span class="required" id="demo6"></span>
+            <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role in the company." />
           </td>
         </tr>
         <tr>
@@ -100,8 +90,8 @@ ob_start();
         </tr>
       </table><br>
       <button type="submit" value="SUBMIT" class="button" id="submit">SUBMIT</button>
-      <button type="reset" class="button" value="RESET" id="reset">RESET</button>
     </form>
+  </div>
   </div>
 </div>
 </div>

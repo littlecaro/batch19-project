@@ -5,11 +5,9 @@ ob_start();
 
 <div class="header">
   <div class="logo">
-    <p>waygukwin</p>
+    <p class="indexreturn" onclick="location.href='index.php'">waygukwin</p>
   </div>
   <div class="menu">
-    <!-- TODO:CHANGE -->
-    <button id="home" onclick="location.href='index.php'">HOME</button>
     <button onclick="location.href='index.php?action=userSignUpView'">SIGN UP</button>
   </div>
 </div>
@@ -26,7 +24,6 @@ ob_start();
         <span style="color: red; font-weight: bold" id="wrong"><?= (isset($_GET['xpass']) ? 'X Wrong password<br>' : "") ?></span>
       </p><br />
       <button id="submit" type="submit" value="Sign In" class="button">SIGN IN</button>
-      <button id="reset" type="reset" value="Reset" class="button">RESET</button>
       <br /><br />
       <?php include("./view/components/googleSignIn.php"); ?>
 
