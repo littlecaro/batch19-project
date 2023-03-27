@@ -21,12 +21,12 @@ $cities = $response->fetchAll(PDO::FETCH_ASSOC);
 <!--  -->
 <form autocomplete="off" action="index.php?action=userProfileSkillsSubmit.php" method="POST">
 
-  <h2>Skills:</h2>
+  <h2> Programming Skills:</h2>
   <?php
   $userProfileSkills = "skills";
   require("./view/userProfileSkillsMultiSelector.php");
   ?>
-  <h2>Languages:</h2>
+  <h2>Spoken and Written Languages:</h2>
   <?php
   $userProfileSkills = "languages";
   require("./view/userProfileSkillsMultiSelector.php");
@@ -37,11 +37,15 @@ $cities = $response->fetchAll(PDO::FETCH_ASSOC);
   require("./view/userProfileSkillsMultiSelector.php");
   ?>
 
-  <input type="submit" value="submit">
+  <input type="submit" value="Save">
 </form>
 
 <script src="./public/js/userProfileSkillsMultiSelector.js"></script>
 <script>
+  // Pass the data from PHP to JavaScript
+  const skills = <?= json_encode($skills); ?>;
+  const languages = <?= json_encode($languages); ?>;
+  const cities = <?= json_encode($cities); ?>;
   createMultiSelector(skills, 'skills', 10);
   createMultiSelector(languages, 'languages', 5);
   createMultiSelector(cities, 'cities', 1);
