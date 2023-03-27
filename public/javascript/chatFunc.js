@@ -113,7 +113,7 @@ function createChatboxActions(thread) {
 
 // Function to create the input box
 function createChatboxInput(thread, messageContainer) {
-  let inputmessage = document.createElement("input");
+  let inputmessage = document.createElement("textarea");
   inputmessage.className = "messageInput";
   inputmessage.name = "msg";
   let submitBox = document.createElement("i");

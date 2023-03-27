@@ -1,0 +1,75 @@
+.multi-selector * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* background-color: cadetblue; */
+}
+
+.multi-selector {
+  width: 30%;
+  min-width: 250px;
+  min-height: 80px;
+  margin: 0 auto;
+}
+
+.multi-selector > .input-container {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.multi-selector > .input-container > input {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.multi-selector .autocomplete-results {
+  /* subtract the input's border-radius */
+  width: calc(100% - 20px);
+  position: absolute;
+  /* match the height of the input */
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: bisque;
+  z-index: 1;
+}
+
+.multi-selector .autocomplete-results > div {
+  padding: 5px;
+}
+
+.multi-selector .autocomplete-results > div:hover {
+  background-color: lightpink;
+}
+
+.multi-selector .selected-items-container {
+  min-height: 35px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.multi-selector .selected-items-container > div {
+  width: fit-content;
+  height: 35px;
+  padding-left: 5px;
+  border-radius: 10px;
+  background-color: seagreen;
+  color: white;
+  display: flex;
+  align-items: center;
+  margin: 2px;
+}
+
+.multi-selector .selected-items-container > div > button {
+  background: none;
+  border: none;
+  outline: none;
+  /* margin-left: 8px; */
+  color: black;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 10px;
+}

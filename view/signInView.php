@@ -5,12 +5,10 @@ ob_start();
 
 <div class="header">
   <div class="logo">
-    <p>waygukwin</p>
+    <p><a href="index.php">waygukwin</a></p>
   </div>
   <div class="menu">
-    <!-- TODO:CHANGE -->
-    <button id="home" onclick="location.href='index.php'">HOME</button>
-    <button onclick="location.href='index.php?action=userSignUpView'">SIGN UP</button>
+    <a href="index.php?action=userSignUpView"><button class="topbutton">SIGN UP</button></a>
   </div>
 </div>
 
@@ -20,20 +18,21 @@ ob_start();
 
     <p><?= isset($_GET['error']) ? $_GET['error'] : "" ?></p>
     <form action="index.php?action=userSignIn" method="POST">
-      <input type="text" name="email" placeholder="Email" /><input type="text" name="pwd" placeholder="Password" /><br />
+      <input type="text" name="email" placeholder="Email" /><br><br>
+      <input type="text" name="pwd" placeholder="Password" /><br />
       <p>
         <span style="color: red; font-weight: bold" id="wrong"><?= (isset($_GET['xlogin']) ? 'X Wrong username<br>' : "") ?></span>
         <span style="color: red; font-weight: bold" id="wrong"><?= (isset($_GET['xpass']) ? 'X Wrong password<br>' : "") ?></span>
       </p><br />
-      <button id="submit" type="submit" value="Sign In" class="button">SIGN IN</button>
-      <button id="reset" type="reset" value="Reset" class="button">RESET</button>
+      <input id="submit" type="submit" value="SIGN IN" class="button">
       <br /><br />
       <?php include("./view/components/googleSignIn.php"); ?>
 
     </form>
     <h4>Don't have an account?</h4>
-    <button onclick="location.href='index.php?action=userSignUpView'" class="button">
-      Sign up here
+    <button class="button">
+      <span class="buttonlink">
+        <a href="index.php?action=userSignUpView">Sign up here</span></a>
     </button>
   </div>
 </div>
