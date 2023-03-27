@@ -1,4 +1,4 @@
-<a href="index.php?action=jobListings&gotolisting=<?= $listing->jobId ?>">
+<a href="index.php?action=jobListings&ListingId=<?= $listing->jobId ?>">
     <div class="jobPostingCard">
         <div class="jobPostingCardHead">
             <div class="jobPostingCardCompanyLogo">

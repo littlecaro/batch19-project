@@ -124,7 +124,12 @@ try {
             require("./view/employeeInfoView.php");
             break;
         case "jobListings":
-            fetchJobPostings();
+            if (!empty($_GET['ListingId'])) {
+                $jobId = $_GET['ListingId'] ?? null;
+                $jobCard = showJobCard($jobId);
+            } else {
+                fetchJobPostings();
+            }
 
             break;
         case "savedProfiles":
@@ -145,6 +150,15 @@ try {
             } else {
                 throw new Exception("missing data");
             }
+            break;
+        case "postJobChanges":
+            $description = $_POST['description'] ?? null;
+            $minSalary = $_POST['minSalary'] ?? null;
+            $maxSalary = $_POST['maxSalary'] ?? null;
+            $deadline = $_POST['deadline'] ?? null;
+            $id = $_POST["id"] ?? null;
+            $id = (int)$id;
+            updateJobListing($description, $minSalary, $maxSalary, $deadline, $id);
             break;
         default:
             showIndex();

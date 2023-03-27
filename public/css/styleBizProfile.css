@@ -27,6 +27,7 @@ html {
   flex-direction: column;
   align-items: center;
   /* justify-content: space-between; */
+  z-index: 20;
   padding: 2rem;
   background: var(--text-color-primary);
   background: linear-gradient(
@@ -109,19 +110,24 @@ h4 {
 
 .userProfile {
   margin-left: 300px;
+  width: calc(100vw - 300px);
   height: 100%;
 }
 
 .main {
-  height: 80%;
-  min-width: 65%;
+  height: 86%;
+  /* min-width: 65%; */
   /* padding: 40px 20px; */
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
+  left: -1.5rem;
   text-align: center;
+  position: relative;
+  /* padding-left: 300px; */
   margin-bottom: 70px;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 }
@@ -522,11 +528,14 @@ input[type="checkbox"] {
 .jobListingWrapper {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* justify-content: center; */
   align-items: center;
-  width: 50%;
-  padding-left: 20rem;
-  padding-right: 20rem;
+  height: 100%;
+  width: 100%;
+  /* padding-left: 20rem; */
+  /* padding-right: 20rem; */
   background-color: var(--greyColor);
 }
 .jobListingWrapper a {
@@ -544,6 +553,19 @@ input[type="checkbox"] {
   position: relative;
   display: flex;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.jobPostingCardFull {
+  background-color: white;
+  height: fit-content;
+  width: 90%;
+  margin: 2rem;
+  height: 100%;
+  padding: 2rem;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  flex-direction: column;
 }
 
 .jobPostingCardHead {
@@ -567,10 +589,45 @@ input[type="checkbox"] {
 }
 #addaJobBtn {
   position: relative;
-  padding-top: 50px;
-  margin-bottom: -50px;
+  /* padding-top: 50px; */
+  /* margin-top: -50px; */
+  bottom: -10px;
+  margin-top: 10px;
   /* margin-left: 300px; */
 }
 #addaJobBtn button {
   margin: auto;
+}
+.jobPostingTitle {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 2rem;
+  font-weight: medium;
+  color: black;
+  line-height: 1.2em;
+  text-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+.jobPostingInfo h2 {
+  color: black;
+  font-size: unset;
+}
+.jobPostingCardFull {
+  text-align: left;
+}
+.aboutTheCompany {
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+.aboutTheCompany img {
+  height: 50px;
+}
+.JobPostingActions a {
+  text-decoration: none;
+}
+.JobPostingActions {
+  position: relative;
+  bottom: -24px;
+  margin-top: 10px;
 }

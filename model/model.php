@@ -1,5 +1,8 @@
 <?php
 //TODO: Check all functions for safety
+
+use JetBrains\PhpStorm\Deprecated;
+
 function dbConnect()
 {
     try {
@@ -123,4 +126,73 @@ FROM
     $query->execute();
     $listings = $query->fetchAll(PDO::FETCH_OBJ);
     return $listings;
+}
+
+function getJobCard($jobId)
+{
+    $userId = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $str = 'SELECT
+    cities.name AS city_name,
+    cities.country_code AS country_code,
+    jobs.id as jobId,
+    jobs.company_id,
+    jobs.title,
+    jobs.job_description,
+    jobs.salary_min,
+    jobs.salary_max,
+    jobs.deadline,
+    jobs.date_created,
+    companies.name,
+    companies.logo_img,
+    companies.website_address
+FROM
+    jobs INNER JOIN
+    cities ON jobs.city_id = cities.id INNER JOIN
+    companies ON jobs.company_id = companies.id
+    WHERE companies.id = :companiesId AND jobs.id = :jobId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(':companiesId', $companyId, PDO::PARAM_INT);
+    $query->bindParam(':jobId', $jobId, PDO::PARAM_INT);
+    $query->execute();
+    $jobCard = $query->fetchAll(PDO::FETCH_OBJ);
+    return $jobCard[0];
+}
+function updateJobPost($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    $user_id = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $str = "UPDATE jobs SET job_description = :inDescription, salary_min = :inMinSalary, salary_max = :inMaxSalary, deadline= :inDeadline WHERE id = :inId AND company_id= :inCompanyId";
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindValue('inDescription', $description, PDO::PARAM_STR);
+    $query->bindValue('inMinSalary', $minSalary, PDO::PARAM_INT);
+    $query->bindValue('inMaxSalary', $maxSalary, PDO::PARAM_INT);
+    $query->bindValue("inDeadline", $deadline, PDO::PARAM_STR);
+    $query->bindValue('inId', $id, PDO::PARAM_INT);
+    $query->bindValue('inCompanyId', $companyId, PDO::PARAM_INT);
+    $query->execute();
 }
