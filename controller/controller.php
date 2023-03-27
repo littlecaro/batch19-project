@@ -5,6 +5,8 @@ require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
 
+require_once("./model/CompanyManager.php");
+
 
 require_once "./model/model.php";
 
@@ -99,6 +101,7 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
+    }
         header("Location: index.php?action=userProfile");
         exit;
     } else {
@@ -111,12 +114,11 @@ function userSignIn($email, $pwd)
         throw new Exception("Invalid Information");
     } else {
         //if data good, allow sign in
-        
+
         header("index.php"); //TODO: change header location
         exit;
     }
 }
-
 
 function showUserSignUp()
 {
@@ -174,7 +176,7 @@ function searchMessages($term)
     if (!empty($chats)) {
         foreach ($chats as $chat) {
             include('./view/components/chatCard.php');
-        }
+        } //TODO:Limit messages
     }
 }
 
@@ -193,18 +195,212 @@ function addCalendar($data)
     }
 }
 
-function deleteCalendarEntry($entry) 
+function showCalendar($user_id)
+{
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadCalendar($user_id);
+    require('./view/calendarView.php');
+}
+function showTalents($filter = false)
+{ //TODO:improve flow of loop
+    ob_start();
+    if (!$filter) {
+    }
+    $allTalents = getAllTalents();
+    // print_r($allTalents);
+    if (!empty($allTalents)) {
+        foreach ($allTalents as $talentID => $key) {
+            $yearsExperience = getTalentYearsExperience($key->id);
+            $skills = getTalentSkills($key->id);
+            $talentInfo = getTalentInfo($key->id);
+            $desiredPositions = getTalentDesiredPosition($key->id);
+            $highestDegree = getTalentHighestDegree($key->id);
+            $talentLanguages = getTalentLanguages($key->id);
+            if ($filter) {
+                // ob_start();
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages);
+
+                include('./view/components/talentCard.php'); //TODO:Limit talent cards
+                $talentCard = ob_get_contents();
+                $id = $key->id;
+                $CandidateRatingData[$key->id] = $talentCard;
+                $scale[$key->id] = $rating;
+                ob_clean();
+                // echo $talentCard;
+                // echo $key->id;
+            } else {
+                include('./view/components/talentCard.php');
+            }
+        }
+    }
+    if (!$filter) {
+        $talentCards = ob_get_clean();
+        require('./view/filterView.php');
+    } else {
+        ob_end_clean();
+        // print_r($scale);
+        arsort($scale);
+        // print_r($scale);
+        // print_r($CandidateRatingData);
+        foreach ($scale as $key => $value) {
+            // echo $key;
+            echo $CandidateRatingData[$key];
+        }
+
+        // ob_end_clean();
+        // echo "test";
+        parseTalentFilter();
+    }
+}
+function loadTalentCards()
+{
+    require("./view/filterView.php");
+}
+function parseTalentFilter()
+{
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    $arr = array(
+        'filteredYearsMin' => $filteredYearsMin,
+        'filteredYearsMax' => $filteredYearsMax,
+        'filteredSkills' => $filteredSkills,
+        'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredHighestDegrees' => $filteredHighestDegrees,
+        'filteredLanguages' => $filteredLanguages,
+
+    );
+    $arr = json_encode($arr);
+    saveTalentFilter($arr);
+}
+function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language)
+{   //TODO:Case for any tags
+    //TODO:add filter for city]
+    $score  = 1;
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    // echo $filteredYearsMax;
+    if (is_numeric($filteredYearsMax) and is_numeric($filteredYearsMin)) {
+        // echo "starting";
+        if ($yearsExperience > $filteredYearsMin && $yearsExperience < $filteredYearsMax) {
+            $score = $score * 1;
+            // echo "test";
+        } else if ($yearsExperience < $filteredYearsMin) {
+            // echo "test2";
+
+            $score = $score * (1 / (1 + ($filteredYearsMin - $yearsExperience) / 10));
+        } else if ($yearsExperience > $filteredYearsMax) {
+            // echo "test3" . $yearsExperience;
+            // echo $yearsExperience - $filteredYearsMax;
+            $score = $score * (1 / (1 + ($yearsExperience - $filteredYearsMax) / 10));
+        }
+    }
+    if (!empty($filteredSkills)) {
+        $ratings = array();
+        foreach ($filteredSkills as $key => $value) {
+            foreach ($skills as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->skills_fixed, $perc);
+                // echo $twoValue->skills_fixed;
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        // print_r($tmp);
+        // echo $tmp;
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredDesiredPositions)) {
+        $ratings = array();
+        foreach ($filteredDesiredPositions as $key => $value) {
+            foreach ($desiredPositions as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->desired_position, $perc);
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            // echo $score;
+            $tmp = array_product($ratings);
+            // echo $tmp;
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredHighestDegrees)) {
+        $ratings = array();
+        foreach ($filteredHighestDegrees as $key => $value) {
+            foreach ($highestDegree as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredLanguages)) {
+        $ratings = array();
+        foreach ($filteredLanguages as $key => $value) {
+            foreach ($language as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->language, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+
+
+    return $score;
+}
+function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
-    $date = strip_tags($entry[$i]['date']);
-    $time = strip_tags($entry[$i]['time']);
+        $date = strip_tags($entry[$i]['date']);
+        $time = strip_tags($entry[$i]['time']);
 
-    $CalendarManager = new CalendarManager();
-    $result = $CalendarManager->updateDeletion($date, $time);
-    if (!$result) {
-        throw new Exception("Unable to delete entry");
-    }
-    header("location: index.php?action=loadCalendar");
+        $CalendarManager = new CalendarManager();
+        $result = $CalendarManager->updateDeletion($date, $time);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        }
+        header("location: index.php?action=loadCalendar");
     }
 }
 
@@ -224,4 +420,29 @@ function showUserProfile()
     $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
+}
+
+function createJobForm()
+{
+    $userManager = new UserManager();
+    $cities = $userManager->getCitiesList();
+    require("./view/addNewJobView.php");
+}
+
+function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline)
+{
+    $salaryMin = trim($salaryMin, "₩M");
+    $salaryMax = trim($salaryMax, "₩M");
+
+    $cities = explode("|", $cities)[1]; // seoul|142 => ["seoul", "142"]
+    $cities = (int)$cities;
+
+    $companyManager = new CompanyManager();
+    $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+    if ($result) {
+        // TODO: finish this bish!
+        echo "Success! New job created. Get your tax money";
+    } else {
+        echo "FAIL!!! U DUN MESSED UP";
+    }
 }

@@ -102,10 +102,15 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
+        case "talentSearch":
+            if (!empty($_GET['filter'])) {
+                showTalents(true);
+            } else {
+                showTalents();
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
-                $entry = json_decode($entry,true);
+                $entry = json_decode($entry, true);
                 deleteCalendarEntry($entry);
             } else {
                 throw new Exception("No calender inputs submitted");
@@ -117,8 +122,8 @@ try {
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;
-        case "addNewJob":
-            require("./view/addNewJobView.php");
+        case "createJobForm":
+            createJobForm();
             break;
         case "employeeInfo":
             require("./view/employeeInfoView.php");
@@ -132,7 +137,19 @@ try {
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
             break;
-            
+        case "addNewJob":
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $jobStory = $_POST['jobStory'] ?? null;
+            $salaryMin = $_POST['salaryMin'] ?? null;
+            $salaryMax = $_POST['salaryMax'] ?? null;
+            $cities = $_POST['cities'] ?? null;
+            $deadline = $_POST['deadline'] ?? null;
+            if ($jobTitle and $jobStory and $salaryMin and $salaryMax and $cities and $deadline) {
+                addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+            } else {
+                throw new Exception("missing data");
+            }
+            break;
         default:
             showIndex();
             break;

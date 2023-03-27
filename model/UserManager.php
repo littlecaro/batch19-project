@@ -45,6 +45,11 @@ class UserManager extends Manager
         $req->execute();
     }
 
+
+    public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+    {
+    }
+
     public function getUserProfile($userId)
     {
         $db = $this->dbConnect();
@@ -92,6 +97,15 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
+    }
+
+    public function getCitiesList()
+    {
+        $db = $this->dbConnect();
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cities;
     }
 
 
