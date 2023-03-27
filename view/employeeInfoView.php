@@ -4,15 +4,11 @@ ob_start();
 ?>
 
 <!-- main -->
-
-<div class="main">
-    <h3>Employee Info</h3><br>
-    <h4>asd</h4>
-    <a href="./index.php?action=addNewJob">
-        <button class="button">ADD A JOB</button>
-    </a>
+<div class="userProfile">
+    <div class="main">
+        <h3>Employee Info</h3><br>
+    </div>
 </div>
-
 <?php
 $content = ob_get_clean();
 require('./view/companyDashboardTemplate.php');

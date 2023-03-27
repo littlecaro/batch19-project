@@ -9,7 +9,7 @@ class CalendarManager extends Manager
 
         $user_id = strip_tags($user_id);
 
-        $req = $db->prepare('SELECT * FROM user_availability WHERE user_id = :user_id ORDER BY date ASC');
+        $req = $db->prepare('SELECT * FROM user_availability WHERE user_id = :user_id ORDER BY date ASC, time_start ASC');
 
         $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
         $req->execute();

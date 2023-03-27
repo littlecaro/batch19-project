@@ -18,7 +18,7 @@ html {
 }
 
 .sidebar {
-  min-width: 18%;
+  width: 220px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,6 @@ html {
 }
 
 .profile {
-  display: flex;
   gap: 0.5rem;
   padding: 1rem;
   background-color: var(--whiteColor);
@@ -55,21 +54,24 @@ html {
   border: none;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  cursor: pointer;
   margin: 5vh 0 5vh 0;
-}
-.profile:hover {
-  background-color: var(--secondaryColor);
+  text-align: center;
+  width: 175px;
 }
 
 .profile-img {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
-.profile-name p {
-  font-size: 12px;
+.profile-name p,
+h4 {
+  line-height: 0.3em;
+}
+
+.profile-name {
+  font-size: 15px;
 }
 
 .menus {
@@ -89,6 +91,7 @@ html {
   text-decoration: none;
   border: none;
   font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.3);
   height: 30px;
   width: 175px;
 }
@@ -98,17 +101,21 @@ html {
 
 .menus button:hover {
   color: var(--fontColor);
+  background-color: white;
+}
+.userProfile {
+  margin-left: 300px;
 }
 
 .main {
-  min-width: 50%;
   height: auto;
-  padding: 40px 70px;
-  margin-left: 290px;
+  min-width: 65%;
+  padding: 40px 20px;
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
-  text-align: left;
+  text-align: center;
+  margin-bottom: 70px;
 }
 .main #personal {
   height: 80vh;
@@ -239,7 +246,7 @@ input {
   height: 30px;
   border-radius: 20px;
   padding: 0 10px;
-  /* width: 220px; */
+  width: 220px;
   /* margin-right: px; */
   border: gray solid 1px;
 }
@@ -248,6 +255,7 @@ textarea {
   border-radius: 10px;
   padding: 10px;
   border: gray solid 1px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 button {
@@ -369,10 +377,9 @@ h3 {
   text-align: center;
 }
 
-p,
+.main p,
 h4 {
   font-family: Georgia, "Times New Roman", Times, serif;
-  line-height: 1.6em;
   font-size: 16px;
 }
 
@@ -487,4 +494,16 @@ input[type="checkbox"] {
 
 #table #jobdescription {
   vertical-align: top;
+}
+
+.noUi-value {
+  padding: 5px;
+}
+
+#salary {
+  height: 90px;
+}
+
+.noUi-tooltip {
+  font-size: 10px;
 }

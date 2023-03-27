@@ -49,6 +49,47 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
+public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+    {
+        $db = $this->dbConnect();
+        //hash pw
+        $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
+        //inserting first into companies table
+        //then set the most recent insert id as the id for users table, then insert there too
+        $preparedinsertSql = "INSERT INTO companies (name) VALUES (:companyname);
+        SET @last_id_in_table1 = LAST_INSERT_ID();
+        INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0)";
+        $req = $db->prepare($preparedinsertSql);
+
+        $req->bindParam(':first_name', $firstName, PDO::PARAM_STR);
+        $req->bindParam(':last_name', $lastName, PDO::PARAM_STR);
+        $req->bindParam(':pwdHash', $pwdHash, PDO::PARAM_STR);
+        $req->bindParam(':email', $email, PDO::PARAM_STR);
+        $req->bindParam(':companyname', $companyName, PDO::PARAM_STR);
+        $req->bindParam(':companytitle', $companyTitle, PDO::PARAM_STR);
+
+        $wasAdded = $req->execute();
+        $req->closeCursor();
+        //if a company was added, we'll fetch this info and run one more query
+        //this query is to get the info for the session
+        if ($wasAdded) {
+            $req = $db->query("SELECT LAST_INSERT_ID() AS user_id, company_id, first_name, last_name FROM users WHERE id = LAST_INSERT_ID()");
+            return $req->fetch(PDO::FETCH_OBJ);
+        } else {
+            return false;
+        }
+        
+    }
+
+
+    //first company insert
+    //then user insert using company_id
+    //insert as user_bio $companyTitle
+
+
+    // public function getUserExperience($jobTitle, $yearsExperience, $companyName)
+    // {
+    // }
 
     public function getUserProfile($userId)
     {
@@ -148,6 +189,15 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
+    }
+
+    public function getCitiesList()
+    {
+        $db = $this->dbConnect();
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cities;
     }
 
 
