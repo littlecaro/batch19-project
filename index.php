@@ -29,17 +29,31 @@ try {
             break;
         case "userSignUp":
             //make sure data exists
-            $firstName = !empty($_POST['firstName']) ? $_POST['firstName'] : null;
-            $lastName = !empty($_POST['lastName']) ? $_POST['lastName'] : null;
+            $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
+            $lastName = !empty($_POST['lName']) ? $_POST['lName'] : null;
             $email = !empty($_POST['email']) ? $_POST['email'] : null;
             $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
             $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
-
             if ($firstName and $lastName and $email and $pwd and $pwd2) {
                 //call a controller function
                 userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
             break;
+        case "companySignUp":
+            $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
+            $lastName = !empty($_POST['lName']) ? $_POST['lName'] : null;
+            $email = !empty($_POST['email']) ? $_POST['email'] : null;
+            $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
+            $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
+            $companyName = !empty($_POST['companyname']) ? $_POST['companyname'] : null;
+            $companyTitle = !empty($_POST['companytitle']) ? $_POST['companytitle'] : null;
+            
+            if ($firstName and $lastName and $email and $pwd and $pwd2 and $companyName and $companyTitle) {
+                //call a controller function
+                companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle);
+            }
+            break;
+
         case "userSignIn":
             //make sure data is set
             $email = isset($_POST['email']);
@@ -56,10 +70,35 @@ try {
             //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
-            //     userProfile();
-            //     require('./view/userProfileView.php');
-
-            //     break;
+            case "getChatMessages":
+                $conversationId = $_POST['conversationId'] ?? null;
+                if (!empty($conversationId)) {
+                    showMessages($conversationId);
+                }
+                break;
+            case "submitMessage":
+    
+                $conversationId = $_POST['conversationId'] ?? null;
+                $senderId = $_POST['senderId'];
+                $message = $_POST['message'];
+                // echo $message, $senderId, $conversationId;
+                if (!empty($senderId)  and !empty($message)) {
+                    // echo "<br>";
+                    // echo "getting controller";
+                    addMessage($conversationId, $senderId, $message);
+                }
+                break;
+            case "messenger":
+                showChats();
+    
+                break;
+            case "search":
+                // print_r($_GET);
+                $term = $_GET['term'] ?? null;
+    
+                searchMessages($term);
+                break;
+            
 
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;

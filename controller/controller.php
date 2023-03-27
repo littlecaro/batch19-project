@@ -88,6 +88,58 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     }
 }
 
+// ======================================
+// BLACKLIST
+// grab the input email address
+// split the email on the @ symbol
+// const domain = email.split('@')[1];
+// loop through the blacklist
+// check if anything after the @
+// matches an entry in the blacklist
+// ======================================
+
+function companySignUp ($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle){
+    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
+    $pwd2Valid  = $pwd === $pwd2;
+
+    require_once("./controller/blacklist.php");
+
+    //split @ sign
+    $domain = explode('@', $email)[1];
+    //set emailValid as true and in loop set it as false
+    $emailValid = true;
+
+    foreach ($blacklist as $spamEmail ) {
+        if (str_starts_with($domain, $spamEmail)){
+            $emailValid = false;
+            break;
+        }
+    }
+    if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid and $companyName and $companyTitle) {
+        //if data good, insert into database w model function
+        $userManager = new UserManager();
+        $user = $userManager->insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle);
+        if ($user) {
+            //create a session for when the company is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            $_SESSION['company_id'] = $user->company_id;
+            print_r($_SESSION);
+
+        } else {
+            echo "Something went wrong.";
+        }
+        // require "./view/signUpView.php";
+    } else {
+        $msg = "Please fill in all inputs.";
+        echo "something was invalid.";
+
+    }
+}
+
 function userSignIn($email, $pwd)
 {
     //check if user exists
