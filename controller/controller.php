@@ -221,8 +221,47 @@ function showUserProfileView()
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $education = $userManager->getUserEducation($_SESSION['id']);
+    $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
+}
+
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+{
+
+    $userManager = new UserManager();
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    // echo $wasEducationUpdated;
+    if ($wasPersonalUpdated) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserEducation($userId, $degree, $degreeLevel)
+{
+
+    $userManager = new UserManager();
+    $wasEducationUpdated = $userManager->updateUserEducation($userId, $degree, $degreeLevel);
+    // echo $wasEducationUpdated;
+    if ($wasEducationUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+{
+
+    $userManager = new UserManager();
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+    echo $wasExperienceUpdated;
+    // if ($wasExperienceUpdated === 1) {
+    //     echo "Successfully Updated";
+    // } else {
+    //     echo "Something went wrong.";
+    // }
 }

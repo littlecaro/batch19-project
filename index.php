@@ -11,7 +11,6 @@ try {
     switch ($action) {
         case "userProfileView":
             showUserProfileView();
-            // require('./view/userProfileView.php');
             break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
@@ -50,16 +49,6 @@ try {
                 userSignIn($email, $pwd);
             }
             break;
-            // case "userProfile":
-            //     // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
-            //     // $city = !empty($_POST['city']) ? $_POST['city'] : null;
-            //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
-            //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-
-            //     userProfile();
-            //     require('./view/userProfileView.php');
-
-            //     break;
 
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
@@ -102,9 +91,6 @@ try {
             $user_id = $_SESSION['user_id'] ?? 1;
             showCalendar($user_id);
             break;
-        case "userProfileView":
-            require("./view/userProfileView.php");
-            break;
         case "deleteEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -133,6 +119,28 @@ try {
             break;
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
+            break;
+        case "updateUserPersonal":
+            $id = $_POST['id'];
+            $phoneNb = $_POST['phoneNb'] ?? null;
+            $city = $_POST['city'] ?? null;
+            $salary = $_POST['salary'] ?? null;
+            $visa = $_POST['visa'] ?? null;
+            updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
+            break;
+        case "updateUserEducation":
+            $userId = $_POST['userId'];
+            $degree = $_POST['degree'] ?? null;
+            $degreeLevel = $_POST['degreeLevel'] ?? null;
+            updateUserEducation($userId, $degree, $degreeLevel);
+            break;
+        case "updateUserExperience":
+            $userId = $_POST['userId'];
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $yearsExperience = $_POST['yearsExperience'] ?? null;
+            $companyName = $_POST['companyName'] ?? null;
+            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
             break;
 
         default:
