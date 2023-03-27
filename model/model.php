@@ -55,7 +55,7 @@ function submitMessage($conversationId, $senderId, $message)
     $query->execute();
     $response = $query->fetch(PDO::FETCH_OBJ);
     $recipientId = $response->recipient_id;
-    print_r($response);
+    // print_r($response);
     $str = 'INSERT INTO messages (id,sender_id, recipient_id, message,conversation_id) VALUES (NULL, :InsenderId,:Inrecipient_id, :Inmessage, :InConversationId )';
     $db = dbConnect();
     $query = $db->prepare($str);
@@ -83,5 +83,133 @@ function searchMessagesGet($term)
     return $chats;
 }
 
+function getAllTalents()
+{
+    $userId = 1;
+    $str = 'SELECT DISTINCT
+    users.id
+FROM
+    users WHERE users.id!=:userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->execute();
+    $allTalents = $query->fetchAll(PDO::FETCH_OBJ);
+    // print_r($query);
+    return $allTalents;
+}
 
+function getTalentSkills($userId)
+{
+    $str = 'SELECT
+    user_skill_map.skill_id,
+    skills.skills_fixed
+FROM
+    users INNER JOIN
+    user_skill_map ON user_skill_map.user_id = users.id INNER JOIN
+    skills ON user_skill_map.skill_id = skills.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+function getTalentInfo($userId)
+{
+    $str = 'SELECT
+    users.id,
+    users.first_name,
+    users.last_name,
+    users.profile_picture
+FROM
+    users
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentInfo = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentInfo;
+}
+function getTalentDesiredPosition($userId)
+{
+    $str = 'SELECT
+    desired_position.desired_position,
+    users.id
+FROM
+    desired_position INNER JOIN
+    users ON desired_position.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $desiredPosition = $query->fetchAll(PDO::FETCH_OBJ);
+    return $desiredPosition;
+}
+function getTalentYearsExperience($userId)
+{
+    $str = 'SELECT
+    users.id,
+    Sum(professional_experience.years_experience) AS years_experience1
+FROM
+    users INNER JOIN
+    professional_experience ON professional_experience.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $yearsExperience = $query->fetchAll(PDO::FETCH_OBJ);
+    return $yearsExperience;
+}
 
+function getTalentHighestDegree($userId)
+{
+    $str = 'SELECT
+    education.institution,
+    education.degree,
+    MAX(education.degree_level) AS highestDegree,
+    users.id
+FROM
+    education INNER JOIN
+    users ON education.user_id = users.id
+    WHERE users.id = :userId
+    ';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentHighestDegree = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentHighestDegree;
+}
+function getTalentLanguages($userId)
+{
+    $str = 'SELECT
+    users.id As id1,
+    languages1.`language`
+FROM
+    users INNER JOIN
+    user_language_map ON user_language_map.user_id = users.id INNER JOIN
+    languages languages1 ON user_language_map.language_id = languages1.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentLanguages = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentLanguages;
+}
+
+function saveTalentFilter($searchData)
+{
+    $userId = 1;
+    $str = 'INSERT INTO saved_searches (id,user_id,search_data) VALUES (NULL,:userId, :searchData)';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->execute();
+}
