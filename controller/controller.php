@@ -246,8 +246,6 @@ function addCalendar($data)
     }
 }
 
-<<<<<<< HEAD
-=======
 function showCalendar($user_id)
 {
     $calendarManager = new CalendarManager();
@@ -256,7 +254,6 @@ function showCalendar($user_id)
     require("./view/userProfileView.php");
 }
 
->>>>>>> main
 function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
@@ -468,15 +465,12 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
-<<<<<<< HEAD
     $allSkills = $userManager->getSkillsList();
     $allLanguages = $userManager->getLanguagesList();
     $allCities = $userManager->getCitiesList();
-=======
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
->>>>>>> main
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
@@ -542,4 +536,33 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     } else {
         echo "FAIL!!! U DUN MESSED UP";
     }
+}
+
+
+function fetchJobPostings()
+{
+    $listings = getJobPostings();
+    require("./view/jobListingsView.php");
+}
+function showJobCard($jobId)
+{
+    $jobCard = getJobCard($jobId);
+    require("./view/jobListingsView.php");
+    return $jobCard;
+}
+function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
+    $listings = getJobPostings();
+    if (!empty($listings) && empty($jobId)) {
+        foreach ($listings as $listing) {
+            require "./view/components/jobPostingCard.php";
+        }
+    }
+}
+
+function updateJobStatus($id, $status)
+{
+
+    setJobStatus($id, $status);
 }
