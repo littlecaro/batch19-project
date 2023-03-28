@@ -249,8 +249,9 @@ function addCalendar($data)
 function showCalendar($user_id)
 {
     $calendarManager = new CalendarManager();
-    $result = $calendarManager->loadCalendar($user_id);
-    require('./view/calendarView.php');
+    $entries = $calendarManager->loadCalendar($user_id);
+    $receives = $calendarManager->loadInterviews($user_id);
+    require("./view/userProfileView.php");
 }
 
 function deleteCalendarEntry($entry)
@@ -464,6 +465,9 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($_SESSION['id']);
+    $receives = $calendarManager->loadInterviews($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }

@@ -126,7 +126,6 @@ try {
             $term = $_GET['term'] ?? null;
             searchMessages($term);
             break;
-
         case "updateCalendar":
             $data = $_REQUEST['data'] ?? "";
             if ($data) {
@@ -136,10 +135,10 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-        case "loadCalendar":
-            $user_id = $_SESSION['user_id'] ?? 1;
-            showCalendar($user_id);
-            break;
+        // case "loadCalendar":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -156,9 +155,10 @@ try {
                 showTalents();
             }
             break;
-        case "userProfileView":
-            require("./view/userProfileView.php");
-            break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;

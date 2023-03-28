@@ -1,7 +1,3 @@
-<?php
-    $title = "Calendar";
-    ob_start();
-?>
 <link rel="stylesheet" href="./public/css/calendar.css">
 <script defer src="./public/js/calendar.js"></script>
 
@@ -12,7 +8,7 @@
             <button class="next">-></button>
         </div>
     
-        <table class="calendar"></table>›
+        <table class="calendar"></table>
     </div>
     <div class="bottom">
         <div id="confirmChoices">
@@ -27,11 +23,7 @@
         </div>
     </div>
 </div>
-    <script>
-        const entries = <?php echo json_encode($result); ?>;
-    </script>
-
-<?php 
-$content = ob_get_clean();
-require('./view/template.php');
-?>
+<script>
+    const entries = <?php echo json_encode($entries); ?>;
+    const receives = <?php echo json_encode($receives); ?>;
+</script>
