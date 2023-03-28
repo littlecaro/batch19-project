@@ -1,17 +1,17 @@
 <div class="sidebar">
     <div class="profile">
         <!-- We need here a profile picture -->
-        <img class="profile-img" src="./public/images/ElonMusk.webp" alt="Elon Musk's photo looking head to left"><br>
+        <img class="profile-img" src="<?= $companyInfo->logo_img ?? "./public/images/default.svg" ?>" alt="Elon Musk's photo looking head to left"><br>
         <div class="profile-name">
-            <h4>Elon Musk</h4>
-            <p>Space</p>
+            <h4><?= $companyInfo->name ?? "NEW COMPANY" ?></h4>
+            <p>Member since <?= $companyInfo->date_created ?></p>
         </div>
     </div>
     <div class="menus">
-        <a href="./index.php?action=companyDashboard"><button><i class="fa-solid fa-house"></i>Company Info</button></a>
-        <a href="./index.php?action=employeeInfo"><button><i class="fa-solid fa-message"></i>Employee Info</button></a>
-        <a href="./index.php?action=jobListings"><button><i class="fa-solid fa-magnifying-glass"></i>Job Listings</button></a>
-        <a href="./index.php?action=savedProfiles"><button><i class="fa-solid fa-chart-simple"></i>Saved Profiles</button></a>
-        <a href="./index.php?action=bookedMeetings"><button><i class="fa-solid fa-bookmark"></i>Booked Meetings</button></a>
+        <a href="./index.php?action=companyDashboard"><button><img src="public/images/biz/house.png" width="15">&nbsp;&nbsp;Company Info</button></a>
+        <a href="./index.php?action=employeeInfo"><button><img src="public/images/biz/user.png" width="15">&nbsp;&nbsp;Employee Info</button></a>
+        <a href="./index.php?action=jobListings"><button><img src="public/images/biz/list.png" width="15">&nbsp;&nbsp;Job Listings</button></a>
+        <a href="./index.php?action=savedProfiles"><button><img src="public/images/biz/ribbon.png" width="15">&nbsp;&nbsp;Saved Profiles</button></a>
+        <a href="./index.php?action=bookedMeetings"><button><img src="public/images/biz/tick-mark.png" width="15">&nbsp;&nbsp;Booked Meetings</button></a>
     </div>
 </div>

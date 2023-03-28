@@ -60,9 +60,7 @@ html {
 }
 
 .profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  max-width: 150px;
 }
 
 .profile-name p,
@@ -104,19 +102,19 @@ h4 {
   background-color: white;
 }
 
-.userProfile {
+.bizProfile {
   margin-left: 300px;
 }
 
 .main {
   height: auto;
-  min-width: 65%;
+  min-width: 500px;
   padding: 40px 20px;
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 30px;
 }
 .main #personal {
   height: 80vh;
@@ -269,6 +267,7 @@ button {
 
 button:hover {
   background-color: var(--secondaryColor); /* Green */
+  cursor: pointer;
 }
 
 .button {
@@ -276,6 +275,14 @@ button:hover {
   border: 0;
   height: 30px;
   color: white;
+}
+
+#submit {
+  cursor: pointer;
+}
+
+#submit:hover {
+  background-color: var(--secondaryColor);
 }
 
 #boxbiz {

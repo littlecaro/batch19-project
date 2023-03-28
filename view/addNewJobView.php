@@ -10,7 +10,7 @@ ob_start();
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" integrity="sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- main -->
 
-<div class="userProfile">
+<div class="bizProfile">
     <div class="main">
         <h3>Add a Job</h3>
         <br>

@@ -115,13 +115,13 @@ try {
             require("./view/userProfileView.php");
             break;
         case "companyDashboard":
-            require("./view/companyDashboard.php");
+            getCompanyInfo();
             break;
         case "createJobForm":
             createJobForm();
             break;
         case "employeeInfo":
-            require("./view/employeeInfoView.php");
+            getEmployeeInfo();
             break;
         case "jobListings":
             require("./view/jobListingsView.php");
@@ -141,6 +141,29 @@ try {
             $deadline = $_POST['deadline'] ?? null;
             if ($jobTitle and $jobStory and $salaryMin and $salaryMax and $cities and $deadline) {
                 addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
+            } else {
+                throw new Exception("missing data");
+            }
+            break;
+        case "updateCompanyInfo":
+            $bizName = $_POST['bizName'] ?? null;
+            $bizAddress = $_POST['bizAddress'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $phone = $_POST['phone'] ?? null;
+            $webSite = $_POST['webSite'] ?? null;
+            $logo = $_FILES['logoUpload'] ?? null;
+            if ($bizName and $bizAddress and $email and $phone and $webSite) {
+                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+            } else {
+                throw new Exception("missing data");
+            }
+            break;
+        case "updateEmployeeInfo":
+            $firstName = $_POST['firstName'] ?? null;
+            $lastName = $_POST['lastName'] ?? null;
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            if ($firstName and $lastName and $jobTitle) {
+                updateEmployeeInfo($firstName, $lastName, $jobTitle);
             } else {
                 throw new Exception("missing data");
             }

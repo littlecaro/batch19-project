@@ -8,7 +8,7 @@ ob_start();
         <p><a href="index.php">waygukwin</a></p>
     </div>
     <div class="menu">
-        <a href="index.php?action=userSignUpView"><button class="topbutton" id="signup">SIGN UP</button></a>
+        <a href="index.php?action=userSignUpView"><button class="topbutton" id="signup">SIGN UP</button></a>&nbsp;
         <a href="index.php?action=userSignInView"><button class="topbutton">SIGN IN</button></a>
     </div>
 </div>
