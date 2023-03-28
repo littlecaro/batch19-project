@@ -1,5 +1,7 @@
 function loadCalendar() {
   let offset = 0;
+  console.log(entries);
+  console.log(receives);
 
   const calendar = document.querySelector(".calendar");
 

@@ -24,6 +24,6 @@
     </div>
 </div>
 <script>
-        const entries = <?php echo json_encode($entries); ?>;
-        const receives = <?php echo json_encode($receives); ?>;
-    </script>
+    const entries = <?php echo json_encode($entries); ?>;
+    const receives = <?php echo json_encode($receives); ?>;
+</script>

@@ -55,13 +55,13 @@ class CalendarManager extends Manager
     {
         $db = $this->dbConnect();
 
-        $user_id = $_SESSION['user_id'] ?? 1;
+        // $user_id = $_SESSION['user_id'] ?? 1;
 
         $query = '  INSERT INTO user_availability (user_id, date, time_start, is_active) 
                     VALUES (:user_id,:date_str,:time_str,1)';
 
         $query = $db->prepare($query);
-        $query->bindParam('user_id', $user_id, PDO::PARAM_INT);
+        $query->bindParam('user_id', $_SESSION['id'], PDO::PARAM_INT);
         $query->bindParam('date_str', $date, PDO::PARAM_STR);
         $query->bindParam('time_str', $time, PDO::PARAM_STR);
 
@@ -72,7 +72,7 @@ class CalendarManager extends Manager
     {
         $db = $this->dbConnect();
         
-        $user_id = $_SESSION['user_id'] ?? 1;
+        // $user_id = $_SESSION['user_id'] ?? 1;
 
         $query = '  DELETE FROM user_availability 
                     WHERE user_id = :user_id 
@@ -81,7 +81,7 @@ class CalendarManager extends Manager
                     AND is_active = 1';
 
         $query = $db->prepare($query);
-        $query->bindParam('user_id', $user_id, PDO::PARAM_INT);
+        $query->bindParam('user_id', $_SESSION['id'], PDO::PARAM_INT);
         $query->bindParam('date_php', strip_tags($date), PDO::PARAM_STR);
         $query->bindParam('time_php', strip_tags($time), PDO::PARAM_STR);
 

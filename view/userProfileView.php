@@ -68,14 +68,10 @@ ob_start();
     </section>
 
     <section id="avail" class="hidden">
-        <p>Your Availability</p>
-<<<<<<< HEAD
-        <div id="avail">
+        <!-- <p>Your Availability</p>
+        <div class="avail"> -->
             <?php include('./view/calendarView.php') ?>
-        </div>
-=======
-        <input type="submit" value="Save">
->>>>>>> main
+        <!-- </div> -->
     </section>
 
 </div>

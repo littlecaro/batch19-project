@@ -155,10 +155,10 @@ try {
                 showTalents();
             }
             break;
-        case "userProfileView":
-            $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            showCalendar($user_id);
-            break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;
