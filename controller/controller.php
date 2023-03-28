@@ -223,6 +223,9 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     // $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $allSkills = $userManager->getSkillsList();
+    $allLanguages = $userManager->getLanguagesList();
+    $allCities = $userManager->getCitiesList();
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }

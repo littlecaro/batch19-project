@@ -87,12 +87,36 @@ class UserManager extends Manager
     public function getUserSkills($userId)
     {
         $db = $this->dbConnect();
-        //TODO: get experience WHERE user id matches;
+        //TODO: get user skills WHERE user id matches;
         $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
         $req = $db->prepare($userSkills);
         $req->execute([$userId]);
         $skill = $req->fetchALL(PDO::FETCH_OBJ);
         return $skill;
+    }
+
+    public function getSkillsList()
+    {
+        $db = $this->dbConnect();
+        $response = $db->query('SELECT id, skills_fixed as item FROM skills');
+        $skills = $response->fetchAll(PDO::FETCH_ASSOC);
+        return $skills;
+    }
+
+    public function getLanguagesList()
+    {
+        $db = $this->dbConnect();
+        $response = $db->query('SELECT id, language as item FROM languages');
+        $languages = $response->fetchAll(PDO::FETCH_ASSOC);
+        return $languages;
+    }
+
+    public function getCitiesList()
+    {
+        $db = $this->dbConnect();
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
+        return $cities;
     }
 
     public function getUserEducation($userId)
@@ -116,15 +140,6 @@ class UserManager extends Manager
             $_SESSION['email'] = $_POST['email'];
             exit;
         }
-    }
-
-    public function getCitiesList()
-    {
-        $db = $this->dbConnect();
-        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
-        $cities = $res->fetchAll(PDO::FETCH_ASSOC);
-
-        return $cities;
     }
 
 

@@ -114,6 +114,15 @@ try {
         case "userProfileView":
             require("./view/userProfileView.php");
             break;
+            // case "getUserSkills":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserLanguages":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserCities":
+            //     require("./view/userProfileSkills.php");
+            //     break;
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;

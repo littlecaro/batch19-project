@@ -1,20 +1,20 @@
 // TODO: Add arrow key and enter selection capability
 // TODO: Add number remaining text
 
-function createMultiSelector(data, userProfileSkills, limit) {
+function createMultiSelector(data, containerId, limit) {
   console.log("limit:", limit);
   // create references to all the required DOM elements
   const inputElement = document.querySelector(
-    `#${userProfileSkills}Container > .input-container > input`
+    `#${containerId}Container > .input-container > input`
   );
   const resultsContainer = document.querySelector(
-    `#${userProfileSkills}Container .autocomplete-results`
+    `#${containerId}Container .autocomplete-results`
   );
   const selectedItemsContainer = document.querySelector(
-    `#${userProfileSkills}Container .selected-items-container`
+    `#${containerId}Container .selected-items-container`
   );
   const hiddenInput = document.querySelector(
-    `#${userProfileSkills}Container input.hidden`
+    `#${containerId}Container input.hidden`
   );
 
   // a Set is similar to an array, but cannot contain duplicate values. yay!
