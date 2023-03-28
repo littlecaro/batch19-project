@@ -246,6 +246,8 @@ function addCalendar($data)
     }
 }
 
+<<<<<<< HEAD
+=======
 function showCalendar($user_id)
 {
     $calendarManager = new CalendarManager();
@@ -254,6 +256,7 @@ function showCalendar($user_id)
     require("./view/userProfileView.php");
 }
 
+>>>>>>> main
 function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
@@ -465,9 +468,15 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+<<<<<<< HEAD
+    $allSkills = $userManager->getSkillsList();
+    $allLanguages = $userManager->getLanguagesList();
+    $allCities = $userManager->getCitiesList();
+=======
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
+>>>>>>> main
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
