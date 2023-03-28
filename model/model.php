@@ -1,5 +1,8 @@
 <?php
 //TODO: Check all functions for safety
+
+use JetBrains\PhpStorm\Deprecated;
+
 function dbConnect()
 {
     try {
@@ -55,7 +58,7 @@ function submitMessage($conversationId, $senderId, $message)
     $query->execute();
     $response = $query->fetch(PDO::FETCH_OBJ);
     $recipientId = $response->recipient_id;
-    print_r($response);
+    // print_r($response);
     $str = 'INSERT INTO messages (id,sender_id, recipient_id, message,conversation_id) VALUES (NULL, :InsenderId,:Inrecipient_id, :Inmessage, :InConversationId )';
     $db = dbConnect();
     $query = $db->prepare($str);
@@ -81,4 +84,273 @@ function searchMessagesGet($term)
     // print_r($query);
     // print_r($chats);
     return $chats;
+}
+function getJobPostings()
+{
+    $userId = 4;
+
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $str = 'SELECT
+    cities.name AS city_name,
+    cities.country_code AS country_code,
+    jobs.id as jobId,
+    jobs.company_id,
+    jobs.title,
+    jobs.job_description,
+    jobs.salary_min,
+    jobs.salary_max,
+    jobs.deadline,
+    jobs.date_created,
+    jobs.is_active,
+    companies.name,
+    companies.logo_img,
+    companies.website_address
+FROM
+    jobs INNER JOIN
+    cities ON jobs.city_id = cities.id INNER JOIN
+    companies ON jobs.company_id = companies.id
+    WHERE companies.id = :companiesId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(':companiesId', $companyId, PDO::PARAM_INT);
+    $query->execute();
+    $listings = $query->fetchAll(PDO::FETCH_OBJ);
+    return $listings;
+}
+
+function getJobCard($jobId)
+{
+    $userId = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $str = 'SELECT
+    cities.name AS city_name,
+    cities.country_code AS country_code,
+    jobs.id as jobId,
+    jobs.company_id,
+    jobs.title,
+    jobs.job_description,
+    jobs.salary_min,
+    jobs.salary_max,
+    jobs.deadline,
+    jobs.date_created,
+    jobs.is_active,
+    companies.name,
+    companies.logo_img,
+    companies.website_address
+FROM
+    jobs INNER JOIN
+    cities ON jobs.city_id = cities.id INNER JOIN
+    companies ON jobs.company_id = companies.id
+    WHERE companies.id = :companiesId AND jobs.id = :jobId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(':companiesId', $companyId, PDO::PARAM_INT);
+    $query->bindParam(':jobId', $jobId, PDO::PARAM_INT);
+    $query->execute();
+    $jobCard = $query->fetchAll(PDO::FETCH_OBJ);
+    return $jobCard[0];
+}
+function updateJobPost($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    $user_id = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $str = "UPDATE jobs SET job_description = :inDescription, salary_min = :inMinSalary, salary_max = :inMaxSalary, deadline= :inDeadline WHERE id = :inId AND company_id= :inCompanyId";
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindValue('inDescription', $description, PDO::PARAM_STR);
+    $query->bindValue('inMinSalary', $minSalary, PDO::PARAM_INT);
+    $query->bindValue('inMaxSalary', $maxSalary, PDO::PARAM_INT);
+    $query->bindValue("inDeadline", $deadline, PDO::PARAM_STR);
+    $query->bindValue('inId', $id, PDO::PARAM_INT);
+    $query->bindValue('inCompanyId', $companyId, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function setJobStatus($id, $status)
+{
+    echo $id . "is Id";
+    echo $status . "is status";
+    $user_id = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $userCompanyQuery = "UPDATE jobs SET is_active = :inStatus WHERE id = :inId AND company_id= :inCompanyId";
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindValue('inStatus', $status, PDO::PARAM_BOOL);
+    $query->bindValue('inId', $id, PDO::PARAM_INT);
+    $query->bindValue('inCompanyId', $companyId, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function getAllTalents()
+{
+    $userId = 1;
+    $str = 'SELECT DISTINCT
+    users.id
+FROM
+    users WHERE users.id!=:userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->execute();
+    $allTalents = $query->fetchAll(PDO::FETCH_OBJ);
+    // print_r($query);
+    return $allTalents;
+}
+
+function getTalentSkills($userId)
+{
+    $str = 'SELECT
+    user_skill_map.skill_id,
+    skills.skills_fixed
+FROM
+    users INNER JOIN
+    user_skill_map ON user_skill_map.user_id = users.id INNER JOIN
+    skills ON user_skill_map.skill_id = skills.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+function getTalentInfo($userId)
+{
+    $str = 'SELECT
+    users.id,
+    users.first_name,
+    users.last_name,
+    users.profile_picture
+FROM
+    users
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentInfo = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentInfo;
+}
+function getTalentDesiredPosition($userId)
+{
+    $str = 'SELECT
+    desired_position.desired_position,
+    users.id
+FROM
+    desired_position INNER JOIN
+    users ON desired_position.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $desiredPosition = $query->fetchAll(PDO::FETCH_OBJ);
+    return $desiredPosition;
+}
+function getTalentYearsExperience($userId)
+{
+    $str = 'SELECT
+    users.id,
+    Sum(professional_experience.years_experience) AS years_experience1
+FROM
+    users INNER JOIN
+    professional_experience ON professional_experience.user_id = users.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $yearsExperience = $query->fetchAll(PDO::FETCH_OBJ);
+    return $yearsExperience;
+}
+
+function getTalentHighestDegree($userId)
+{
+    $str = 'SELECT
+    education.institution,
+    education.degree,
+    MAX(education.degree_level) AS highestDegree,
+    users.id
+FROM
+    education INNER JOIN
+    users ON education.user_id = users.id
+    WHERE users.id = :userId
+    ';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentHighestDegree = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentHighestDegree;
+}
+function getTalentLanguages($userId)
+{
+    $str = 'SELECT
+    users.id As id1,
+    languages1.`language`
+FROM
+    users INNER JOIN
+    user_language_map ON user_language_map.user_id = users.id INNER JOIN
+    languages languages1 ON user_language_map.language_id = languages1.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentLanguages = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentLanguages;
+}
+
+function saveTalentFilter($searchData)
+{
+    $userId = 1;
+    $str = 'INSERT INTO saved_searches (id,user_id,search_data) VALUES (NULL,:userId, :searchData)';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->execute();
 }

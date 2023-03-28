@@ -4,6 +4,7 @@
 require_once('./model/CalendarManager.php');
 
 require_once("./model/UserManager.php");
+
 require_once("./model/CompanyManager.php");
 
 
@@ -42,6 +43,7 @@ function checkUserSignInGoogle($decodedToken)
             $result = $userManager->insertUserGoogle($firstName, $lastName, $email, $picture);
             $user = $userManager->getUserByEmail($userEmail);
 
+            // add user into users, prof_exp, education & skills 
             if (!$result) {
                 throw new Exception("Cannot add user.");
             }
@@ -52,7 +54,7 @@ function checkUserSignInGoogle($decodedToken)
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['email'] = $userEmail;
 
-        header("Location: index.php?action=userProfile");
+        header("Location: index.php?action=userProfileView");
         exit;
     } else {
         // $msg = "invalid login";
@@ -84,6 +86,57 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     } else {
         $msg = "Please fill in all inputs.";
         require "./view/signUpView.php";
+    }
+}
+
+// ======================================
+// BLACKLIST
+// grab the input email address
+// split the email on the @ symbol
+// const domain = email.split('@')[1];
+// loop through the blacklist
+// check if anything after the @
+// matches an entry in the blacklist
+// ======================================
+
+function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle)
+{
+    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
+    $pwd2Valid  = $pwd === $pwd2;
+
+    require_once("./controller/blacklist.php");
+
+    //split @ sign
+    $domain = explode('@', $email)[1];
+    //set emailValid as true and in loop set it as false
+    $emailValid = true;
+
+    foreach ($blacklist as $spamEmail) {
+        if (str_starts_with($domain, $spamEmail)) {
+            $emailValid = false;
+            break;
+        }
+    }
+    if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid and $companyName and $companyTitle) {
+        //if data good, insert into database w model function
+        $userManager = new UserManager();
+        $user = $userManager->insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle);
+        if ($user) {
+            //create a session for when the company is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            $_SESSION['company_id'] = $user->company_id;
+            print_r($_SESSION);
+        } else {
+            echo "Something went wrong.";
+        }
+        // require "./view/signUpView.php";
+    } else {
+        $msg = "Please fill in all inputs.";
+        echo "something was invalid.";
     }
 }
 
@@ -134,12 +187,12 @@ function showUserSignIn()
 //     require "./view/userProfileView.php";
 // }
 
-function userProfilePage1()
-{
-    $userProfileManager = new UserProfileManager();
-    $user = $userProfileManager->showUserProfile();
-    require "./view/userProfilePage1.php";
-}
+// function userProfilePage1()
+// {
+//     $userProfileManager = new UserProfileManager();
+//     $user = $userProfileManager->showUserProfileView();
+//     require "./view/userProfilePage1.php";
+// }
 
 function showChats()
 {
@@ -174,7 +227,7 @@ function searchMessages($term)
     if (!empty($chats)) {
         foreach ($chats as $chat) {
             include('./view/components/chatCard.php');
-        }
+        } //TODO:Limit messages
     }
 }
 
@@ -193,6 +246,14 @@ function addCalendar($data)
     }
 }
 
+function showCalendar($user_id)
+{
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($user_id);
+    $receives = $calendarManager->loadInterviews($user_id);
+    require("./view/userProfileView.php");
+}
+
 function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
@@ -208,24 +269,250 @@ function deleteCalendarEntry($entry)
     }
 }
 
-function showCalendar($user_id)
+function showTalents($filter = false)
+{ //TODO:improve flow of loop
+    ob_start();
+    if (!$filter) {
+    }
+    $allTalents = getAllTalents();
+    // print_r($allTalents);
+    if (!empty($allTalents)) {
+        foreach ($allTalents as $talentID => $key) {
+            $yearsExperience = getTalentYearsExperience($key->id);
+            $skills = getTalentSkills($key->id);
+            $talentInfo = getTalentInfo($key->id);
+            $desiredPositions = getTalentDesiredPosition($key->id);
+            $highestDegree = getTalentHighestDegree($key->id);
+            $talentLanguages = getTalentLanguages($key->id);
+            if ($filter) {
+                // ob_start();
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages);
+
+                include('./view/components/talentCard.php'); //TODO:Limit talent cards
+                $talentCard = ob_get_contents();
+                $id = $key->id;
+                $CandidateRatingData[$key->id] = $talentCard;
+                $scale[$key->id] = $rating;
+                ob_clean();
+                // echo $talentCard;
+                // echo $key->id;
+            } else {
+                include('./view/components/talentCard.php');
+            }
+        }
+    }
+    if (!$filter) {
+        $talentCards = ob_get_clean();
+        require('./view/filterView.php');
+    } else {
+        ob_end_clean();
+        // print_r($scale);
+        arsort($scale);
+        // print_r($scale);
+        // print_r($CandidateRatingData);
+        foreach ($scale as $key => $value) {
+            // echo $key;
+            echo $CandidateRatingData[$key];
+        }
+
+        // ob_end_clean();
+        // echo "test";
+        parseTalentFilter();
+    }
+}
+function loadTalentCards()
 {
-    $CalendarManager = new CalendarManager();
-    $result = $CalendarManager->loadCalendar($user_id);
-    require('./view/calendarView.php');
+    require("./view/filterView.php");
+}
+function parseTalentFilter()
+{
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    $arr = array(
+        'filteredYearsMin' => $filteredYearsMin,
+        'filteredYearsMax' => $filteredYearsMax,
+        'filteredSkills' => $filteredSkills,
+        'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredHighestDegrees' => $filteredHighestDegrees,
+        'filteredLanguages' => $filteredLanguages,
+
+    );
+    $arr = json_encode($arr);
+    saveTalentFilter($arr);
+}
+function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language)
+{   //TODO:Case for any tags
+    //TODO:add filter for city]
+    $score  = 1;
+    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+    // echo $filteredYearsMin . "bteeee";
+    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    // echo $filteredYearsMax;
+    if (is_numeric($filteredYearsMax) and is_numeric($filteredYearsMin)) {
+        // echo "starting";
+        if ($yearsExperience > $filteredYearsMin && $yearsExperience < $filteredYearsMax) {
+            $score = $score * 1;
+            // echo "test";
+        } else if ($yearsExperience < $filteredYearsMin) {
+            // echo "test2";
+
+            $score = $score * (1 / (1 + ($filteredYearsMin - $yearsExperience) / 10));
+        } else if ($yearsExperience > $filteredYearsMax) {
+            // echo "test3" . $yearsExperience;
+            // echo $yearsExperience - $filteredYearsMax;
+            $score = $score * (1 / (1 + ($yearsExperience - $filteredYearsMax) / 10));
+        }
+    }
+    if (!empty($filteredSkills)) {
+        $ratings = array();
+        foreach ($filteredSkills as $key => $value) {
+            foreach ($skills as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->skills_fixed, $perc);
+                // echo $twoValue->skills_fixed;
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        // print_r($tmp);
+        // echo $tmp;
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredDesiredPositions)) {
+        $ratings = array();
+        foreach ($filteredDesiredPositions as $key => $value) {
+            foreach ($desiredPositions as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->desired_position, $perc);
+                // echo $perc;
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            // echo $score;
+            $tmp = array_product($ratings);
+            // echo $tmp;
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredHighestDegrees)) {
+        $ratings = array();
+        foreach ($filteredHighestDegrees as $key => $value) {
+            foreach ($highestDegree as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);;
+        // print_r($tmp);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+    if (!empty($filteredLanguages)) {
+        $ratings = array();
+        foreach ($filteredLanguages as $key => $value) {
+            foreach ($language as $twoKey => $twoValue) {
+                $sim = similar_text($value, $twoValue->language, $perc);
+                if ($perc > 50) {
+                    array_push($ratings, $perc / 100);
+                }
+            }
+        }
+        $tmp = array_filter($ratings);
+        if (empty($tmp)) {
+            $score = $score - 0.2;
+        } else {
+            $tmp = array_product($ratings);
+            $score = $score * $tmp + 0.2;
+        }
+    }
+
+
+    return $score;
 }
 
-function showUserProfile()
+function showUserProfileView()
 {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $education = $userManager->getUserEducation($_SESSION['id']);
+    $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $allSkills = $userManager->getSkillsList();
+    $allLanguages = $userManager->getLanguagesList();
+    $allCities = $userManager->getCitiesList();
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($_SESSION['id']);
+    $receives = $calendarManager->loadInterviews($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
 
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+{
+
+    $userManager = new UserManager();
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    // echo $wasEducationUpdated;
+    if ($wasPersonalUpdated) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserEducation($userId, $degree, $degreeLevel)
+{
+
+    $userManager = new UserManager();
+    $wasEducationUpdated = $userManager->updateUserEducation($userId, $degree, $degreeLevel);
+    // echo $wasEducationUpdated;
+    if ($wasEducationUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+{
+
+    $userManager = new UserManager();
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+    echo $wasExperienceUpdated;
+    // if ($wasExperienceUpdated === 1) {
+    //     echo "Successfully Updated";
+    // } else {
+    //     echo "Something went wrong.";
+    // }
+}
 function createJobForm()
 {
     $userManager = new UserManager();
@@ -321,4 +608,32 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
     } else {
         throw new Exception("Update failed.");
     }
+}
+
+function fetchJobPostings()
+{
+    $listings = getJobPostings();
+    require("./view/jobListingsView.php");
+}
+function showJobCard($jobId)
+{
+    $jobCard = getJobCard($jobId);
+    require("./view/jobListingsView.php");
+    return $jobCard;
+}
+function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
+    $listings = getJobPostings();
+    if (!empty($listings) && empty($jobId)) {
+        foreach ($listings as $listing) {
+            require "./view/components/jobPostingCard.php";
+        }
+    }
+}
+
+function updateJobStatus($id, $status)
+{
+
+    setJobStatus($id, $status);
 }

@@ -1,6 +1,7 @@
 <?php
 //TODO:does it receive requests outside of the website
 // Check if the request is a POST request
+//DEPRECATED
 require_once '../model/model.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
