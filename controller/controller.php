@@ -43,6 +43,7 @@ function checkUserSignInGoogle($decodedToken)
             $result = $userManager->insertUserGoogle($firstName, $lastName, $email, $picture);
             $user = $userManager->getUserByEmail($userEmail);
 
+            // add user into users, prof_exp, education & skills 
             if (!$result) {
                 throw new Exception("Cannot add user.");
             }
@@ -53,7 +54,7 @@ function checkUserSignInGoogle($decodedToken)
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['email'] = $userEmail;
 
-        header("Location: index.php?action=userProfile");
+        header("Location: index.php?action=userProfileView");
         exit;
     } else {
         // $msg = "invalid login";
@@ -85,6 +86,57 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     } else {
         $msg = "Please fill in all inputs.";
         require "./view/signUpView.php";
+    }
+}
+
+// ======================================
+// BLACKLIST
+// grab the input email address
+// split the email on the @ symbol
+// const domain = email.split('@')[1];
+// loop through the blacklist
+// check if anything after the @
+// matches an entry in the blacklist
+// ======================================
+
+function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle)
+{
+    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
+    $pwd2Valid  = $pwd === $pwd2;
+
+    require_once("./controller/blacklist.php");
+
+    //split @ sign
+    $domain = explode('@', $email)[1];
+    //set emailValid as true and in loop set it as false
+    $emailValid = true;
+
+    foreach ($blacklist as $spamEmail) {
+        if (str_starts_with($domain, $spamEmail)) {
+            $emailValid = false;
+            break;
+        }
+    }
+    if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid and $companyName and $companyTitle) {
+        //if data good, insert into database w model function
+        $userManager = new UserManager();
+        $user = $userManager->insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle);
+        if ($user) {
+            //create a session for when the company is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            $_SESSION['company_id'] = $user->company_id;
+            print_r($_SESSION);
+        } else {
+            echo "Something went wrong.";
+        }
+        // require "./view/signUpView.php";
+    } else {
+        $msg = "Please fill in all inputs.";
+        echo "something was invalid.";
     }
 }
 
@@ -135,12 +187,12 @@ function showUserSignIn()
 //     require "./view/userProfileView.php";
 // }
 
-function userProfilePage1()
-{
-    $userProfileManager = new UserProfileManager();
-    $user = $userProfileManager->showUserProfile();
-    require "./view/userProfilePage1.php";
-}
+// function userProfilePage1()
+// {
+//     $userProfileManager = new UserProfileManager();
+//     $user = $userProfileManager->showUserProfileView();
+//     require "./view/userProfilePage1.php";
+// }
 
 function showChats()
 {
@@ -406,17 +458,55 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
     return $score;
 }
 
-function showUserProfile()
+function showUserProfileView()
 {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
-    // $education = $userManager->getUserEducation($_SESSION['id']);
+    $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
 
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+{
+
+    $userManager = new UserManager();
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    // echo $wasEducationUpdated;
+    if ($wasPersonalUpdated) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserEducation($userId, $degree, $degreeLevel)
+{
+
+    $userManager = new UserManager();
+    $wasEducationUpdated = $userManager->updateUserEducation($userId, $degree, $degreeLevel);
+    // echo $wasEducationUpdated;
+    if ($wasEducationUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+{
+
+    $userManager = new UserManager();
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+    echo $wasExperienceUpdated;
+    // if ($wasExperienceUpdated === 1) {
+    //     echo "Successfully Updated";
+    // } else {
+    //     echo "Something went wrong.";
+    // }
+}
 function createJobForm()
 {
     $userManager = new UserManager();
