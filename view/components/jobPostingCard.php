@@ -1,5 +1,5 @@
 <a href="index.php?action=jobListings&ListingId=<?= $listing->jobId ?>">
-    <div class="jobPostingCard">
+    <div class="jobPostingCard" data=<?= $listing->is_active ?>>
         <div class="jobPostingCardHead">
             <div class="jobPostingCardCompanyLogo">
                 <img src="<?= $listing->logo_img ?>" alt="">

@@ -2,6 +2,10 @@
     <div class="jobPostingCardHead">
         <div class="jobPostingCardCompanyLogo">
             <img src="<?= $jobCard->logo_img ?>" alt="">
+            <div class="jobPostingCardActions">
+                <button id="addCandidatesBtn">Candidate search</button>
+                <button id="closePositionBtn">Close position</button>
+            </div>
         </div>
     </div>
     <div class="jobPostingInfo">
@@ -18,6 +22,6 @@
             <p><?= $jobCard->website_address ?></p>
         </div>
     </div>
-
+    <input type="hidden" name="jobState" id="<?= $jobCard->jobId ?>" data="<?= $jobCard->is_active ?>">
 </div>
 <script defer src="public\javascript\editJobPosting.js"></script>

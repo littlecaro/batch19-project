@@ -151,7 +151,7 @@ h4 {
   --text-color-primary: #86cfd0;
   --text-color-hover: #13c2c5;
   --header-color-primary: #28225d;
-  --business-color-primary: hsl(280, 37%, 52%);
+  --business-color-primary: #9457b3;
   --background-color-secondary: rgba(101, 90, 223, 0.5);
   --business-color-secondary: rgba(147, 86, 178, 0.5);
   --background-color-footer: #e2e2e2;
@@ -630,4 +630,32 @@ input[type="checkbox"] {
   position: relative;
   bottom: -24px;
   margin-top: 10px;
+}
+.jobPostingCardActions button {
+  margin-right: 12px;
+  height: 32px;
+  background-color: white;
+  color: var(--header-color-primary);
+}
+.jobPostingCardActions button {
+  margin-right: 12px;
+  height: 32px;
+  background-color: white;
+  color: var(--header-color-primary);
+  border-width: 0.4px;
+}
+.jobPostingCardActions button:hover {
+  background-color: var(--background-color-secondary);
+}
+.jobPostingCardCompanyLogo {
+  display: flex;
+  align-items: center;
+}
+
+.jobInactive {
+  user-select: none;
+  opacity: 0.5;
+}
+#closePositionBtn {
+  opacity: 1;
 }

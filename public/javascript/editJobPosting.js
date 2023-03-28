@@ -10,7 +10,41 @@ const now = new Date();
 const offsetMs = now.getTimezoneOffset() * 60 * 1000;
 const dateLocal = new Date(now.getTime() - offsetMs);
 const str = dateLocal.toISOString().slice(0, 19);
+const addCandidatesBtn = document.querySelector("#addCandidatesBtn");
+const closePositionBtn = document.querySelector("#closePositionBtn");
+function updateButton() {
+  let jobState = parseInt(
+    document.querySelector("input[name=jobState]").getAttribute("data")
+  );
+  if (jobState == 0) {
+    closePositionBtn.innerText = "Open Position";
+    action = 1;
+    document.querySelector("input[name=jobState]").setAttribute("data", 1);
+    jobPostingInfo.classList.add("jobInactive");
+  } else if (jobState == 1) {
+    closePositionBtn.innerText = "Close Position";
+    action = 0;
+    document.querySelector("input[name=jobState]").setAttribute("data", 0);
+    jobPostingInfo.classList.remove("jobInactive");
+  }
+}
+
+addCandidatesBtn.addEventListener("click", () => {});
+closePositionBtn.addEventListener("click", () => {
+  formdata = new FormData();
+  console.log(jobId, action);
+  formdata.append("id", jobId);
+  formdata.append("status", action);
+  xhr = new XMLHttpRequest();
+  xhr.open("POST", "./index.php?action=updatePosition");
+  xhr.onload = () => {
+    console.log(xhr.responseText);
+    updateButton();
+  };
+  xhr.send(formdata);
+});
 let edited = false;
+
 console.log(jobId);
 jobPostingEditBtn.addEventListener("click", editFields);
 jobPostingFinishBtn.addEventListener("click", submitFields);
@@ -74,3 +108,4 @@ function editFields() {
 function goBack() {
   window.location.replace("./index.php?action=jobListings");
 }
+updateButton();

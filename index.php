@@ -160,6 +160,12 @@ try {
             $id = (int)$id;
             updateJobListing($description, $minSalary, $maxSalary, $deadline, $id);
             break;
+        case "updatePosition":
+            $id = $_POST['id'] ?? null;
+            $id = (int)$id;
+            $status = $_POST['status'] ?? null;
+            updateJobStatus($id, $status);
+            break;
         default:
             showIndex();
             break;

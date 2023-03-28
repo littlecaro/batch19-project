@@ -112,6 +112,7 @@ FROM
     jobs.salary_max,
     jobs.deadline,
     jobs.date_created,
+    jobs.is_active,
     companies.name,
     companies.logo_img,
     companies.website_address
@@ -154,6 +155,7 @@ FROM
     jobs.salary_max,
     jobs.deadline,
     jobs.date_created,
+    jobs.is_active,
     companies.name,
     companies.logo_img,
     companies.website_address
@@ -192,6 +194,31 @@ FROM
     $query->bindValue('inMinSalary', $minSalary, PDO::PARAM_INT);
     $query->bindValue('inMaxSalary', $maxSalary, PDO::PARAM_INT);
     $query->bindValue("inDeadline", $deadline, PDO::PARAM_STR);
+    $query->bindValue('inId', $id, PDO::PARAM_INT);
+    $query->bindValue('inCompanyId', $companyId, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function setJobStatus($id, $status)
+{
+    echo $id . "is Id";
+    echo $status . "is status";
+    $user_id = 4;
+    $userCompanyQuery = "SELECT
+    users.company_id,
+    users.id
+FROM
+    users INNER JOIN
+    companies ON users.company_id = companies.id WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetchAll(PDO::FETCH_OBJ);
+    $companyId = $rec[0]->company_id;
+    $userCompanyQuery = "UPDATE jobs SET is_active = :inStatus WHERE id = :inId AND company_id= :inCompanyId";
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindValue('inStatus', $status, PDO::PARAM_BOOL);
     $query->bindValue('inId', $id, PDO::PARAM_INT);
     $query->bindValue('inCompanyId', $companyId, PDO::PARAM_INT);
     $query->execute();

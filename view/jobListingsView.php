@@ -36,6 +36,7 @@ ob_start();
             } ?>
     </div>
 </div>
+<script defer src="./public\javascript\jobListing.js"></script>
 <?php
 $content = ob_get_clean();
 require('./view/companyDashboardTemplate.php');

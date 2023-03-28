@@ -273,3 +273,9 @@ function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
         }
     }
 }
+
+function updateJobStatus($id, $status)
+{
+
+    setJobStatus($id, $status);
+}
