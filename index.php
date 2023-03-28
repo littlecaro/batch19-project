@@ -88,7 +88,6 @@ try {
             $term = $_GET['term'] ?? null;
             searchMessages($term);
             break;
-
         case "updateCalendar":
             $data = $_REQUEST['data'] ?? "";
             if ($data) {

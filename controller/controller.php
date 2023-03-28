@@ -197,7 +197,8 @@ function addCalendar($data)
 function showCalendar($user_id)
 {
     $calendarManager = new CalendarManager();
-    $result = $calendarManager->loadCalendar($user_id);
+    $entries = $calendarManager->loadCalendar($user_id);
+    $receives = $calendarManager->loadInterviews($user_id);
     require('./view/calendarView.php');
 }
 

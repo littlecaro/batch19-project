@@ -31,7 +31,7 @@ function displayCal(x = 0) {
           th.textContent = i;
           tr.appendChild(th);
         } else {
-          th.textContent = "Table";
+          th.textContent = " ";
           tr.appendChild(th);
         }
       }
@@ -76,9 +76,96 @@ function displayCal(x = 0) {
       }
     }
   }
-  inputEntries(entries);
+  inputEntries(entries, receives);
   displayConfirmed(entries);
+  displayInterviews(receives);
   highlight();
+}
+
+function displayInterviews(receives) {
+  let oldConfirmed = document.querySelector(".confirmedInt");
+  if (oldConfirmed) {
+    oldConfirmed.remove();
+  }
+
+  const confirmed = document.createElement("div");
+  confirmed.setAttribute("class", "confirmedInt");
+  confirmedInterviews.appendChild(confirmed);
+
+  if (receives.length == 0) {
+    return;
+  }
+  for (let i = 0; i < receives.length; i++) {
+    let dateArr = dateStrToArr(receives[i].date);
+    let newDate = true;
+    if (i != 0) {
+      newDate = new Date(receives[i].date).getTime() > new Date(receives[i - 1].date).getTime() ? true : false;
+    }
+    if (newDate) {
+      const sortDiv = document.createElement("div");
+      sortDiv.setAttribute("class", "confirmedAvail");
+      sortDiv.setAttribute("data-id", `${new Date(receives[i].date).getTime()}`);
+      let titleDiv = document.createElement("div");
+      titleDiv.setAttribute("class", "titleDate");
+      let titleDateNow = new Date(receives[i].date);
+      // let titleUnix = titleDateNow.getTime();
+      let titleDay = document.createElement("p");
+      titleDay.textContent = `${dayStr(titleDateNow.getDay())}, `;
+      titleDiv.appendChild(titleDay);
+
+      //
+      let titleDate = document.createElement("p");
+      // Parse int to remove leading zero (minus one because array is zero-indexed).
+      let month = monthStr(parseInt(dateArr[1] - 1, 10));
+      let day = dayToTh(parseInt(dateArr[2], 10));
+      titleDate.textContent = `${month} ${day}`;
+      titleDiv.appendChild(titleDate);
+      sortDiv.appendChild(titleDiv);
+
+      let timeDiv = document.createElement("div");
+      timeDiv.setAttribute("class", "timeDiv");
+
+      let job = document.createElement("p");
+      job.textContent = `${receives[i].title}, `;
+      timeDiv.appendChild(job);
+
+      let company = document.createElement("p");
+      company.textContent = `${receives[i].name}, `;
+      timeDiv.appendChild(company);
+
+      let time = document.createElement("p");
+      time.textContent = `${receives[i].time_start.slice(0, 5)}`;
+      timeDiv.appendChild(time);
+      sortDiv.appendChild(timeDiv);
+
+      let deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Cancel";
+      deleteBtn.classList.add("cancel");
+      deleteBtn.setAttribute("data-cancelId", `${receives[i].id}`);
+      deleteBtn.addEventListener("click", deleteReservation);
+      time.appendChild(deleteBtn);
+      confirmed.appendChild(sortDiv);
+    } else {
+      const sortDiv = document.querySelector(`[data-id=${CSS.escape(new Date(receives[i].date).getTime())}]`);
+      let timeDiv = document.createElement("div");
+      timeDiv.setAttribute("class", "timeDiv");
+      let time = document.createElement("p");
+      time.textContent = `${receives[i].time_start.slice(0, 5)}`;
+      timeDiv.appendChild(time);
+
+      let deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Cancel";
+      deleteBtn.classList.add("cancel");
+      deleteBtn.setAttribute("data-cancelId", `${receives[i].id}`);
+      deleteBtn.addEventListener("click", deleteReservation);
+      timeDiv.appendChild(deleteBtn);
+      sortDiv.appendChild(timeDiv);
+    }
+  }
+  let deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Cancel all interviews";
+  deleteBtn.addEventListener("click", deleteReservation);
+  confirmed.appendChild(deleteBtn);
 }
 
 displayCal();
@@ -125,8 +212,14 @@ function highlight() {
   });
   for (let td of tds) {
     td.addEventListener("mousemove", function (e) {
-      if (!isMouseUp && !td.classList.contains("confirmed")) {
+      if (!isMouseUp && !td.classList.contains("confirmed") && !td.classList.contains("interview")) {
         td.className = "selected";
+      }
+    });
+    td.addEventListener("click", function (e) {
+      if (!td.classList.contains("confirmed") && !td.classList.contains("interview")) {
+        td.className = "selected";
+        displayChoices();
       }
     });
   }
@@ -178,7 +271,7 @@ function displayChoices() {
       sortDiv.appendChild(timeDiv);
 
       let undoBtn = document.createElement("button");
-      undoBtn.textContent = "X";
+      undoBtn.textContent = "Undo";
       undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
       undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
       undoBtn.addEventListener("click", unselect);
@@ -193,7 +286,7 @@ function displayChoices() {
       timeDiv.appendChild(time);
 
       let undoBtn = document.createElement("button");
-      undoBtn.textContent = "X";
+      undoBtn.textContent = "Undo";
       undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
       undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
       undoBtn.addEventListener("click", unselect);
@@ -250,7 +343,8 @@ function sendIt() {
   xhr.send(null);
 }
 
-function inputEntries(entries) {
+function inputEntries(entries, receives) {
+  // console.log(receives);
   const tds = document.querySelectorAll("td");
   for (let td of tds) {
     let date = td.getAttribute("data-php");
@@ -258,6 +352,12 @@ function inputEntries(entries) {
     for (let entry of entries) {
       if ((date === entry.date) & (time === entry.time_start)) {
         td.className = "confirmed";
+      }
+    }
+    for (let receive of receives) {
+      if ((date === receive.date) & (time === receive.time_start)) {
+        td.className = "interview";
+        td.textContent = receive.name;
       }
     }
   }
@@ -315,7 +415,7 @@ function displayConfirmed(entries) {
       sortDiv.appendChild(timeDiv);
 
       let deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "X";
+      deleteBtn.textContent = "Delete";
       deleteBtn.classList.add("delete");
       deleteBtn.setAttribute("data-date", `${entries[i].date}`);
       deleteBtn.setAttribute("data-time", `${entries[i].time_start}`);
@@ -331,7 +431,7 @@ function displayConfirmed(entries) {
       timeDiv.appendChild(time);
 
       let deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "X";
+      deleteBtn.textContent = "Delete";
       deleteBtn.classList.add("delete");
       deleteBtn.setAttribute("data-date", `${entries[i].date}`);
       deleteBtn.setAttribute("data-time", `${entries[i].time_start}`);
@@ -403,4 +503,19 @@ function deleteDateEntry(e) {
   });
 
   xhr.send(null);
+}
+
+function deleteReservation(e) {
+  const entry = e.target.dataset.cancelid;
+  console.log(entry);
+
+  // let xhr = new XMLHttpRequest();
+  // xhr.open("GET", `./index.php?action=deleteReservation&entry=${entry}`);
+
+  // xhr.addEventListener("load", function () {
+  //   location.reload();
+  //   // console.log(xhr.responseText);
+  // });
+
+  // xhr.send(null);
 }
