@@ -22,15 +22,21 @@ ob_start();
   require("./view/userProfileSkillsMultiSelector.php");
   ?>
 
-  <input type="submit" value="submit">
+  <input type="submit" value="Save">
 </form>
 
 <script src="./public/js/userProfileSkillsMultiSelector.js"></script>
 <script>
   // Pass the data from PHP to JavaScript
+<<<<<<< HEAD
   const skills = <?= json_encode($allSkills); ?>;
   const languages = <?= json_encode($allLanguages); ?>;
   const cities = <?= json_encode($allCities); ?>;
+=======
+  const skills = <?= json_encode($skills); ?>;
+  const languages = <?= json_encode($languages); ?>;
+  const cities = <?= json_encode($cities); ?>;
+>>>>>>> main
   createMultiSelector(skills, 'skills', 10);
   createMultiSelector(languages, 'languages', 5);
   createMultiSelector(cities, 'cities', 2);
