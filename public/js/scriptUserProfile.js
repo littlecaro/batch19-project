@@ -7,3 +7,13 @@ function myFunction(id) {
   var x = document.getElementById(id);
   x.classList.remove("hidden");
 }
+let hasCalendarLoaded = false;
+function showCalendarPage() {
+  myFunction("avail");
+
+  if (!hasCalendarLoaded) {
+    loadCalendar();
+    hasCalendarLoaded = true;
+  }
+  // loadCalendar();
+}
