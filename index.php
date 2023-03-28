@@ -97,10 +97,10 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-        case "loadCalendar":
-            $user_id = $_SESSION['user_id'] ?? 1;
-            showCalendar($user_id);
-            break;
+        // case "loadCalendar":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -118,7 +118,8 @@ try {
             }
             break;
         case "userProfileView":
-            require("./view/userProfileView.php");
+            $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            showCalendar($user_id);
             break;
         case "companyDashboard":
             require("./view/companyDashboard.php");

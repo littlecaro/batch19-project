@@ -1,7 +1,3 @@
-<?php
-    $title = "Calendar";
-    ob_start();
-?>
 <link rel="stylesheet" href="./public/css/calendar.css">
 <script defer src="./public/js/calendar.js"></script>
 
@@ -27,12 +23,7 @@
         </div>
     </div>
 </div>
-    <script>
+<script>
         const entries = <?php echo json_encode($entries); ?>;
         const receives = <?php echo json_encode($receives); ?>;
     </script>
-
-<?php 
-$content = ob_get_clean();
-require('./view/userProfileTemplate.php');
-?>

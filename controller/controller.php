@@ -199,7 +199,7 @@ function showCalendar($user_id)
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($user_id);
     $receives = $calendarManager->loadInterviews($user_id);
-    require('./view/calendarView.php');
+    require("./view/userProfileView.php");
 }
 
 function deleteCalendarEntry($entry)

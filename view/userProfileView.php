@@ -27,7 +27,8 @@ ob_start();
 
         <button onclick="myFunction('skills')"><i class="fa-solid fa-bookmark"></i></i>Skills</button>
 
-        <button onclick="myFunction('avail')"><i class="fa-solid fa-message"></i>Availability</button>
+        <button onclick="showCalendarPage()"><i class="fa-solid fa-message"></i>Availability</button>
+        <!-- <button onclick="myFunction('avail')"><i class="fa-solid fa-message"></i>Availability</button> -->
     </div>
 </div>
 
@@ -188,11 +189,12 @@ ob_start();
 
     <section id="avail" class="hidden">
         <p>Your Availability</p>
-        <div id="avail"></div>
+        <div id="avail">
+            <?php include('./view/calendarView.php') ?>
+        </div>
     </section>
 
 </div>
-
 <?php
 $content = ob_get_clean();
 require('./view/userProfileTemplate.php');

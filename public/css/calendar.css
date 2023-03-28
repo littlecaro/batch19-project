@@ -1,5 +1,10 @@
 .calendar {
   user-select: none;
+  width: 100%;
+}
+
+.cal-container {
+  margin-left: 220px;
 }
 
 table {
@@ -20,9 +25,9 @@ td {
   color: white;
 }
 
-/* .times {
+.times {
   width: 5vh;
-} */
+}
 
 #confirmedContainer,
 #confirmedInterviews {
@@ -124,7 +129,7 @@ button {
 
 .bottom {
   display: flex;
-  /* justify-content: space-around; */
+  justify-content: space-around;
   width: 100%;
 }
 
