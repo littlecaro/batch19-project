@@ -25,7 +25,7 @@
 </div>
 <dialog id="favDialog">
   <form method="dialog">
-    <p>Please submit this week's entries before going to a different week</p>
+    <p>Please submit your entries before going to a different week</p>
     <div>
       <button>Ok</button>
     </div>
