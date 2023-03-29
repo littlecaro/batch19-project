@@ -4,8 +4,8 @@
 <div class="cal-container">
     <div class="cal">
         <div>
-            <button class="prev"><-</button>
-            <button class="next">-></button>
+            <button class="prev changeWeek"><-</button>
+            <button class="next changeWeek">-></button>
         </div>
     
         <table class="calendar"></table>
@@ -23,6 +23,14 @@
         </div>
     </div>
 </div>
+<dialog id="favDialog">
+  <form method="dialog">
+    <p>Please submit this week's entries before going to a different week</p>
+    <div>
+      <button>Ok</button>
+    </div>
+  </form>
+</dialog>
 <script>
     const entries = <?php echo json_encode($entries); ?>;
     const receives = <?php echo json_encode($receives); ?>;
