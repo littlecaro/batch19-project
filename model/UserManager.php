@@ -108,7 +108,6 @@ class UserManager extends Manager
         $experience = $req->fetch(PDO::FETCH_OBJ);
         return $experience;
     }
-
     public function getUserSkills($userId)
     {
         $db = $this->dbConnect();
