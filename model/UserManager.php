@@ -19,8 +19,10 @@ class UserManager extends Manager
         $insertUser = 'INSERT INTO users (first_name, last_name, email, profile_picture, login_type) 
         VALUES (:inFirst_name, :inLast_name, :inEmail, :inProfile_picture, 0); 
         SET @last_id_in_table1 = LAST_INSERT_ID(); 
-        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1);  -- // inserting id for professional
-        INSERT INTO education (user_id) VALUES (@last_id_in_table1);';  // inserting id for education
+        INSERT INTO education (user_id) VALUES (@last_id_in_table1);  --// inserting id for education
+        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1); -- // inserting id for professional
+        INSERT INTO user_skill_map (user_id) VALUES (@last_id_table1);';
+
 
         $req = $db->prepare($insertUser);
         // your value is the decodedToken from the JSon and -> selecting the specific title from there
@@ -49,7 +51,7 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
-public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+    public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
         //hash pw
@@ -78,7 +80,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         } else {
             return false;
         }
-        
     }
 
 
@@ -130,6 +131,17 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $skill;
     }
 
+    public function getCityName($cityId)
+    {
+        $db = $this->dbConnect();
+        $cityName = ("SELECT name FROM cities WHERE id = :inCityId");
+        $req = $db->prepare($cityName);
+        $req->bindParam(':inCityId', $cityId, PDO::PARAM_INT);
+        $req->execute();
+        $name = $req->fetchALL(PDO::FETCH_OBJ);
+        return $name;
+    }
+
     public function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
     {
         $db = $this->dbConnect();
@@ -139,7 +151,7 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         $req->bindParam(':inCity', $city, PDO::PARAM_STR);
         $cityId = $req->execute();
         $cityId = $req->fetchAll(PDO::FETCH_OBJ);
-        $cityId = $cityId[0]->id; // the city id in table cities
+        $cityId = $cityId[0]->id ?? NULL; // the city id in table cities
 
         $updateUserP = "UPDATE users SET phone_number = :inPhoneNb, city_id = :inCity, visa_sponsorship = :inVisa, desired_salary = :inSalary WHERE id = :id";
         $req = $db->prepare($updateUserP);
@@ -151,6 +163,17 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         $result2 = $req->execute();
         return $result2;
     }
+
+    // public function getEducationLevel($educationId)
+    // {
+    //     $db = $this->dbConnect();
+    //     $educationLevel = ("SELECT degree_level FROM education WHERE user_id = :inEducationId");
+    //     $req = $db->prepare($educationLevel);
+    //     $req->bindParam(':inEducationId', $educationId, PDO::PARAM_INT);
+    //     $req->execute();
+    //     $name = $req->fetchALL(PDO::FETCH_OBJ);
+    //     return $name;
+    // }
 
     public function updateUserEducation($userId, $degree, $degreeLevel)
     {
