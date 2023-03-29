@@ -149,12 +149,31 @@ try {
             }
             break;
         case "talentSearch":
-            if (!empty($_GET['filter'])) {
-                showTalents(true);
+            $jobId = $_GET['jobId'] ?? null;
+            // echo $jobId . "<br>";
+            $saveData = savedSearchExists($jobId) ?? null;
+            if (!empty($saveData)) {
+                // echo "showing filters    ";
+                showTalents(true, $saveData);
             } else {
-                showTalents();
+
+                showTalents(false, null);
             }
+
             break;
+        case "talentSearchSave":
+            // echo "save";
+            $jobId = $_GET['jobId'] ?? null;
+            // echo $jobId . "<br>";
+            $saveData = savedSearchExists($jobId) ?? null;
+            if (!empty($saveData)) {
+                // echo "savedata not empty";
+                updateSavedTalentSearch($saveData, $jobId);
+                showTalents(true, null);
+            } else {
+                parseTalentFilter($jobId);
+                showTalents(true, null);
+            }
             // case "getUserSkills":
             //     require("./view/userProfileSkills.php");
             //     break;

@@ -6,6 +6,8 @@ use JetBrains\PhpStorm\Deprecated;
 function dbConnect()
 {
     try {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
         return new PDO('mysql:host=localhost;dbname=batch19_project;charset=utf8', 'root', '');
     } catch (Exception $e) {
         die('Error : ' . $e->getMessage());
@@ -201,8 +203,8 @@ FROM
 
 function setJobStatus($id, $status)
 {
-    echo $id . "is Id";
-    echo $status . "is status";
+    // echo $id . "is Id";
+    // echo $status . "is status";
     $user_id = 4;
     $userCompanyQuery = "SELECT
     users.company_id,
@@ -226,6 +228,7 @@ FROM
 
 function getAllTalents()
 {
+    // echo "allTalents";
     $userId = 1;
     $str = 'SELECT DISTINCT
     users.id
@@ -236,7 +239,7 @@ FROM
     $query->bindParam(':userId', $userId, PDO::PARAM_INT);
     $query->execute();
     $allTalents = $query->fetchAll(PDO::FETCH_OBJ);
-    // print_r($query);
+    // print_r($allTalents);
     return $allTalents;
 }
 
@@ -289,6 +292,21 @@ FROM
     $query->execute();
     $desiredPosition = $query->fetchAll(PDO::FETCH_OBJ);
     return $desiredPosition;
+}
+function getTalentLocation($userId)
+{
+    $str = 'SELECT
+    cities.name as location
+From
+    cities INNER JOIN
+    users ON users.city_id = cities.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentlocation = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentlocation;
 }
 function getTalentYearsExperience($userId)
 {
@@ -343,14 +361,44 @@ FROM
     $talentLanguages = $query->fetchAll(PDO::FETCH_OBJ);
     return $talentLanguages;
 }
-
-function saveTalentFilter($searchData)
+function talentFilterExists($jobId)
 {
     $userId = 1;
-    $str = 'INSERT INTO saved_searches (id,user_id,search_data) VALUES (NULL,:userId, :searchData)';
+    // echo $jobId;
+    $db = dbConnect();
+    $str = 'SELECT * FROM saved_searches WHERE job_id = :jobId AND user_id = :userId';
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
+    $query->execute();
+    $savedSearches = $query->fetchAll(PDO::FETCH_OBJ);
+    // print_r($savedSearches);
+    return $savedSearches;
+}
+function saveTalentFilter($searchData, $jobId)
+{
+    $userId = 1;
+    $str = 'INSERT INTO saved_searches (id,user_id,search_data, job_id) VALUES (NULL,:userId, :searchData,:jobId)';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(":userId", $userId, PDO::PARAM_INT);
     $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
+    $query->execute();
+}
+function updateTalentFilter($searchData, $user_id, $jobId)
+{
+    $userId = 1;
+    echo "<br>";
+    echo $searchData;
+    echo "<br>";
+    echo 'jobId:' . $jobId;
+    $str = "UPDATE saved_searches SET search_data = :searchData where (job_id = :jobId AND user_id = :userId)";
+
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
     $query->execute();
 }

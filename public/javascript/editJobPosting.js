@@ -3,6 +3,7 @@ const jobPostingBackBtn = document.querySelector("#jobPostingBackBtn");
 const jobPostingFinishBtn = document.querySelector("#jobPostingFinishBtn");
 const jobPostingInfo = document.querySelector(".jobPostingInfo");
 const wrapper = document.querySelector(".jobListingWrapper");
+const main = document.querySelector(".main");
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const jobId = urlParams.get("ListingId");
@@ -11,6 +12,7 @@ const offsetMs = now.getTimezoneOffset() * 60 * 1000;
 const dateLocal = new Date(now.getTime() - offsetMs);
 const str = dateLocal.toISOString().slice(0, 19);
 const addCandidatesBtn = document.querySelector("#addCandidatesBtn");
+
 const closePositionBtn = document.querySelector("#closePositionBtn");
 function updateButton() {
   let jobState = parseInt(
@@ -29,7 +31,19 @@ function updateButton() {
   }
 }
 
-addCandidatesBtn.addEventListener("click", () => {});
+addCandidatesBtn.addEventListener("click", () => {
+  formdata = new FormData();
+  console.log(jobId, action);
+  formdata.append("id", jobId);
+  xhr = new XMLHttpRequest();
+  xhr.open("POST", "./index.php?action=talentSearch&filter");
+  xhr.onload = () => {
+    console.log(xhr.responseText);
+    main.innerHTML = "";
+    main.innerHTML = xhr.response;
+  };
+  xhr.send(formdata);
+});
 closePositionBtn.addEventListener("click", () => {
   formdata = new FormData();
   console.log(jobId, action);

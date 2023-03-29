@@ -110,11 +110,11 @@ h4 {
 
 .userProfile {
   margin-left: 300px;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 268px);
   height: 100%;
 }
 
-.main {
+.userProfile .main {
   height: 86%;
   /* min-width: 65%; */
   /* padding: 40px 20px; */
