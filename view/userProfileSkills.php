@@ -28,14 +28,17 @@ ob_start();
 <script src="./public/js/userProfileSkillsMultiSelector.js"></script>
 <script>
   // Pass the data from PHP to JavaScript
+  
+  /* NOT SURE WHICH IS NEEDED 
   const skills = <?= json_encode($allSkills); ?>;
   const languages = <?= json_encode($allLanguages); ?>;
   const cities = <?= json_encode($allCities); ?>;
-  /* NOT SURE WHICH IS NEEDED 
+  */
+  
   const skills = <?= json_encode($skills); ?>;
   const languages = <?= json_encode($languages); ?>;
   const cities = <?= json_encode($cities); ?>;
-  */
+  
   createMultiSelector(skills, 'skills', 10);
   createMultiSelector(languages, 'languages', 5);
   createMultiSelector(cities, 'cities', 2);

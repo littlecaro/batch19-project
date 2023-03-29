@@ -1,3 +1,9 @@
+// if (educationLevel) {
+//   const selectedOption = document.querySelector(
+//     `option[value=${educationLevel}]`
+//   );
+//   selectedOption.setAttribute("selected", true);
+// }
 function updateUserEducation(e) {
   e.preventDefault();
 
@@ -12,6 +18,7 @@ function updateUserEducation(e) {
 
   const formData = new FormData();
   formData.append("degreeLevel", degree.options[degree.selectedIndex].value);
+
   formData.append("degree", major.value);
   formData.append("userId", userIdEducation.value);
 

@@ -155,19 +155,19 @@ try {
                 showTalents();
             }
             break;
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "userProfileView":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
+      // case "getUserSkills":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserLanguages":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserCities":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "userProfileView":
+      //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+      //     showCalendar($user_id);
+      //     break;
         case "companyDashboard":
             getCompanyInfo();
             break;
@@ -193,12 +193,14 @@ try {
             require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
+
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
         case "updateUserEducation":
