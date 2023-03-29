@@ -51,6 +51,7 @@ ob_start();
                     <span class="required" id="demo1"></span>
                 </td>
                 </tr>
+                <input type="hidden" name="oldLogo" value="<?= $companyInfo->logo_img ?? "./public/images/default.svg" ?>">
             </table>
             <br>
             <button class="button" id="save">SAVE</button>

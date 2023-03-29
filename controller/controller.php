@@ -573,11 +573,13 @@ function uploadImage($file)
     return $newPath;
 }
 
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
+function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
     if ($logo) {
         $logo = uploadImage($logo);
+    } else {
+        $logo = $oldLogo;
     }
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
