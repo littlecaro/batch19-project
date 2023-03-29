@@ -110,17 +110,16 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $experience;
     }
 
-<<<<<<< HEAD
-    public function getUserSkills($userId)
-    {
-        $db = $this->dbConnect();
-        //TODO: get user skills WHERE user id matches;
-        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
-        $req = $db->prepare($userSkills);
-        $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
-        return $skill;
-    }
+    // public function getUserSkills($userId)
+    // {
+    //     $db = $this->dbConnect();
+    //     //TODO: get user skills WHERE user id matches;
+    //     $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
+    //     $req = $db->prepare($userSkills);
+    //     $req->execute([$userId]);
+    //     $skill = $req->fetchALL(PDO::FETCH_OBJ);
+    //     return $skill;
+    // }
 
     public function getSkillsList()
     {
@@ -146,8 +145,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $cities;
     }
 
-=======
->>>>>>> main
     public function getUserEducation($userId)
     {
         $db = $this->dbConnect();
