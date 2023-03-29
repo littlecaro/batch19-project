@@ -341,9 +341,17 @@ function loadCalendar() {
 
     xhr.addEventListener("load", function () {
       location.reload();
+      // displayCal();
+      // refresh();
+      // loadCalendar();
     });
 
     xhr.send(null);
+  }
+
+  function refresh(reload) {
+    window.location = "#avail";
+    window.location.reload(true);
   }
 
   function inputEntries(entries, receives) {
