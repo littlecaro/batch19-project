@@ -49,7 +49,7 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
-public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+    public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
         //hash pw
@@ -78,7 +78,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         } else {
             return false;
         }
-        
     }
 
 
@@ -110,17 +109,16 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $experience;
     }
 
-<<<<<<< HEAD
-    public function getUserSkills($userId)
-    {
-        $db = $this->dbConnect();
-        //TODO: get user skills WHERE user id matches;
-        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
-        $req = $db->prepare($userSkills);
-        $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
-        return $skill;
-    }
+    // public function getUserSkills($userId)
+    // {
+    //     $db = $this->dbConnect();
+    //     //TODO: get user skills WHERE user id matches;
+    //     $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
+    //     $req = $db->prepare($userSkills);
+    //     $req->execute([$userId]);
+    //     $skill = $req->fetchALL(PDO::FETCH_OBJ);
+    //     return $skill;
+    // }
 
     public function getSkillsList()
     {
@@ -146,8 +144,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $cities;
     }
 
-=======
->>>>>>> main
     public function getUserEducation($userId)
     {
         $db = $this->dbConnect();
@@ -214,6 +210,19 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         $req->execute();
         return $req->rowCount();
     }
+    // public function updateUserSkills($, $yearsExperience, $companyName, $userId)
+    // {
+    //     $db = $this->dbConnect();
+    //     $updateUserExp = "UPDATE professional_experience SET job_title = :inJobTitle, years_experience = :inYearsExperience, company_name = :inCompanyName WHERE user_id = :inUserID";
+    //     $req = $db->prepare($updateUserExp);
+    //     $req->bindParam('inJobTitle', $jobTitle, PDO::PARAM_STR);
+    //     $req->bindParam('inYearsExperience', $yearsExperience, PDO::PARAM_INT);
+    //     $req->bindParam('inCompanyName', $companyName, PDO::PARAM_STR);
+    //     $req->bindParam('inUserID', $userId, PDO::PARAM_INT);
+    //     $req->execute();
+    //     return $req->rowCount();
+    // }
+
 
     public function signInUser($email, $pwd)
     {

@@ -135,10 +135,10 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-        // case "loadCalendar":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
+            // case "loadCalendar":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -155,7 +155,6 @@ try {
                 showTalents();
             }
             break;
-<<<<<<< HEAD
             // case "getUserSkills":
             //     require("./view/userProfileSkills.php");
             //     break;
@@ -165,12 +164,13 @@ try {
             // case "getUserCities":
             //     require("./view/userProfileSkills.php");
             //     break;
-=======
-        // case "userProfileView":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
->>>>>>> main
+            // case "userProfileView":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
+            // case "userProfileSkillsSubmit":
+
+
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;
@@ -189,8 +189,6 @@ try {
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
             break;
-<<<<<<< HEAD
-=======
         case "updateUserPersonal":
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
@@ -214,7 +212,6 @@ try {
             updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
             break;
 
->>>>>>> main
         case "addNewJob":
             $jobTitle = $_POST['jobTitle'] ?? null;
             $jobStory = $_POST['jobStory'] ?? null;
