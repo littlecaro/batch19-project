@@ -465,6 +465,8 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $cityName = $userManager->getCityName($user->city_id);
+    // $educationLevel = $userManager->getEducationLevel($education->degree_level);
     $allSkills = $userManager->getSkillsList();
     $allLanguages = $userManager->getLanguagesList();
     $allCities = $userManager->getCitiesList();
@@ -475,9 +477,9 @@ function showUserProfileView()
     require("./view/userProfileView.php");
 }
 
+
 function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
 {
-
     $userManager = new UserManager();
     $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
     // echo $wasEducationUpdated;

@@ -193,12 +193,14 @@ try {
             require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
+
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
         case "updateUserEducation":

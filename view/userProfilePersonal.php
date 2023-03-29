@@ -1,6 +1,10 @@
 <!-- <form action="index.php?action=userProfileView" method="POST"> -->
 <form id="personalForm"> <!-- Submitted with AJAX -->
-
+    <script>
+        const cityName = `<?php if (!empty($cityName)) {
+                                echo  $cityName[0]->name;
+                            } ?>`
+    </script>
     <h2>Personal</h2>
     <label for="phonenb">Phone Number:</label>
     <input type="text" name="phoneNb" id="phoneNb" value="<?= $user->phone_number; ?>" />
@@ -8,7 +12,7 @@
     <p>
         <span class="tooltip">Please select a city: </span>
         <!-- change all placeholders to $user->... -->
-        <select name="city" id="city" value="<?= $user->city_id; ?>">
+        <select name="city" id="city">
             <option value="">Select your city of residence</option>
             <option value="Andong">Andong</option>
             <option value="Ansan">Ansan</option>
@@ -86,5 +90,7 @@
     <input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
     <input type="submit" value="Save">
     <p id="personalUpdateStatus"></p>
+    <script>
+    </script>
     <script defer src="./public/js/updateUserPersonal.js"></script>
 </form>
