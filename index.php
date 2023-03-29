@@ -135,10 +135,10 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-        // case "loadCalendar":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
+            // case "loadCalendar":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -155,19 +155,19 @@ try {
                 showTalents();
             }
             break;
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-        // case "userProfileView":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
+      // case "getUserSkills":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserLanguages":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserCities":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "userProfileView":
+      //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+      //     showCalendar($user_id);
+      //     break;
         case "companyDashboard":
             require("./view/companyDashboard.php");
             break;
@@ -178,7 +178,13 @@ try {
             require("./view/employeeInfoView.php");
             break;
         case "jobListings":
-            require("./view/jobListingsView.php");
+            if (!empty($_GET['ListingId'])) {
+                $jobId = $_GET['ListingId'] ?? null;
+                $jobCard = showJobCard($jobId);
+            } else {
+                fetchJobPostings();
+            }
+
             break;
         case "savedProfiles":
             require("./view/savedProfilesView.php");
@@ -221,6 +227,21 @@ try {
             } else {
                 throw new Exception("missing data");
             }
+            break;
+        case "postJobChanges":
+            $description = $_POST['description'] ?? null;
+            $minSalary = $_POST['minSalary'] ?? null;
+            $maxSalary = $_POST['maxSalary'] ?? null;
+            $deadline = $_POST['deadline'] ?? null;
+            $id = $_POST["id"] ?? null;
+            $id = (int)$id;
+            updateJobListing($description, $minSalary, $maxSalary, $deadline, $id);
+            break;
+        case "updatePosition":
+            $id = $_POST['id'] ?? null;
+            $id = (int)$id;
+            $status = $_POST['status'] ?? null;
+            updateJobStatus($id, $status);
             break;
         default:
             showIndex();

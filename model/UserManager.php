@@ -49,7 +49,7 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
-public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+    public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
         //hash pw
@@ -78,7 +78,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         } else {
             return false;
         }
-        
     }
 
 
@@ -109,17 +108,16 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         $experience = $req->fetch(PDO::FETCH_OBJ);
         return $experience;
     }
-
-    // public function getUserSkills($userId)
-    // {
-    //     $db = $this->dbConnect();
-    //     //TODO: get user skills WHERE user id matches;
-    //     $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
-    //     $req = $db->prepare($userSkills);
-    //     $req->execute([$userId]);
-    //     $skill = $req->fetchALL(PDO::FETCH_OBJ);
-    //     return $skill;
-    // }
+    public function getUserSkills($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get user skills WHERE user id matches;
+        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
+        $req = $db->prepare($userSkills);
+        $req->execute([$userId]);
+        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        return $skill;
+    }
 
     public function getSkillsList()
     {
@@ -154,16 +152,6 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
         return $education;
     }
 
-    public function getUserSkills($userId)
-    {
-        $db = $this->dbConnect();
-        //TODO: get experience WHERE user id matches;
-        $userSkills = ("SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?");
-        $req = $db->prepare($userSkills);
-        $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
-        return $skill;
-    }
 
     public function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
     {

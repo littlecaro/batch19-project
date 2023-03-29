@@ -537,3 +537,32 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
         echo "FAIL!!! U DUN MESSED UP";
     }
 }
+
+
+function fetchJobPostings()
+{
+    $listings = getJobPostings();
+    require("./view/jobListingsView.php");
+}
+function showJobCard($jobId)
+{
+    $jobCard = getJobCard($jobId);
+    require("./view/jobListingsView.php");
+    return $jobCard;
+}
+function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
+    $listings = getJobPostings();
+    if (!empty($listings) && empty($jobId)) {
+        foreach ($listings as $listing) {
+            require "./view/components/jobPostingCard.php";
+        }
+    }
+}
+
+function updateJobStatus($id, $status)
+{
+
+    setJobStatus($id, $status);
+}
