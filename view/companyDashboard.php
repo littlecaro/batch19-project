@@ -1,4 +1,8 @@
 <?php
+// if (empty($_SESSION['id']) or empty($_SESSION['company_id'])) {
+//     throw new Exception("Not authorized");
+//     exit;
+// }
 $title = "company dashboard";
 ob_start();
 ?>

@@ -578,6 +578,7 @@ function uploadImage($file)
 function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
     if ($logo) {
         $logo = uploadImage($logo);
     } else {
@@ -585,7 +586,7 @@ function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $log
     }
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
-    if ($result) {
+    if ($result[0] and $result[1]) {
 
         header("location:index.php?action=companyDashboard");
     } else {
@@ -606,6 +607,7 @@ function getEmployeeInfo()
 function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
     if ($result) {
         header("location:index.php?action=employeeInfo");
@@ -616,6 +618,9 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 
 function fetchJobPostings()
 {
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $listings = getJobPostings();
     require("./view/jobListingsView.php");
 }
@@ -627,6 +632,7 @@ function showJobCard($jobId)
 }
 function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
 {
+
     updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
     $listings = getJobPostings();
     if (!empty($listings) && empty($jobId)) {
@@ -634,6 +640,8 @@ function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
             require "./view/components/jobPostingCard.php";
         }
     }
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
 }
 
 function updateJobStatus($id, $status)
