@@ -77,11 +77,11 @@ try {
                 userSignIn($email, $pwd);
             }
             break;
-            // case "userProfile":
-            //     // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
-            //     // $city = !empty($_POST['city']) ? $_POST['city'] : null;
-            //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
-            //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
+        case "userProfile":
+            // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
+            // $city = !empty($_POST['city']) ? $_POST['city'] : null;
+            // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
+            // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;

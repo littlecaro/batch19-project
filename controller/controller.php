@@ -72,12 +72,14 @@ function checkUserSignInGoogle($decodedToken)
 function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
 {
     //validate data
-    $firstNameValid = preg_match("/^[a-z._]+$/", $firstName);
-    $lastNameValid = preg_match("/^[a-z._]+$/", $lastName);
+    echo $firstName . $lastName . $email . $pwd . $pwd2;
+    $firstNameValid = preg_match("/^[A-Za-z._]+$/", $firstName);
+    $lastNameValid = preg_match("/^[A-Za-z._]+$/", $lastName);
     $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
     $emailValid = preg_match("/^[a-z0-9_.@]{3,20}$/i", $_POST['email']);
-
+    echo "<br>";
+    echo $emailValid . $pwdValid . $pwd2Valid . $firstNameValid . $lastNameValid;
     if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid) {
         //if data good, insert into database w model function
         $userManager = new UserManager();
@@ -91,7 +93,9 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
         } else {
             echo "Something went wrong.";
         }
-        require "./view/signUpView.php";
+        header("Location: index.php?action=userProfileView");
+        showUserProfileView();
+        // require "./view/signUpView.php";
     } else {
         $msg = "Please fill in all inputs.";
         require "./view/signUpView.php";

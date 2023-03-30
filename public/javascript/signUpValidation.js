@@ -154,7 +154,15 @@ function handleSubmit(e) {
   const checkPwd2Good = checkPwd2();
   const companyCheckGood = companyName();
   const companyTitleGood = companyTitle();
-
+  console.log(
+    lastNameGood,
+    firstNameGood,
+    checkEmailGood,
+    checkPwdGood,
+    checkPwd2Good,
+    companyCheckGood,
+    companyTitleGood
+  );
   if (
     whichFormOpen === "company" &&
     lastNameGood &&
