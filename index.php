@@ -9,9 +9,8 @@ try {
     session_start();
 
     switch ($action) {
-        case "userProfile":
-            showUserProfile();
-            // require('./view/userProfileView.php');
+        case "userProfileView":
+            showUserProfileView();
             break;
         case "userPhotoUpload":
             echo "<pre>";
@@ -59,7 +58,7 @@ try {
             $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
             $companyName = !empty($_POST['companyname']) ? $_POST['companyname'] : null;
             $companyTitle = !empty($_POST['companytitle']) ? $_POST['companytitle'] : null;
-            
+
             if ($firstName and $lastName and $email and $pwd and $pwd2 and $companyName and $companyTitle) {
                 //call a controller function
                 companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle);
@@ -84,35 +83,35 @@ try {
             //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
-            case "getChatMessages":
-                $conversationId = $_POST['conversationId'] ?? null;
-                if (!empty($conversationId)) {
-                    showMessages($conversationId);
-                }
-                break;
-            case "submitMessage":
-    
-                $conversationId = $_POST['conversationId'] ?? null;
-                $senderId = $_POST['senderId'];
-                $message = $_POST['message'];
-                // echo $message, $senderId, $conversationId;
-                if (!empty($senderId)  and !empty($message)) {
-                    // echo "<br>";
-                    // echo "getting controller";
-                    addMessage($conversationId, $senderId, $message);
-                }
-                break;
-            case "messenger":
-                showChats();
-    
-                break;
-            case "search":
-                // print_r($_GET);
-                $term = $_GET['term'] ?? null;
-    
-                searchMessages($term);
-                break;
-            
+        case "getChatMessages":
+            $conversationId = $_POST['conversationId'] ?? null;
+            if (!empty($conversationId)) {
+                showMessages($conversationId);
+            }
+            break;
+        case "submitMessage":
+
+            $conversationId = $_POST['conversationId'] ?? null;
+            $senderId = $_POST['senderId'];
+            $message = $_POST['message'];
+            // echo $message, $senderId, $conversationId;
+            if (!empty($senderId)  and !empty($message)) {
+                // echo "<br>";
+                // echo "getting controller";
+                addMessage($conversationId, $senderId, $message);
+            }
+            break;
+        case "messenger":
+            showChats();
+
+            break;
+        case "search":
+            // print_r($_GET);
+            $term = $_GET['term'] ?? null;
+
+            searchMessages($term);
+            break;
+
 
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
@@ -141,7 +140,6 @@ try {
             $term = $_GET['term'] ?? null;
             searchMessages($term);
             break;
-
         case "updateCalendar":
             $data = $_REQUEST['data'] ?? "";
             if ($data) {
@@ -151,10 +149,10 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-        case "loadCalendar":
-            $user_id = $_SESSION['user_id'] ?? 1;
-            showCalendar($user_id);
-            break;
+            // case "loadCalendar":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -171,20 +169,36 @@ try {
                 showTalents();
             }
             break;
-        case "userProfileView":
-            require("./view/userProfileView.php");
-            break;
+      // case "getUserSkills":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserLanguages":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "getUserCities":
+      //     require("./view/userProfileSkills.php");
+      //     break;
+      // case "userProfileView":
+      //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+      //     showCalendar($user_id);
+      //     break;
         case "companyDashboard":
-            require("./view/companyDashboard.php");
+            getCompanyInfo();
             break;
         case "createJobForm":
             createJobForm();
             break;
         case "employeeInfo":
-            require("./view/employeeInfoView.php");
+            getEmployeeInfo();
             break;
         case "jobListings":
-            require("./view/jobListingsView.php");
+            if (!empty($_GET['ListingId'])) {
+                $jobId = $_GET['ListingId'] ?? null;
+                $jobCard = showJobCard($jobId);
+            } else {
+                fetchJobPostings();
+            }
+
             break;
         case "savedProfiles":
             require("./view/savedProfilesView.php");
@@ -192,6 +206,31 @@ try {
         case "bookedMeetings":
             require("./view/bookedMeetingsView.php");
             break;
+        case "updateUserPersonal":
+
+            $id = $_POST['id'];
+            $phoneNb = $_POST['phoneNb'] ?? null;
+            $city = $_POST['city'] ?? null;
+            $salary = $_POST['salary'] ?? null;
+            $visa = $_POST['visa'] ?? null;
+            updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            // echo $id, $phoneNb, $city, $salary, $visa;
+            // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
+            break;
+        case "updateUserEducation":
+            $userId = $_POST['userId'];
+            $degree = $_POST['degree'] ?? null;
+            $degreeLevel = $_POST['degreeLevel'] ?? null;
+            updateUserEducation($userId, $degree, $degreeLevel);
+            break;
+        case "updateUserExperience":
+            $userId = $_POST['userId'];
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $yearsExperience = $_POST['yearsExperience'] ?? null;
+            $companyName = $_POST['companyName'] ?? null;
+            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            break;
+
         case "addNewJob":
             $jobTitle = $_POST['jobTitle'] ?? null;
             $jobStory = $_POST['jobStory'] ?? null;
@@ -204,6 +243,43 @@ try {
             } else {
                 throw new Exception("missing data");
             }
+            break;
+        case "updateCompanyInfo":
+            $bizName = $_POST['bizName'] ?? null;
+            $bizAddress = $_POST['bizAddress'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $phone = $_POST['phone'] ?? null;
+            $webSite = $_POST['webSite'] ?? null;
+            $logo = $_FILES['logoUpload'] ?? null;
+            if ($bizName and $bizAddress and $email and $phone and $webSite) {
+                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+            } else {
+                throw new Exception("missing data");
+            }
+            break;
+        case "updateEmployeeInfo":
+            $firstName = $_POST['firstName'] ?? null;
+            $lastName = $_POST['lastName'] ?? null;
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            if ($firstName and $lastName and $jobTitle) {
+                updateEmployeeInfo($firstName, $lastName, $jobTitle);
+            } else {
+                throw new Exception("missing data");
+            }
+        case "postJobChanges":
+            $description = $_POST['description'] ?? null;
+            $minSalary = $_POST['minSalary'] ?? null;
+            $maxSalary = $_POST['maxSalary'] ?? null;
+            $deadline = $_POST['deadline'] ?? null;
+            $id = $_POST["id"] ?? null;
+            $id = (int)$id;
+            updateJobListing($description, $minSalary, $maxSalary, $deadline, $id);
+            break;
+        case "updatePosition":
+            $id = $_POST['id'] ?? null;
+            $id = (int)$id;
+            $status = $_POST['status'] ?? null;
+            updateJobStatus($id, $status);
             break;
         default:
             showIndex();

@@ -25,3 +25,13 @@ profilePhoto.onchange = () => {
 //     imgPreview.src = URL.createObjectURL(file);
 //   }
 // };
+let hasCalendarLoaded = false;
+function showCalendarPage() {
+  myFunction("avail");
+
+  if (!hasCalendarLoaded) {
+    loadCalendar();
+    hasCalendarLoaded = true;
+  }
+  // loadCalendar();
+}

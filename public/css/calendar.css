@@ -1,5 +1,10 @@
-* {
+.calendar {
   user-select: none;
+  width: 100%;
+}
+
+.cal-container {
+  margin-left: 220px;
 }
 
 table {
@@ -9,33 +14,37 @@ table {
 
 td,
 th {
-  border: 1px solid black;
   width: 20vh;
   height: 2.5vh;
   text-align: center;
 }
 
 td {
+  border: 1px solid black;
   text-align: center;
-  color: var(--text-color-primary);
+  color: white;
 }
 
 .times {
   width: 5vh;
 }
 
-#confirmedContainer {
-  width: 50vh;
+#confirmedContainer,
+#confirmedInterviews {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-/* #confirmedContainer > div {
+#confirmedInterviews .timeDiv {
+  flex-direction: column;
+  gap: 0;
+}
+
+#confirmedInterviews .timeDiv > p:nth-of-type(3) {
   display: flex;
-  align-items: center;
   gap: 1em;
-} */
+}
 
 .cal {
   display: flex;
@@ -52,11 +61,12 @@ div {
 }
 
 .selected {
-  background-color: red;
+  background-color: orange;
 }
 
 .selection,
-.confirmedCont {
+.confirmedCont,
+.confirmedInt {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,11 +85,6 @@ div {
 .titleDate {
   display: flex;
   gap: 0.5em;
-  border-bottom: 1px solid black;
-}
-
-.times {
-  margin-bottom: 1vh;
   border-bottom: 1px solid black;
 }
 
@@ -112,6 +117,10 @@ button {
   background-color: green;
 }
 
+.interview {
+  background-color: #28225d;
+}
+
 .cal-container {
   display: flex;
   flex-direction: column;
@@ -120,7 +129,7 @@ button {
 
 .bottom {
   display: flex;
-  /* justify-content: space-around; */
+  justify-content: space-around;
   width: 100%;
 }
 

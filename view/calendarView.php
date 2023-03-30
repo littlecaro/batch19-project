@@ -1,18 +1,14 @@
-<?php
-    $title = "Calendar";
-    ob_start();
-?>
 <link rel="stylesheet" href="./public/css/calendar.css">
 <script defer src="./public/js/calendar.js"></script>
 
 <div class="cal-container">
     <div class="cal">
         <div>
-            <button class="prev"><-</button>
-            <button class="next">-></button>
+            <button class="prev changeWeek"><-</button>
+            <button class="next changeWeek">-></button>
         </div>
     
-        <table class="calendar"></table>›
+        <table class="calendar"></table>
     </div>
     <div class="bottom">
         <div id="confirmChoices">
@@ -27,11 +23,15 @@
         </div>
     </div>
 </div>
-    <script>
-        const entries = <?php echo json_encode($result); ?>;
-    </script>
-
-<?php 
-$content = ob_get_clean();
-require('./view/template.php');
-?>
+<dialog id="favDialog">
+  <form method="dialog">
+    <p>Please submit your entries before going to a different week</p>
+    <div>
+      <button>Ok</button>
+    </div>
+  </form>
+</dialog>
+<script>
+    const entries = <?php echo json_encode($entries); ?>;
+    const receives = <?php echo json_encode($receives); ?>;
+</script>
