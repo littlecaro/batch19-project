@@ -97,8 +97,6 @@ try {
 
             searchMessages($term);
             break;
-
-
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
@@ -174,27 +172,27 @@ try {
                 parseTalentFilter($jobId);
                 showTalents(true, null);
             }
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "userProfileView":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
+        // case "getUserSkills":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserLanguages":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserCities":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "companyDashboard":
-            require("./view/companyDashboard.php");
+            getCompanyInfo();
             break;
         case "createJobForm":
             createJobForm();
             break;
         case "employeeInfo":
-            require("./view/employeeInfoView.php");
+            getEmployeeInfo();
             break;
         case "jobListings":
             if (!empty($_GET['ListingId'])) {
@@ -212,12 +210,14 @@ try {
             require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
+
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
         case "updateUserEducation":
@@ -247,6 +247,28 @@ try {
                 throw new Exception("missing data");
             }
             break;
+        case "updateCompanyInfo":
+            $bizName = $_POST['bizName'] ?? null;
+            $bizAddress = $_POST['bizAddress'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $phone = $_POST['phone'] ?? null;
+            $webSite = $_POST['webSite'] ?? null;
+            $logo = $_FILES['logoUpload'] ?? null;
+            if ($bizName and $bizAddress and $email and $phone and $webSite) {
+                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+            } else {
+                throw new Exception("missing data");
+            }
+            break;
+        case "updateEmployeeInfo":
+            $firstName = $_POST['firstName'] ?? null;
+            $lastName = $_POST['lastName'] ?? null;
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            if ($firstName and $lastName and $jobTitle) {
+                updateEmployeeInfo($firstName, $lastName, $jobTitle);
+            } else {
+                throw new Exception("missing data");
+            }
         case "postJobChanges":
             $description = $_POST['description'] ?? null;
             $minSalary = $_POST['minSalary'] ?? null;

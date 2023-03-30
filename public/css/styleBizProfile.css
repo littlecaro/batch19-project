@@ -64,9 +64,7 @@ html {
 }
 
 .profile-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  max-width: 150px;
 }
 
 .profile-name p,
@@ -108,13 +106,16 @@ h4 {
   background-color: white;
 }
 
-.userProfile {
+.bizProfile {
   margin-left: 300px;
   width: calc(100vw - 268px);
   height: 100%;
 }
 
 .userProfile .main {
+  /* height: auto;
+  min-width: 500px;
+  padding: 40px 20px; current changes */
   height: 86%;
   /* min-width: 65%; */
   /* padding: 40px 20px; */
@@ -123,6 +124,7 @@ h4 {
   border-radius: 5px;
   left: -1.5rem;
   text-align: center;
+  /* margin-bottom: 30px; current changes */
   position: relative;
   /* padding-left: 300px; */
   margin-bottom: 70px;
@@ -131,6 +133,7 @@ h4 {
   flex-direction: column;
   align-items: center;
 }
+
 .main #personal {
   height: 80vh;
 }
@@ -283,6 +286,7 @@ button {
 
 button:hover {
   background-color: var(--secondaryColor); /* Green */
+  cursor: pointer;
 }
 
 .button {
@@ -290,6 +294,14 @@ button:hover {
   border: 0;
   height: 30px;
   color: white;
+}
+
+#submit {
+  cursor: pointer;
+}
+
+#submit:hover {
+  background-color: var(--secondaryColor);
 }
 
 #boxbiz {

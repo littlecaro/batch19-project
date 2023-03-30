@@ -4,7 +4,7 @@ ob_start();
 ?>
 
 <!-- main -->
-<div class="userProfile">
+<div class="bizProfile">
     <div class="main">
         <h3>Saved Profiles</h3><br>
     </div>
