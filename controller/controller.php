@@ -735,24 +735,22 @@ function uploadUserProfileImage($file)
     $hash = hash_file("md5", $file["tmp_name"]);
     echo $hash;
     $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2);
+    $second = substr($hash, 2, 2); 
 
     mkdir("./public/images/uploaded/$first/$second", 0777, true);
+
+    // allow read & write permissions for everyone
     chmod("./public/images/uploaded/$first", 0777);
     chmod("./public/images/uploaded/$first/$second", 0777);
-    // 0777 is for reading/writing/editing permissions
-
 
     $type = explode(".", $file['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newpath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file['tmp_name'], $newpath);
-    chmod($newpath, 0777);
+    $newPath = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($file["tmp_name"], $newPath);
 
-    // TODO: Save the path to the image in the DB for the user's profile_photo
-    $userManager = new UserManager();
-    $newpath = $userManager->uploadUserPhoto($file);
-    header("Location:index.php?action=userProfile");
+    chmod($newPath, 0777);
+
+    return $newPath;
 }
 function uploadResume($resume)
 {
