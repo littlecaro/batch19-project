@@ -81,7 +81,16 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid) {
         //if data good, insert into database w model function
         $userManager = new UserManager();
-        $users = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+        $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+        if ($user) {
+            //create a session for when the user is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            print_r($_SESSION);
+        } else {
+            echo "Something went wrong.";
+        }
         require "./view/signUpView.php";
     } else {
         $msg = "Please fill in all inputs.";
@@ -718,6 +727,53 @@ function updateJobStatus($id, $status)
 {
 
     setJobStatus($id, $status);
+}
+
+function uploadUserProfileImage($file)
+{
+    // md5 is considered insecure so generally we don't use it except for files
+    $hash = hash_file("md5", $file["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2);
+    $second = substr($hash, 2, 2);
+
+    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+    chmod("./public/images/uploaded/$first", 0777);
+    chmod("./public/images/uploaded/$first/$second", 0777);
+    // 0777 is for reading/writing/editing permissions
+
+
+    $type = explode(".", $file['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newpath = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($file['tmp_name'], $newpath);
+    chmod($newpath, 0777);
+
+    // TODO: Save the path to the image in the DB for the user's profile_photo
+    $userManager = new UserManager();
+    $newpath = $userManager->uploadUserPhoto($file);
+    header("Location:index.php?action=userProfile");
+}
+function uploadResume($resume)
+{
+    $hash = hash_file("md5", $resume["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2);
+    $second = substr($hash, 2, 2);
+
+    mkdir("./public/images/resume/$first/$second", 0777, true);
+    chmod("./public/images/resume/$first", 0777);
+    chmod("./public/images/resume/$first/$second", 0777);
+
+    $type = explode(".", $resume['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newResumeLivingPlace = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
+    chmod($newResumeLivingPlace, 0777);
+
+    $userManager = new UserManager();
+    $newResumeLivingPlace = $userManager->uploadUserResume($resume);
+    header("Location:index.php?action=userProfile");
 }
 function savedSearchExists($jobId)
 {
