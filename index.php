@@ -155,19 +155,19 @@ try {
                 showTalents();
             }
             break;
-      // case "getUserSkills":
-      //     require("./view/userProfileSkills.php");
-      //     break;
-      // case "getUserLanguages":
-      //     require("./view/userProfileSkills.php");
-      //     break;
-      // case "getUserCities":
-      //     require("./view/userProfileSkills.php");
-      //     break;
-      // case "userProfileView":
-      //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-      //     showCalendar($user_id);
-      //     break;
+            // case "getUserSkills":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserLanguages":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserCities":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "userProfileView":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "companyDashboard":
             getCompanyInfo();
             break;
@@ -193,7 +193,6 @@ try {
             require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
-
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
@@ -209,12 +208,21 @@ try {
             $degreeLevel = $_POST['degreeLevel'] ?? null;
             updateUserEducation($userId, $degree, $degreeLevel);
             break;
-        case "updateUserExperience":
+
+        case "updateUserExperience": //DONE
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
             updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            break;
+
+        case "addNewUserExperience":
+            $userId = $_POST['userId'];
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $yearsExperience = $_POST['yearsExperience'] ?? null;
+            $companyName = $_POST['companyName'] ?? null;
+            addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
             break;
 
         case "addNewJob":

@@ -20,9 +20,7 @@ class UserManager extends Manager
         VALUES (:inFirst_name, :inLast_name, :inEmail, :inProfile_picture, 0); 
         SET @last_id_in_table1 = LAST_INSERT_ID(); 
         INSERT INTO education (user_id) VALUES (@last_id_in_table1);  --// inserting id for education
-        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1); -- // inserting id for professional
-        INSERT INTO user_skill_map (user_id) VALUES (@last_id_table1);';
-
+        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1);'; // inserting id for professional
 
         $req = $db->prepare($insertUser);
         // your value is the decodedToken from the JSon and -> selecting the specific title from there
@@ -51,6 +49,21 @@ class UserManager extends Manager
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->execute();
     }
+
+    public function insertUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+    {
+        $db = $this->dbConnect();
+        $insertExperience = 'INSERT INTO professional_experience (job_title, company_name, years_experience, user_id) 
+        VALUES (:inJob_title, :inCompany_name, :inYears_experience, :inUser_id);';
+
+        $req = $db->prepare($insertExperience);
+        $req->bindParam('inCompany_name',  $companyName,  PDO::PARAM_STR);
+        $req->bindParam('inJob_title',  $jobTitle,  PDO::PARAM_STR);
+        $req->bindParam('inYears_experience',  $yearsExperience,  PDO::PARAM_INT);
+        $req->bindParam('inUser_id',  $userId,  PDO::PARAM_INT);
+        return $req->execute();
+    }
+
     public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
@@ -82,7 +95,6 @@ class UserManager extends Manager
         }
     }
 
-
     //first company insert
     //then user insert using company_id
     //insert as user_bio $companyTitle
@@ -104,12 +116,12 @@ class UserManager extends Manager
     public function getUserExperience($userId)
     {
         $db = $this->dbConnect();
-        //TODO: get experience WHERE user id matches;
-        $req = $db->prepare("SELECT * FROM professional_experience WHERE user_id = ?");
+        $req = $db->prepare("SELECT * FROM professional_experience WHERE user_id = ? ");
         $req->execute([$userId]);
-        $experience = $req->fetch(PDO::FETCH_OBJ);
+        $experience = $req->fetchAll(PDO::FETCH_OBJ);
         return $experience;
     }
+
     public function getUserSkills($userId)
     {
         $db = $this->dbConnect();
@@ -117,7 +129,7 @@ class UserManager extends Manager
         $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
         $req = $db->prepare($userSkills);
         $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        $skill = $req->fetchAll(PDO::FETCH_OBJ);
         return $skill;
     }
 
@@ -154,7 +166,6 @@ class UserManager extends Manager
         return $education;
     }
 
-
     public function getCityName($cityId)
     {
         $db = $this->dbConnect();
@@ -187,17 +198,6 @@ class UserManager extends Manager
         $result2 = $req->execute();
         return $result2;
     }
-
-    // public function getEducationLevel($educationId)
-    // {
-    //     $db = $this->dbConnect();
-    //     $educationLevel = ("SELECT degree_level FROM education WHERE user_id = :inEducationId");
-    //     $req = $db->prepare($educationLevel);
-    //     $req->bindParam(':inEducationId', $educationId, PDO::PARAM_INT);
-    //     $req->execute();
-    //     $name = $req->fetchALL(PDO::FETCH_OBJ);
-    //     return $name;
-    // }
 
     public function updateUserEducation($userId, $degree, $degreeLevel)
     {

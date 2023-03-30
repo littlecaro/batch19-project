@@ -181,19 +181,6 @@ function showUserSignIn()
     require "./view/signInView.php";
 }
 
-
-// function userProfile()
-// {
-//     require "./view/userProfileView.php";
-// }
-
-// function userProfilePage1()
-// {
-//     $userProfileManager = new UserProfileManager();
-//     $user = $userProfileManager->showUserProfileView();
-//     require "./view/userProfilePage1.php";
-// }
-
 function showChats()
 {
     $chats = loadChats();
@@ -462,7 +449,7 @@ function showUserProfileView()
 {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
-    $experience = $userManager->getUserExperience($_SESSION['id']);
+    $experiences = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
@@ -473,6 +460,7 @@ function showUserProfileView()
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
+
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
@@ -497,6 +485,18 @@ function updateUserEducation($userId, $degree, $degreeLevel)
     $wasEducationUpdated = $userManager->updateUserEducation($userId, $degree, $degreeLevel);
     // echo $wasEducationUpdated;
     if ($wasEducationUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function addNewUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+{
+    $userManager = new UserManager();
+    $newExperienceUpdated = $userManager->insertUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+    // echo $newExperienceUpdated;
+    if ($newExperienceUpdated === 1) {
         echo "Successfully Updated";
     } else {
         echo "Something went wrong.";

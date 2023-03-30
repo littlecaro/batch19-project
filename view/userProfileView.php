@@ -70,7 +70,7 @@ ob_start();
     <section id="avail" class="hidden">
         <!-- <p>Your Availability</p>
         <div class="avail"> -->
-            <?php include('./view/calendarView.php') ?>
+        <?php include('./view/calendarView.php') ?>
         <!-- </div> -->
     </section>
 
