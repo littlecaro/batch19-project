@@ -162,7 +162,20 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-        header("Location: index.php?action=userProfile");
+        $_SESSION['company_id'] = $user->company_id;
+        $companyManager = new CompanyManager();
+        $companyInfo = $companyManager->fetchCompanyInfo();
+        echo $user->company_id;
+        $_SESSION['company_id'] = $companyInfo->id;
+        $_SESSION["profile_pic"] = $companyInfo->logo_img;
+        $_SESSION["company_name"] = $companyInfo->name;
+        $_SESSION["company_title"] = $user->user_bio;
+        $_SESSION["date_created"] = $companyInfo->date_created;
+        if ($_SESSION["company_id"] != null) {
+            header("Location: index.php?action=companyDashboard");
+        } else {
+            header("Location: index.php?action=userProfileView");
+        }
         exit;
     } else {
         throw new Exception("Invalid Information");
@@ -626,9 +639,9 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
         // TODO: finish this bish!
-        echo "Success! New job created. Get your tax money";
+        header("Location: ./index.php?action=jobListings");
     } else {
-        echo "FAIL!!! U DUN MESSED UP";
+        echo "Adding job failed, please contact the administrator";
     }
 }
 
@@ -703,19 +716,22 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 
 function fetchJobPostings()
 {
-    $listings = getJobPostings();
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
+
+    $listings = getJobPostings($_SESSION["id"]);
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
-    $jobCard = getJobCard($jobId);
+    $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
 }
 function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
 {
     updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
+    $listings = getJobPostings($_SESSION["id"]);
     if (!empty($listings) && empty($jobId)) {
         foreach ($listings as $listing) {
             require "./view/components/jobPostingCard.php";
@@ -735,7 +751,7 @@ function uploadUserProfileImage($file)
     $hash = hash_file("md5", $file["tmp_name"]);
     echo $hash;
     $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2); 
+    $second = substr($hash, 2, 2);
 
     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 
