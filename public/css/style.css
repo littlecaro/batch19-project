@@ -1,13 +1,15 @@
+@font-face {
+  font-family: "niramit";
+  src: url(./Niramit/Niramit-SemiBold.ttf);
+}
 :root {
-  --button-color-primary: #d66238;
+  --button-color-primary: #6ca0d8;
   --button-color-secondary: hwb(302 51% 21%);
-  --text-color-primary: #86cfd0;
-  --text-color-hover: #13c2c5;
-  --header-color-primary: #28225d;
-  --business-color-primary: hsl(280, 37%, 52%);
+  --text-color-primary: #13c2c5;
+  --text-color-hover: #c5fcee;
+  --header-color-primary: #4c67b4;
   --background-color-secondary: rgba(101, 90, 223, 0.5);
-  --business-color-secondary: rgba(147, 86, 178, 0.5);
-  --background-color-footer: #e2e2e2;
+  --background-color-footer: #afd5fe;
 }
 
 body {
@@ -58,7 +60,7 @@ body {
 }
 
 .logo p {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "niramit";
   color: var(--text-color-primary);
   font-size: 29px;
   font-weight: bold;
@@ -132,10 +134,6 @@ button {
   color: white;
 }
 
-button:hover {
-  background-color: var(--button-color-secondary); /* Green */
-}
-
 .button {
   background-color: var(--button-color-primary);
   border: 0;
@@ -144,20 +142,20 @@ button:hover {
 }
 
 #boxbiz {
-  background-color: #d66238;
+  background-color: var(--button-color-primary);
   border: 0;
   box-shadow: 2px 2px 3px grey;
 }
 
 #boxuser {
-  background-color: #d66238;
+  background-color: var(--button-color-primary);
   border: 0;
-  box-shadow: 2px 2px 3px grey;
+  box-shadow: 2px 2px 3px --background-color-footer;
 }
 
 #boxbiz:hover,
 #boxuser:hover {
-  background-color: rgb(220, 170, 152);
+  background-color: var(--button-color-secondary);
   border: 0;
 }
 
@@ -165,6 +163,12 @@ button:hover {
 #boxuser {
   width: 200px;
   height: 75px;
+}
+
+#createAccount {
+  max-height: 0;
+  overflow: hidden;
+  transition: 1s;
 }
 
 .menu button {
@@ -202,11 +206,11 @@ button:hover {
   margin: auto;
 }
 
-#submit,
-#reset {
+#sign-up-submit {
   border: 0px;
   font-weight: bold;
   width: 100px;
+  background-color: var(--button-color-secondary);
 }
 
 .g_id_signin {
@@ -334,20 +338,11 @@ input[type="checkbox"] {
 
 /* css for javascript validation: added by caro */
 .green {
-  outline: 3px solid greenyellow;
+  border: 3px solid greenyellow;
 }
 
 .red {
-  outline: 3px solid red;
-}
-.indexreturn {
-  cursor: grab;
-}
-
-#createAccount {
-  max-height: 0;
-  transition: max-height 1s;
-  overflow: hidden;
+  border: 3px solid red;
 }
 .calendar table {
   border-collapse: collapse;

@@ -7,3 +7,21 @@ function myFunction(id) {
   var x = document.getElementById(id);
   x.classList.remove("hidden");
 }
+
+// script for profile photo upload
+profilePhoto.onchange = () => {
+  const file = profilePhoto.files[0];
+  console.log(file);
+  if (file) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+};
+
+//script for resume upload
+// resume.onchange = () => {
+//   const resume1 = resume.files[0];
+//   console.log(resume1);
+//   if (resume1) {
+//     imgPreview.src = URL.createObjectURL(file);
+//   }
+// };
