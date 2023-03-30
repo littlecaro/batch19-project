@@ -3,9 +3,9 @@
   width: 100%;
 }
 
-.cal-container {
+/* .cal-container {
   margin-left: 220px;
-}
+} */
 
 table {
   border-collapse: collapse;
@@ -55,11 +55,6 @@ table:hover {
   cursor: grab;
 }
 
-div {
-  display: flex;
-  justify-content: center;
-}
-
 .selected {
   background-color: orange;
 }
@@ -107,7 +102,7 @@ div {
   flex-direction: row;
 }
 
-button {
+#avail button {
   height: 2em;
   background-color: orange;
   color: white;
