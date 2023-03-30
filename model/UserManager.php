@@ -210,6 +210,28 @@ class UserManager extends Manager
         $req->execute();
         return $req->rowCount();
     }
+
+    public function updateUserSkills($skill_id, $userId)
+    {
+        $db = $this->dbConnect();
+        $updateUserSkills = "INSERT IGNORE INTO user_skill_map (user_id, skill_id) VALUES (:user_id, :skill_id)";
+        $req = $db->prepare($updateUserSkills);
+        $req->bindParam('skill_id',  $skill_id,  PDO::PARAM_INT);
+        $req->bindParam('user_id',  $userId,  PDO::PARAM_INT);
+        $req->execute();
+        return $req->rowCount();
+    }
+
+    public function updateUserLanguages($language_id, $userId)
+    {
+        $db = $this->dbConnect();
+        $updateUserLanguages = "INSERT IGNORE INTO user_language_map (user_id, language_id) VALUES (:user_id, :language_id)";
+        $req = $db->prepare($updateUserLanguages);
+        $req->bindParam('user_id',  $userId,  PDO::PARAM_INT);
+        $req->bindParam('language_id',  $language_id,  PDO::PARAM_INT);
+        $req->execute();
+        return $req->rowCount();
+    }
     // public function updateUserSkills($, $yearsExperience, $companyName, $userId)
     // {
     //     $db = $this->dbConnect();

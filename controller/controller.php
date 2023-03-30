@@ -505,6 +505,27 @@ function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId
     //     echo "Something went wrong.";
     // }
 }
+function updateUserSkills($skillsString, $userId)
+{
+    $userManager = new UserManager();
+    $skillsArray = explode('&', $skillsString);
+    // echo $skillsArray;
+    foreach ($skillsArray as $skill_item) {
+        $skill_id = explode('|', $skill_item)[1];
+        $wasSkillsUpdated = $userManager->updateUserSkills($skill_id, $userId);
+    }
+    echo $wasSkillsUpdated;
+}
+function updateUserLanguages($languagesString, $userId)
+{
+    $userManager = new UserManager();
+    $languagesArray = explode('&', $languagesString);
+    foreach ($languagesArray as $language_item) {
+        $language_id = explode('|', $language_item)[1];
+        $wasLanguagesUpdated = $userManager->updateUserLanguages($language_id, $userId);
+    }
+    echo $wasLanguagesUpdated;
+}
 function createJobForm()
 {
     $userManager = new UserManager();
