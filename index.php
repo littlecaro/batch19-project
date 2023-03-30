@@ -12,6 +12,18 @@ try {
         case "userProfileView":
             showUserProfileView();
             break;
+        case "userPhotoUpload":
+            echo "<pre>";
+            print_r($_FILES);
+            $file = $_FILES['profilePhoto'];
+            uploadUserProfileImage($file);
+            break;
+        case "userResumeUpload":
+            echo "<pre>";
+            print_r($_FILES);
+            $resume = $_FILES['resume'];
+            uploadResume($resume);
+            break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
             $decodedToken = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1])))); // decoding the json web token (JWT) into the array info
@@ -50,6 +62,8 @@ try {
             if ($firstName and $lastName and $email and $pwd and $pwd2 and $companyName and $companyTitle) {
                 //call a controller function
                 companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle);
+            } else if ($firstName and $lastName and $email and $pwd and $pwd2) {
+                userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
             break;
 

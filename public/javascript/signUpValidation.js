@@ -1,5 +1,5 @@
 //use if statements to check if inputs exist bc this might be used on other pages
-
+let whichFormOpen = "";
 function showSignUp(userType) {
   // var company = document.getElementById("company");
   // company.style.display = "block";
@@ -8,8 +8,10 @@ function showSignUp(userType) {
   const account = document.getElementById("createAccount");
   if (account.style.maxHeight == 0) {
     if (userType === "company") {
+      whichFormOpen = "company";
       account.style.maxHeight = "600px";
     } else {
+      whichFormOpen = "user";
       account.style.maxHeight = "500px";
     }
   }
@@ -154,6 +156,7 @@ function handleSubmit(e) {
   const companyTitleGood = companyTitle();
 
   if (
+    whichFormOpen === "company" &&
     lastNameGood &&
     firstNameGood &&
     checkEmailGood &&
@@ -163,7 +166,17 @@ function handleSubmit(e) {
     companyTitleGood
   ) {
     console.log("send");
+  } else if (
+    whichFormOpen === "user" &&
+    lastNameGood &&
+    firstNameGood &&
+    checkEmailGood &&
+    checkPwdGood &&
+    checkPwd2Good
+  ) {
+    console.log("cats2");
   } else {
+    console.log("cats");
     e.preventDefault();
   }
 }
