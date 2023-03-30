@@ -35,7 +35,7 @@
                                     } else {
                                         echo "none";
                                     } ?></li>
-                <li>Location: <?= $talentLocation[0]->location ?></li>
+                <li>Location: <?= $talentLocation[0]->location ?? "None" ?></li>
             </ul>
         </div>
         <div class="talentDesiredPosition">

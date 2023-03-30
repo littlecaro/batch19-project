@@ -287,3 +287,6 @@ label[for="slider"] {
   bottom: -10px;
   margin-top: 10px;
 }
+.userProfile {
+  height: 100%;
+}

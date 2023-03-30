@@ -724,7 +724,7 @@ function fetchJobPostings()
 }
 function showJobCard($jobId)
 {
-    $jobCard = getJobCard($jobId);
+    $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
 }
@@ -751,7 +751,7 @@ function uploadUserProfileImage($file)
     $hash = hash_file("md5", $file["tmp_name"]);
     echo $hash;
     $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2); 
+    $second = substr($hash, 2, 2);
 
     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 

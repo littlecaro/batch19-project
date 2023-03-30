@@ -130,9 +130,9 @@ FROM
     return $listings;
 }
 
-function getJobCard($jobId)
+function getJobCard($jobId, $userId)
 {
-    $userId = 4;
+    // $userId = 4;
     $userCompanyQuery = "SELECT
     users.company_id,
     users.id
