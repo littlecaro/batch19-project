@@ -562,29 +562,6 @@ function getCompanyInfo()
     require("./view/companyDashboard.php");
 }
 
-function uploadImage($file)
-{
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2); // 09
-    $second = substr($hash, 2, 2); // 0f
-
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
-
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
-
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
-
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
-
 function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
 {
     $companyManager = new CompanyManager();
@@ -650,223 +627,27 @@ function updateJobStatus($id, $status)
     setJobStatus($id, $status);
 }
 
-function getCompanyInfo()
+function uploadUserProfileImage($file)
 {
-    $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyInfo();
-    // print_r($companyInfo);
-
-    require("./view/companyDashboard.php");
-}
-
-function uploadImage($file)
-{
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2); // 09
-    $second = substr($hash, 2, 2); // 0f
-
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
-
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
-
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
-
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
-
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
-{
-    $companyManager = new CompanyManager();
-    if ($logo) {
-        $logo = uploadImage($logo);
-    }
-    $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
-
-    if ($result) {
-
-        header("location:index.php?action=companyDashboard");
-    } else {
-        throw new Exception("Update failed.");
-    }
-}
-
-function getEmployeeInfo()
-{
-    $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyBasicInfo();
-    $employeeInfo = $companyManager->fetchEmployeeInfo();
-    // print_r($companyInfo);
-
-    require("./view/employeeInfoView.php");
-}
-
-function updateEmployeeInfo($firstName, $lastName, $jobTitle)
-{
-    $companyManager = new CompanyManager();
-    $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
-    if ($result) {
-        header("location:index.php?action=employeeInfo");
-    } else {
-        throw new Exception("Update failed.");
-    }
-}
-
-function fetchJobPostings()
-{
-    $listings = getJobPostings();
-    require("./view/jobListingsView.php");
-}
-function showJobCard($jobId)
-{
-    $jobCard = getJobCard($jobId);
-    require("./view/jobListingsView.php");
-    return $jobCard;
-}
-function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
-{
-    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
-    if (!empty($listings) && empty($jobId)) {
-        foreach ($listings as $listing) {
-            require "./view/components/jobPostingCard.php";
-        }
-    }
-}
-
-function updateJobStatus($id, $status)
-{
-
-    setJobStatus($id, $status);
-}
-
-function getCompanyInfo()
-{
-    $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyInfo();
-    // print_r($companyInfo);
-
-    require("./view/companyDashboard.php");
-}
-
-function uploadImage($file)
-{
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2); // 09
-    $second = substr($hash, 2, 2); // 0f
-
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
-
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
-
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
-
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
-
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
-{
-    $companyManager = new CompanyManager();
-    if ($logo) {
-        $logo = uploadImage($logo);
-    }
-    $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
-
-    if ($result) {
-
-        header("location:index.php?action=companyDashboard");
-    } else {
-        throw new Exception("Update failed.");
-    }
-}
-
-function getEmployeeInfo()
-{
-    $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyBasicInfo();
-    $employeeInfo = $companyManager->fetchEmployeeInfo();
-    // print_r($companyInfo);
-
-    require("./view/employeeInfoView.php");
-}
-
-function updateEmployeeInfo($firstName, $lastName, $jobTitle)
-{
-    $companyManager = new CompanyManager();
-    $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
-    if ($result) {
-        header("location:index.php?action=employeeInfo");
-    } else {
-        throw new Exception("Update failed.");
-    }
-}
-
-function fetchJobPostings()
-{
-    $listings = getJobPostings();
-    require("./view/jobListingsView.php");
-}
-function showJobCard($jobId)
-{
-    $jobCard = getJobCard($jobId);
-    require("./view/jobListingsView.php");
-    return $jobCard;
-}
-function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
-{
-    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
-    if (!empty($listings) && empty($jobId)) {
-        foreach ($listings as $listing) {
-            require "./view/components/jobPostingCard.php";
-        }
-    }
-}
-
-function updateJobStatus($id, $status)
-{
-
-    setJobStatus($id, $status);
-}
-
-function uploadImage($file){
-    // md5 is considered insecure so generally we don't use it except for files
     $hash = hash_file("md5", $file["tmp_name"]);
     echo $hash;
     $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2);
+    $second = substr($hash, 2, 2); 
 
     mkdir("./public/images/uploaded/$first/$second", 0777, true);
+
+    // allow read & write permissions for everyone
     chmod("./public/images/uploaded/$first", 0777);
     chmod("./public/images/uploaded/$first/$second", 0777);
-    // 0777 is for reading/writing/editing permissions
 
-    
     $type = explode(".", $file['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newpath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file['tmp_name'], $newpath);
-    chmod($newpath, 0777);
+    $newPath = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($file["tmp_name"], $newPath);
 
-    // TODO: Save the path to the image in the DB for the user's profile_photo
-    $userManager = new UserManager();
-    $newpath = $userManager->uploadUserPhoto($file);
-    header("Location:index.php?action=userProfile");
+    chmod($newPath, 0777);
+
+    return $newPath;
 }
 function uploadResume($resume){
     $hash = hash_file("md5", $resume["tmp_name"]);
