@@ -108,11 +108,11 @@ h4 {
 
 .bizProfile {
   margin-left: 300px;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 268px);
   height: 100%;
 }
 
-.main {
+.userProfile .main {
   /* height: auto;
   min-width: 500px;
   padding: 40px 20px; current changes */
@@ -133,6 +133,7 @@ h4 {
   flex-direction: column;
   align-items: center;
 }
+
 .main #personal {
   height: 80vh;
 }
