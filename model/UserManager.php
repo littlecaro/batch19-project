@@ -33,34 +33,34 @@ class UserManager extends Manager
         return $req->execute();
     }
 
-    // public function insertUser($firstName, $lastName, $email, $pwd)
-    // {
-    //     $db = $this->dbConnect();
-    //     //hash pw
+    public function insertUser($firstName, $lastName, $email, $pwd)
+    {
+        $db = $this->dbConnect();
+        //hash pw
 
-    //     $pwdHash = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+        $pwdHash = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
 
-    //     //insert into db
-    //     $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type)
-    //     VALUES (:firstName, :lastName, :pwdHash, :email, 0)";
-    //     // 0 is for email login
-    //     $req = $db->prepare($preparedinsertSql);
-    //     $req->bindParam('firstName', $firstName, PDO::PARAM_STR);
-    //     $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
-    //     $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
-    //     $req->bindParam('email', $email, PDO::PARAM_STR);
-    //     $wasAdded = $req->execute();
-    //     $req->closeCursor();
-    //     //if a user was added, we'll fetch this info and run one more query
-    //     //this query is to get the info for the session
-    //     if ($wasAdded) {
-    //         $req = $db->query("SELECT LAST_INSERT_ID() AS user_id, first_name, last_name FROM users WHERE id = LAST_INSERT_ID()");
-    //         return $req->fetch(PDO::FETCH_OBJ);
-    //     } else {
-    //         return false;
-    //     }
-    // }
-public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+        //insert into db
+        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type)
+        VALUES (:firstName, :lastName, :pwdHash, :email, 0)";
+        // 0 is for email login
+        $req = $db->prepare($preparedinsertSql);
+        $req->bindParam('firstName', $firstName, PDO::PARAM_STR);
+        $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
+        $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
+        $req->bindParam('email', $email, PDO::PARAM_STR);
+        $wasAdded = $req->execute();
+        $req->closeCursor();
+        //if a user was added, we'll fetch this info and run one more query
+        //this query is to get the info for the session
+        if ($wasAdded) {
+            $req = $db->query("SELECT LAST_INSERT_ID() AS user_id, first_name, last_name FROM users WHERE id = LAST_INSERT_ID()");
+            return $req->fetch(PDO::FETCH_OBJ);
+        } else {
+            return false;
+        }
+    }
+    public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
         //hash pw
@@ -248,14 +248,16 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
 
     //     return $user;
     // }
-    public function uploadUserPhoto($newpath){
+    public function uploadUserPhoto($newpath)
+    {
         $db = $this->dbConnect();
         $preparedinsertSql = "INSERT INTO users (profile_picture)
         VALUES (:profilepicture)";
         $req = $db->prepare($preparedinsertSql);
         $req->bindParam('profile_picture', $newpath, PDO::PARAM_STR);
     }
-    public function uploadUserResume($resume){
+    public function uploadUserResume($resume)
+    {
         $db = $this->dbConnect();
         $preparedinsertSql = "INSERT INTO users (resume_file_url)
         VALUES (:resume)";
