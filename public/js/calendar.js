@@ -1,20 +1,30 @@
 function loadCalendar() {
   let offset = 0;
-  console.log(entries);
-  console.log(receives);
+  // console.log(entries);
+  // console.log(receives);
 
   const calendar = document.querySelector(".calendar");
 
   const prevWeek = document.querySelector(".prev");
   prevWeek.addEventListener("click", () => {
-    offset += 7;
-    displayCal(offset);
+    let selectionExists = document.querySelector(".selection");
+    if (selectionExists) {
+      favDialog.showModal();
+    } else {
+      offset += 7;
+      displayCal(offset);
+    }
   });
 
   const nextWeek = document.querySelector(".next");
   nextWeek.addEventListener("click", () => {
-    offset -= 7;
-    displayCal(offset);
+    let selectionExists = document.querySelector(".selection");
+    if (selectionExists) {
+      favDialog.showModal();
+    } else {
+      offset -= 7;
+      displayCal(offset);
+    }
   });
 
   function displayCal(x = 0) {
@@ -341,9 +351,17 @@ function loadCalendar() {
 
     xhr.addEventListener("load", function () {
       location.reload();
+      // displayCal();
+      // refresh();
+      // loadCalendar();
     });
 
     xhr.send(null);
+  }
+
+  function refresh(reload) {
+    window.location = "#avail";
+    window.location.reload(true);
   }
 
   function inputEntries(entries, receives) {

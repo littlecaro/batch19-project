@@ -246,6 +246,14 @@ function addCalendar($data)
     }
 }
 
+// function showCalendar($user_id)
+// {
+//     $calendarManager = new CalendarManager();
+//     $entries = $calendarManager->loadCalendar($user_id);
+//     $receives = $calendarManager->loadInterviews($user_id);
+//     require("./view/userProfileView.php");
+// }
+
 function deleteCalendarEntry($entry)
 {
     for ($i = 0; $i < count($entry); $i++) {
@@ -261,8 +269,9 @@ function deleteCalendarEntry($entry)
     }
 }
 
-function showTalents($filter = false)
+function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
+    // echo $filter;
     ob_start();
     if (!$filter) {
     }
@@ -276,9 +285,11 @@ function showTalents($filter = false)
             $desiredPositions = getTalentDesiredPosition($key->id);
             $highestDegree = getTalentHighestDegree($key->id);
             $talentLanguages = getTalentLanguages($key->id);
+            $talentLocation = getTalentLocation($key->id);
+            // print_r($talentLocation);
             if ($filter) {
                 // ob_start();
-                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages);
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0], $saveData);
 
                 include('./view/components/talentCard.php'); //TODO:Limit talent cards
                 $talentCard = ob_get_contents();
@@ -297,7 +308,7 @@ function showTalents($filter = false)
         $talentCards = ob_get_clean();
         require('./view/filterView.php');
     } else {
-        ob_end_clean();
+        // ob_end_clean();
         // print_r($scale);
         arsort($scale);
         // print_r($scale);
@@ -306,48 +317,103 @@ function showTalents($filter = false)
             // echo $key;
             echo $CandidateRatingData[$key];
         }
+        // print_r($saveData);
+        $talentCards = ob_get_clean();
+        $saveData =  json_encode($saveData);
+        require('./view/filterView.php');
 
-        // ob_end_clean();
+
         // echo "test";
-        parseTalentFilter();
+        if (empty($saveData)) {
+            // parseTalentFilter();
+        }
     }
 }
+
 function loadTalentCards()
 {
     require("./view/filterView.php");
 }
 function parseTalentFilter()
 {
-    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
-    // echo $filteredYearsMin . "bteeee";
-    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
-    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
-    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
-    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
-    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    if (!empty($savedData)) {
+    } else {
+
+        $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+        // echo $filteredYearsMin . "bteeee";
+        $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+        $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+        $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+        $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
+        $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+        $filteredTalentlocation = $_GET["locations"] ?? null;
+        $jobId = $_GET["jobId"] ?? null;
+    }
     $arr = array(
         'filteredYearsMin' => $filteredYearsMin,
         'filteredYearsMax' => $filteredYearsMax,
         'filteredSkills' => $filteredSkills,
         'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredLocation' => $filteredTalentlocation,
         'filteredHighestDegrees' => $filteredHighestDegrees,
         'filteredLanguages' => $filteredLanguages,
 
     );
     $arr = json_encode($arr);
-    saveTalentFilter($arr);
+    saveTalentFilter($arr, $jobId);
 }
-function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language)
-{   //TODO:Case for any tags
-    //TODO:add filter for city]
-    $score  = 1;
+function updateSavedTalentSearch($data, $jobId)
+{
+    $user_id = 1;
     $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
     // echo $filteredYearsMin . "bteeee";
     $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
     $filteredSkills = explode(",", $_GET["skills"]) ?? null;
     $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
-    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
     $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    $filteredTalentlocation = $_GET["locations"] ?? null;
+
+
+    $arr = array(
+        'filteredYearsMin' => $filteredYearsMin,
+        'filteredYearsMax' => $filteredYearsMax,
+        'filteredSkills' => $filteredSkills,
+        'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredLocation' => $filteredTalentlocation,
+        'filteredHighestDegrees' => $filteredHighestDegrees,
+        'filteredLanguages' => $filteredLanguages,
+
+    );
+    print_r($arr);
+    echo "<br>";
+    echo "array";
+    $arr = json_encode($arr);
+    updateTalentFilter($arr, $user_id, $jobId);
+}
+function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language, $location, $saveData)
+{   //TODO:Case for any tags
+    //TODO:add filter for city
+    $score  = 1;
+    if (empty($saveData)) {
+        $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+        // echo $filteredYearsMin . "bteeee";
+        $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+        $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+        $filteredTalentlocation = $_GET["talentlocation"] ?? null;
+        $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+        $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
+        $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    } else {
+        // print_r($saveData);
+        $filteredYearsMin = $saveData->filteredYearsMin;
+        $filteredTalentlocation = $saveData->filteredLocation;
+        $filteredYearsMax = $saveData->filteredYearsMax;
+        $filteredSkills = $saveData->filteredSkills;
+        $filteredDesiredPositions = $saveData->filteredDesiredPositions;
+        $filteredHighestDegrees = $saveData->filteredHighestDegrees;
+        $filteredLanguages = $saveData->filteredLanguages;
+    }
     // echo $filteredYearsMax;
     if (is_numeric($filteredYearsMax) and is_numeric($filteredYearsMin)) {
         // echo "starting";
@@ -385,7 +451,27 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
             $tmp = array_product($ratings);
             $score = $score * $tmp + 0.2;
         }
-    }
+    } //TODO: Location cannot be easily implemented without checking country
+    // if (!empty($filteredTalentlocation)) {
+    //     $ratings = array();
+    //     $sim = similar_text($filteredTalentlocation, $location->location, $perc);
+    //     // echo $twoValue->skills_fixed;
+    //     // echo $perc;
+    //     if ($perc > 50) {
+    //         array_push($ratings, $perc / 100);
+    //     }
+
+
+    //     $tmp = array_filter($ratings);
+    //     // print_r($tmp);
+    //     // echo $tmp;
+    //     if (empty($tmp)) {
+    //         $score = $score - 0.2;
+    //     } else {
+    //         $tmp = array_product($ratings);
+    //         $score = $score * $tmp + 0.2;
+    //     }
+    // }
     if (!empty($filteredDesiredPositions)) {
         $ratings = array();
         foreach ($filteredDesiredPositions as $key => $value) {
@@ -446,7 +532,9 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
         }
     }
 
-
+    if ($score < 0) {
+        $score = 0;
+    }
     return $score;
 }
 
@@ -457,6 +545,8 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $cityName = $userManager->getCityName($user->city_id);
+    // $educationLevel = $userManager->getEducationLevel($education->degree_level);
     $allSkills = $userManager->getSkillsList();
     $allLanguages = $userManager->getLanguagesList();
     $allCities = $userManager->getCitiesList();
@@ -467,9 +557,9 @@ function showUserProfileView()
     require("./view/userProfileView.php");
 }
 
+
 function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
 {
-
     $userManager = new UserManager();
     $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
     // echo $wasEducationUpdated;
@@ -530,6 +620,8 @@ function createJobForm()
 {
     $userManager = new UserManager();
     $cities = $userManager->getCitiesList();
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     require("./view/addNewJobView.php");
 }
 
@@ -542,11 +634,121 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $cities = (int)$cities;
 
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
         // TODO: finish this bish!
         echo "Success! New job created. Get your tax money";
     } else {
         echo "FAIL!!! U DUN MESSED UP";
+    }
+}
+
+function getCompanyInfo()
+{
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
+    // print_r($companyInfo);
+
+    require("./view/companyDashboard.php");
+}
+
+function uploadImage($file)
+{
+    $hash = hash_file("md5", $file["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2); // 09
+    $second = substr($hash, 2, 2); // 0f
+
+    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+
+    // allow read & write permissions for everyone
+    chmod("./public/images/uploaded/$first", 0777);
+    chmod("./public/images/uploaded/$first/$second", 0777);
+
+    $type = explode(".", $file['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newPath = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($file["tmp_name"], $newPath);
+
+    chmod($newPath, 0777);
+
+    return $newPath;
+}
+
+function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
+{
+    $companyManager = new CompanyManager();
+    if ($logo) {
+        $logo = uploadImage($logo);
+    }
+    $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+
+    if ($result) {
+
+        header("location:index.php?action=companyDashboard");
+    } else {
+        throw new Exception("Update failed.");
+    }
+}
+
+function getEmployeeInfo()
+{
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+    $employeeInfo = $companyManager->fetchEmployeeInfo();
+    // print_r($companyInfo);
+
+    require("./view/employeeInfoView.php");
+}
+
+function updateEmployeeInfo($firstName, $lastName, $jobTitle)
+{
+    $companyManager = new CompanyManager();
+    $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
+    if ($result) {
+        header("location:index.php?action=employeeInfo");
+    } else {
+        throw new Exception("Update failed.");
+    }
+}
+
+function fetchJobPostings()
+{
+    $listings = getJobPostings();
+    require("./view/jobListingsView.php");
+}
+function showJobCard($jobId)
+{
+    $jobCard = getJobCard($jobId);
+    require("./view/jobListingsView.php");
+    return $jobCard;
+}
+function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
+{
+    updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
+    $listings = getJobPostings();
+    if (!empty($listings) && empty($jobId)) {
+        foreach ($listings as $listing) {
+            require "./view/components/jobPostingCard.php";
+        }
+    }
+}
+
+function updateJobStatus($id, $status)
+{
+
+    setJobStatus($id, $status);
+}
+function savedSearchExists($jobId)
+{
+
+    $savedSearchExists = talentFilterExists($jobId);
+    // print_r($savedSearchExists);
+    if (!empty($savedSearchExists)) {
+        $searchdata = json_decode($savedSearchExists[0]->search_data);
+        return $searchdata;
+    } else {
+        return false;
     }
 }

@@ -19,8 +19,10 @@ class UserManager extends Manager
         $insertUser = 'INSERT INTO users (first_name, last_name, email, profile_picture, login_type) 
         VALUES (:inFirst_name, :inLast_name, :inEmail, :inProfile_picture, 0); 
         SET @last_id_in_table1 = LAST_INSERT_ID(); 
-        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1);  -- // inserting id for professional
-        INSERT INTO education (user_id) VALUES (@last_id_in_table1);';  // inserting id for education
+        INSERT INTO education (user_id) VALUES (@last_id_in_table1);  --// inserting id for education
+        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1); -- // inserting id for professional
+        INSERT INTO user_skill_map (user_id) VALUES (@last_id_table1);';
+
 
         $req = $db->prepare($insertUser);
         // your value is the decodedToken from the JSon and -> selecting the specific title from there
@@ -108,17 +110,16 @@ class UserManager extends Manager
         $experience = $req->fetch(PDO::FETCH_OBJ);
         return $experience;
     }
-
-    // public function getUserSkills($userId)
-    // {
-    //     $db = $this->dbConnect();
-    //     //TODO: get user skills WHERE user id matches;
-    //     $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
-    //     $req = $db->prepare($userSkills);
-    //     $req->execute([$userId]);
-    //     $skill = $req->fetchALL(PDO::FETCH_OBJ);
-    //     return $skill;
-    // }
+    public function getUserSkills($userId)
+    {
+        $db = $this->dbConnect();
+        //TODO: get user skills WHERE user id matches;
+        $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
+        $req = $db->prepare($userSkills);
+        $req->execute([$userId]);
+        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        return $skill;
+    }
 
     public function getSkillsList()
     {
@@ -153,15 +154,16 @@ class UserManager extends Manager
         return $education;
     }
 
-    public function getUserSkills($userId)
+
+    public function getCityName($cityId)
     {
         $db = $this->dbConnect();
-        //TODO: get experience WHERE user id matches;
-        $userSkills = ("SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?");
-        $req = $db->prepare($userSkills);
-        $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
-        return $skill;
+        $cityName = ("SELECT name FROM cities WHERE id = :inCityId");
+        $req = $db->prepare($cityName);
+        $req->bindParam(':inCityId', $cityId, PDO::PARAM_INT);
+        $req->execute();
+        $name = $req->fetchALL(PDO::FETCH_OBJ);
+        return $name;
     }
 
     public function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
@@ -173,7 +175,7 @@ class UserManager extends Manager
         $req->bindParam(':inCity', $city, PDO::PARAM_STR);
         $cityId = $req->execute();
         $cityId = $req->fetchAll(PDO::FETCH_OBJ);
-        $cityId = $cityId[0]->id; // the city id in table cities
+        $cityId = $cityId[0]->id ?? NULL; // the city id in table cities
 
         $updateUserP = "UPDATE users SET phone_number = :inPhoneNb, city_id = :inCity, visa_sponsorship = :inVisa, desired_salary = :inSalary WHERE id = :id";
         $req = $db->prepare($updateUserP);
@@ -185,6 +187,17 @@ class UserManager extends Manager
         $result2 = $req->execute();
         return $result2;
     }
+
+    // public function getEducationLevel($educationId)
+    // {
+    //     $db = $this->dbConnect();
+    //     $educationLevel = ("SELECT degree_level FROM education WHERE user_id = :inEducationId");
+    //     $req = $db->prepare($educationLevel);
+    //     $req->bindParam(':inEducationId', $educationId, PDO::PARAM_INT);
+    //     $req->execute();
+    //     $name = $req->fetchALL(PDO::FETCH_OBJ);
+    //     return $name;
+    // }
 
     public function updateUserEducation($userId, $degree, $degreeLevel)
     {

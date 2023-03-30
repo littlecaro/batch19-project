@@ -1,18 +1,22 @@
+if (cityName) {
+  const selectedOption = document.querySelector(`option[value=${cityName}]`);
+  selectedOption.setAttribute("selected", true);
+}
 function updateUserPersonal(e) {
   e.preventDefault();
-  console.log(city.options[city.selectedIndex].value);
-
+  // console.log(city.options[city.selectedIndex].value);
+  console.log(cityName);
   const formData = new FormData();
   formData.append("phoneNb", phoneNb.value);
   formData.append("city", city.options[city.selectedIndex].value); // TODO:
   formData.append("salary", salary.value);
   formData.append("id", id.value);
   var inputs = document.querySelectorAll('input[type="radio"]');
-  console.log(inputs);
+  // console.log(inputs);
   for (var i = 0; i < inputs.length; i++) {
     var input = inputs[i];
     if (input.checked) {
-      alert("Checked input is :" + inputs[i].value);
+      // alert("Checked input is :" + inputs[i].value);
       formData.append("visa", inputs[i].value);
       break;
     }
