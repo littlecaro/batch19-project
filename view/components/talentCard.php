@@ -7,7 +7,7 @@
             <p><?= $talentInfo[0]->first_name . " " . $talentInfo[0]->last_name; ?></p>
         </div>
         <div class="talentMatch"><?php
-                                    if (!empty($rating)) {
+                                    if (isset($rating)) {
                                     ?><p>Match rating:<?php
                                                         echo floor($rating * 100) . "%";
                                                         ?></p>
@@ -35,7 +35,7 @@
                                     } else {
                                         echo "none";
                                     } ?></li>
-                <li></li>
+                <li>Location: <?= $talentLocation[0]->location ?></li>
             </ul>
         </div>
         <div class="talentDesiredPosition">

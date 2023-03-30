@@ -60,7 +60,7 @@ class UserManager extends Manager
             return false;
         }
     }
-public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
+    public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
         //hash pw
@@ -248,14 +248,16 @@ public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyN
 
     //     return $user;
     // }
-    public function uploadUserPhoto($newpath){
+    public function uploadUserPhoto($newpath)
+    {
         $db = $this->dbConnect();
         $preparedinsertSql = "INSERT INTO users (profile_picture)
         VALUES (:profilepicture)";
         $req = $db->prepare($preparedinsertSql);
         $req->bindParam('profile_picture', $newpath, PDO::PARAM_STR);
     }
-    public function uploadUserResume($resume){
+    public function uploadUserResume($resume)
+    {
         $db = $this->dbConnect();
         $preparedinsertSql = "INSERT INTO users (resume_file_url)
         VALUES (:resume)";
