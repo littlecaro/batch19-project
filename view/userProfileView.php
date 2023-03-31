@@ -10,6 +10,15 @@ ob_start();
 <!--sidebar  -->
 <div class="sidebar">
   <h1 class="logo"><a href="./index.php"> WaygukIn</a></h1>
+
+  <!-- <button class="profile" onclick="myFunction('landing')">
+            <img class="profile-img" src="./public/images/ElonMusk.webp" alt="Elon Musk's photo looking head to left">
+            <div class="profile-name">
+                <h4>Elon Musk</h4>
+                <p>Space</p>
+            </div>
+    </button> -->
+
   <!-- profile photo upload here -->
   <div class="profile">
     <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
@@ -46,66 +55,76 @@ ob_start();
 
 <!-- main -->
 <div class="main">
-  <section id="personal">
+  <<<<<<< HEAD <section id="personal">
+    =======
+    <section id="landing">
 
-    <?php include('./view/userProfilePersonal.php') ?>
+      <?php include('./view/userProfileLanding.php') ?>
 
-  </section>
-  <section id="resume" class="hidden">
-    <div id="resume">
-      <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
-        <p>
-        <h2>Resume/CV</h2>
-        <input type="file" name="resume" id="resume" accept=".pdf" />
-        </p>
-        <p>
-          <input id="submitResume" type="submit" value="Save" />
-        </p>
-      </form>
-    </div>
-  </section>
+    </section>
 
-  <section id="resume" class="hidden">
-    <div id="resume">
-      <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
-        <p>
-        <h2>Resume/CV</h2>
-        <input type="file" name="resume" id="resume" accept=".pdf" />
-        </p>
-        <p>
-          <input id="submitResume" type="submit" value="UPLOAD" />
-        </p>
-      </form>
-    </div>
-  </section>
 
-  <section id="education" class="hidden">
-    <p>Your education level</p>
+    <section id="personal" class="hidden">
+      >>>>>>> main
 
-    <?php include('./view/userProfileEducation.php') ?>
+      <?php include('./view/userProfilePersonal.php') ?>
 
-  </section>
+    </section>
+    <section id="resume" class="hidden">
+      <div id="resume">
+        <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
+          <p>
+          <h2>Resume/CV</h2>
+          <input type="file" name="resume" id="resume" accept=".pdf" />
+          </p>
+          <p>
+            <input id="submitResume" type="submit" value="Save" />
+          </p>
+        </form>
+      </div>
+    </section>
 
-  <section id="experience" class="hidden">
-    <p>Your experiences</p>
+    <section id="resume" class="hidden">
+      <div id="resume">
+        <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
+          <p>
+          <h2>Resume/CV</h2>
+          <input type="file" name="resume" id="resume" accept=".pdf" />
+          </p>
+          <p>
+            <input id="submitResume" type="submit" value="UPLOAD" />
+          </p>
+        </form>
+      </div>
+    </section>
 
-    <?php include('./view/userProfileExperience.php') ?>
+    <section id="education" class="hidden">
+      <p>Your education level</p>
 
-  </section>
+      <?php include('./view/userProfileEducation.php') ?>
 
-  <section id="skills" class="hidden">
-    <p>Your Skills</p>
+    </section>
 
-    <?php include('./view/userProfileSkills.php') ?>
+    <section id="experience" class="hidden">
+      <p>Your experiences</p>
 
-  </section>
+      <?php include('./view/userProfileExperience.php') ?>
 
-  <section id="avail" class="hidden">
-    <!-- <p>Your Availability</p>
+    </section>
+
+    <section id="skills" class="hidden">
+      <p>Your Skills</p>
+
+      <?php include('./view/userProfileSkills.php') ?>
+
+    </section>
+
+    <section id="avail" class="hidden">
+      <!-- <p>Your Availability</p>
         <div class="avail"> -->
-    <?php include('./view/calendarView.php') ?>
-    <!-- </div> -->
-  </section>
+      <?php include('./view/calendarView.php') ?>
+      <!-- </div> -->
+    </section>
 
 </div>
 <?php
