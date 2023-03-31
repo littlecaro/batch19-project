@@ -320,6 +320,16 @@ try {
             session_destroy();
             header("location:index.php");
             break;
+        case "talentProfile":
+            $id = $_POST["talentID"] ?? null;
+            $jobID = $_POST['jobID'] ?? null;
+            showTalentProfileView($id, $jobID);
+            break;
+        case "bookInterview":
+            $id = $_POST["talentID"] ?? null;
+            $jobID = $_POST['jobID'] ?? null;
+            bookInterview($id, $jobID);
+            break;
         default:
             showIndex();
             break;
