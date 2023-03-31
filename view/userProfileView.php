@@ -10,6 +10,15 @@ ob_start();
 <!--sidebar  -->
 <div class="sidebar">
     <h1 class="logo"><a href="./index.php"> WaygukIn</a></h1>
+
+    <!-- <button class="profile" onclick="myFunction('landing')">
+            <img class="profile-img" src="./public/images/ElonMusk.webp" alt="Elon Musk's photo looking head to left">
+            <div class="profile-name">
+                <h4>Elon Musk</h4>
+                <p>Space</p>
+            </div>
+    </button> -->
+    
     <!-- profile photo upload here -->
     <div class="profile">
         <form
@@ -61,7 +70,14 @@ ob_start();
 
 <!-- main -->
 <div class="main">
-    <section id="personal">
+    <section id="landing">
+
+        <?php include('./view/userProfileLanding.php') ?>
+
+    </section>
+
+
+    <section id="personal" class="hidden">
 
         <?php include('./view/userProfilePersonal.php') ?>
 

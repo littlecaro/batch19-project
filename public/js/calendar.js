@@ -495,11 +495,12 @@ function loadCalendar() {
   }
 
   function dayToTh(day) {
-    if (day == 1) {
+    let th = day % 10;
+    if (th == 1) {
       return `${day}st`;
-    } else if (day == 2) {
+    } else if (th == 2) {
       return `${day}nd`;
-    } else if (day == 3) {
+    } else if (th == 3) {
       return `${day}rd`;
     } else {
       return `${day}th`;
