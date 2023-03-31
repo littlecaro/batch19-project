@@ -40,6 +40,7 @@ class CompanyManager extends Manager
 
     {
         $COMPANY_ID = 1;  // TODO: REMOVE THIS!!
+        $USER_ID = 2; // TODO: REMOVE THIS!!
         $db = $this->dbConnect();
         $query = "UPDATE companies SET name = :bizName, company_address = :bizAddress, email = :email, phone_number = :phone, website_address = :webSite, logo_img = :logo WHERE ID = :companyId";
         $req = $db->prepare($query);
@@ -52,7 +53,19 @@ class CompanyManager extends Manager
         $req->bindParam("logo", $logo, PDO::PARAM_STR);
 
         $result = $req->execute();
-        return $result;
+        $req->closeCursor();
+
+        // Create an SQL query to update the users table
+        // Set profile_photo to your $logo variable
+        // WHERE the user_id matches the logged in user's id ($_SESSION['id'])
+
+        $query = "UPDATE users SET profile_picture = :logo WHERE ID = :userID";
+        $req = $db->prepare($query);
+        $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
+        $req->bindParam("logo", $logo, PDO::PARAM_STR);
+
+        $result2 = $req->execute();
+        return [$result, $result2];
     }
 
     public function fetchEmployeeInfo()

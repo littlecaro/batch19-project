@@ -1,64 +1,52 @@
-body,
-html {
-  /* width: 100vw; */
-  height: 100vh;
-  /* overflow: hidden; */
-  margin: 0;
-  font-size: 16px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
-* {
-  /* outline: red 1px solid; */
-}
-.talentHeader {
-  position: absolute;
-  width: 100%;
-  background-color: var(--header-color-primary);
-  display: flex;
-  height: 60px;
-  z-index: 2;
-}
 .talentMain {
   font-size: 1rem;
   display: flex;
-  background-color: var(--background-color-secondary);
   width: 100%;
   height: 100%;
   overflow: hidden;
+  justify-content: flex-end;
 }
-.talentSide {
-  height: 100%;
-  width: 16%;
-  background-color: var(--business-color-primary);
-  z-index: 1;
-}
+
 .talentSearchMain {
+  overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* justify-content: center; */
   align-items: center;
-  justify-content: center;
+  height: 90%;
   width: 100%;
-  height: 100%;
-  top: 8%;
-  position: relative;
-  height: fit-content;
-  padding-bottom: 10%;
+  /* padding-left: 20rem; */
+  /* padding-right: 20rem; */
+  background-color: var(--greyColor);
 }
 .talentCenter {
-  width: 84%;
-  top: 10%;
-  position: relative;
-
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* justify-content: center; */
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  /* padding-left: 20rem; */
+  /* padding-right: 20rem; */
+  background-color: var(--greyColor);
 }
 .talentCard {
-  margin: 30px;
-  width: 80%;
-  height: 200px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 1px 1px 5px gray;
+  background-color: white;
+  height: fit-content;
+  width: 90%;
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .talentCardMain {
   display: flex;
@@ -95,6 +83,7 @@ html {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .talentBasicInfo {
   flex: 1.2;
@@ -110,18 +99,18 @@ html {
 }
 .editSearch {
   position: fixed;
-  top: 8%;
+  /* top: 8%; */
   right: 0;
+  display: flex;
   z-index: 1040;
-  width: 84%;
+  width: calc(100% - 220px - 4rem);
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(3px);
 }
 .editSearchMain {
-  display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
   padding-left: 70px;
   height: 83%;
   background-color: white;
@@ -259,6 +248,7 @@ label[for="slider"] {
   /* border: 1px solid #1e87f0; */
   box-sizing: border-box;
   margin: 1em;
+  margin-bottom: 0;
   padding: 0em 0.5em;
   display: -webkit-box;
   display: flex;
@@ -277,8 +267,26 @@ label[for="slider"] {
 }
 .searchTags ul li {
   margin: 0.5em 0.2em;
-  padding: 0.2em;
+  padding: 0.3em;
   color: #fff;
   background-color: #1e87f0;
   border-radius: 5px;
+}
+.talentSearchTitle {
+  margin-bottom: 0;
+}
+#cancelSearch,
+#editSearch {
+  background-color: var(--button-color-primary);
+  border: 0;
+  height: 30px;
+  color: white;
+  position: relative;
+  /* padding-top: 50px; */
+  /* margin-top: -50px; */
+  bottom: -10px;
+  margin-top: 10px;
+}
+.userProfile {
+  height: 100%;
 }

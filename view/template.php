@@ -1,4 +1,3 @@
-
 <?php
 $_SESSION["userId"] = 1; ?>
 
@@ -14,7 +13,6 @@ $_SESSION["userId"] = 1; ?>
     <link rel="stylesheet" href="./public/css/chatStyle.css">
     <link rel="stylesheet" href="./public/css/styleMain.css" />
     <link rel="stylesheet" href="./public/css/messenger.css">
-    <link rel="stylesheet" href="./public/css/talentSearchStyle.css">
     <script>
         const userId = <?= $_SESSION["userId"] ?>
     </script>
