@@ -172,6 +172,7 @@ try {
             }
 
             break;
+
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -185,6 +186,7 @@ try {
                 parseTalentFilter($jobId);
                 showTalents(true, null);
             }
+
             // case "getUserSkills":
             //     require("./view/userProfileSkills.php");
             //     break;
@@ -273,9 +275,13 @@ try {
             $email = $_POST['email'] ?? null;
             $phone = $_POST['phone'] ?? null;
             $webSite = $_POST['webSite'] ?? null;
-            $logo = $_FILES['logoUpload'] ?? null;
+            $oldLogo = $_POST['oldLogo'] ?? null;
+            $logo = !empty($_FILES['logoUpload']['name']) ? $_FILES['logoUpload'] : null;
+            // echo "<pre>";
+            // print_r($_FILES);
+            // echo "logo; $logo";
             if ($bizName and $bizAddress and $email and $phone and $webSite) {
-                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
             } else {
                 throw new Exception("missing data");
             }
@@ -303,6 +309,10 @@ try {
             $id = (int)$id;
             $status = $_POST['status'] ?? null;
             updateJobStatus($id, $status);
+            break;
+        case "signOut";
+            session_destroy();
+            header("location:index.php");
             break;
         default:
             showIndex();
