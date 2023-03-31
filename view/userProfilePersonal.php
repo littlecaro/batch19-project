@@ -1,4 +1,31 @@
 <!-- <form action="index.php?action=userProfileView" method="POST"> -->
+<style>
+    #slider-square {
+        border-radius: 0;
+    }
+
+    #slider-square .noUi-handle {
+        border-radius: 0;
+        background: #2980b9;
+        height: 18px;
+        width: 18px;
+        top: -1px;
+        right: -9px;
+    }
+
+    .slider-styled,
+    .slider-styled .noUi-handle {
+        box-shadow: none;
+    }
+
+    /* Hide markers on slider handles */
+    .slider-styled .noUi-handle::before,
+    .slider-styled .noUi-handle::after {
+        display: none;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js" integrity="sha512-UOJe4paV6hYWBnS0c9GnIRH8PLm2nFK22uhfAvsTIqd3uwnWsVri1OPn5fJYdLtGY3wB11LGHJ4yPU1WFJeBYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" integrity="sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <form id="personalForm"> <!-- Submitted with AJAX -->
     <script>
         const cityName = `<?php if (!empty($cityName)) {
@@ -74,7 +101,16 @@
         </select>
     </p>
     <label for="salary">Expected salary (KRW):</label>
-    <input type="text" name="salary" id="salary" value="<?= $user->desired_salary; ?>" /><br />
+    <br><br><br><br>
+    <div class="salaryslider" style=" display:flex; justify-content:center">
+        <div class="slider-styled" id="slider-square" style="width:300px;"></div>
+
+        <input type="hidden" name="salary" id="salary" value="<?= $user->desired_salary; ?>" />
+        <!-- <input id="salaryMin" type="hidden" name="salaryMin">
+        <input id="salaryMax" type="hidden" name="salaryMax"> -->
+    </div>
+
+    <br />
     <p>
         Do you need visa sponsorhip?
         <label for="yes">Yes</label>
@@ -91,6 +127,47 @@
     <input type="submit" value="Save">
     <p id="personalUpdateStatus"></p>
     <script>
+    </script>
+    <script>
+        var arbitraryValuesSlider = document.getElementById('slider-square');
+        var arbitraryValuesForSlider = ['₩0', '₩10M', '₩20M', '₩30M', '₩40M', '₩50M', '₩60M', '₩70M', '₩80M+'];
+        var format = {
+            to: function(value) {
+                return arbitraryValuesForSlider[Math.round(value)];
+            },
+            from: function(value) {
+                return arbitraryValuesForSlider.indexOf(value);
+            }
+        };
+
+        noUiSlider.create(arbitraryValuesSlider, {
+            // start values are parsed by 'format'
+            start: ['₩50M'],
+            connect: true,
+            range: {
+                min: 0,
+                max: arbitraryValuesForSlider.length - 1
+            },
+            step: 1,
+            tooltips: true,
+            format: format,
+            // pips: {
+            //     mode: 'steps',
+            //     format: format,
+            //     density: 50
+            // },
+        });
+    </script>
+    <script>
+        const form = document.querySelector("form");
+        const slider = document.querySelector("#slider-square");
+        form.addEventListener("submit", function(e) {
+            const userSalary = slider.noUiSlider.get();
+            console.log(userSalary);
+            user = userSalary.substr(1, 2);
+            document.getElementById('salary').value = parseInt(user);
+            e.preventDefault();
+        });
     </script>
     <script defer src="./public/js/updateUserPersonal.js"></script>
 </form>

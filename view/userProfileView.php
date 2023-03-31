@@ -9,13 +9,12 @@ ob_start();
 <!-- part of website icon: we can choose from navibar or can create our own -->
 <!--sidebar  -->
 <div class="sidebar">
-    <h1 class="logo"><a href="./index.php"> WaygukIn</a></h1>
     <div class="profile">
         <!-- We need here a profile picture -->
-        <img class="profile-img" src="./public/images/ElonMusk.webp" alt="Elon Musk's photo looking head to left">
+        <img class="profile-img" src="<?= $companyInfo->logo_img ?? "./public/images/default.svg" ?>" alt="Elon Musk's photo looking head to left"><br>
         <div class="profile-name">
-            <h4>Elon Musk</h4>
-            <p>Space</p>
+            <h4><?= $companyInfo->name ?? "NEW COMPANY" ?></h4>
+            <p>Member since <?= $companyInfo->date_created ?></p>
         </div>
     </div>
     <div class="menus">
@@ -70,7 +69,7 @@ ob_start();
     <section id="avail" class="hidden">
         <!-- <p>Your Availability</p>
         <div class="avail"> -->
-            <?php include('./view/calendarView.php') ?>
+        <?php include('./view/calendarView.php') ?>
         <!-- </div> -->
     </section>
 
