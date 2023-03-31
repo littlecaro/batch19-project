@@ -830,3 +830,25 @@ function savedSearchExists($jobId)
         return false;
     }
 }
+
+function showTalentProfileView($id, $jobID) {
+    $userManager = new UserManager();
+    $user = $userManager->getUserProfile($id);
+    $experience = $userManager->getUserExperience($id);
+    $education = $userManager->getUserEducation($id);
+    $skills = $userManager->getUserSkills($id);
+    $cityName = $userManager->getCityName($user->city_id);
+    // $educationLevel = $userManager->getEducationLevel($education->degree_level);
+    $allSkills = $userManager->getSkillsList();
+    $allLanguages = $userManager->getLanguagesList();
+    $allCities = $userManager->getCitiesList();
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($id);
+    // $experience = $userManager->getUserExperience($_SESSION['id']);
+    require("./view/talentProfileView.php");
+}
+
+function bookInterview($id, $jobID) {
+    $calendarManager = new CalendarManager();
+    header("Location:index.php?action=talentProfile");
+}

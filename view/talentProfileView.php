@@ -1,65 +1,66 @@
-<div id="landingContainer">
-    <h1><i class="fa-solid fa-house"></i>Personal info</h1>
-    <button class="landingBtn" onclick="myFunction('personal')">
-    <!-- TODO: Split up the two div buttons, one will link to profile pic upload. -->
+<?php
+$title = "company dashboard";
+ob_start();
+?>
+
+<!-- main -->
+<div class="bizProfile">
+    <div id="landingContainer" class="main">
+        <h3>Talent Profile</h3><br>
+        <a href="http://localhost/sites/batch19-project/index.php?action=talentSearch&jobId=<?= $jobID ?>">Back to searches</a>        
         <div class="landingPersonal">
             <?php include("./view/components/landingPersonalCard.php") ?>
         </div>
-    </button>
-
-    <h1><i class="fa-solid fa-graduation-cap"></i>Highest Education</h1>
-    <button class="landingBtn" onclick="myFunction('education')">
         <div class="landingEducation">
             <?php if(!empty($education)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Not set";
                     } ?>
         </div>
-    </button>
-
-    <h1><i class="fa-solid fa-briefcase"></i>Experience</h1>
-    <button class="landingBtn" onclick="myFunction('experience')">
         <div class="landingExperience">
             <?php if(!empty($experience)){
                         include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Not set";
                     } ?>
         </div>
-    </button>
-    <h1><i class="fa-solid fa-code"></i>Skills</h1>
-    <button class="landingBtn" onclick="myFunction('skills')">
         <div class="landingSkills">
                     <?php if(!empty($skill)){
                         // include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Not set";
                     } ?>
             <p><b>Skills:</b> </p>
             <p><b>Languages:</b> </p>
         </div>
-    </button>
-
-    <h1><i class="fa-regular fa-calendar-days"></i>Availability</h1>
-    <button class="landingBtn" onclick="showCalendarPage()">
         <div class="landingAvail">
             <?php
-            $entries = $calendarManager->loadCalendar($_SESSION['id']);
             
             function calDateToStr($str) {
                 $d = strtotime($str);
                 return date("l, M jS", $d);
             }
-
             if (!empty($entries)) {
                 foreach ($entries as $entry) {
                     include("./view/components/landingCalendarCard.php");
+                    ?>
+                    <form action="http://localhost/sites/batch19-project/index.php?action=bookInterview">
+                        <input type="hidden" name="talentID" value="<?= $id?>">
+                        <input type="hidden" name="jobID" value="<?= $jobID?>">
+                        <button>Book interview</button>
+                    </form>
+                    <?php
                 } 
             } else {
-                echo "Please click to fill in your first entry";
+                echo "Not set";
             }
             ?>
         </div>
-    </button>
+    </div>
 </div>
+
+<?php
+$content = ob_get_clean();
+require('./view/companyDashboardTemplate.php');
+?>

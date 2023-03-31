@@ -4,7 +4,7 @@
         <img class="profile-img" src="<?= $companyInfo->logo_img ?? "./public/images/default.svg" ?>" alt="Elon Musk's photo looking head to left"><br>
         <div class="profile-name">
             <h4><?= $_SESSION["company_name"] ?? "NEW COMPANY" ?></h4>
-            <p>Member since <?= $_SESSION["date_created"]  ?></p>
+            <p>Member since <?= $_SESSION["date_created"] ?? "not set"  ?></p>
         </div>
     </div>
     <div class="menus">
