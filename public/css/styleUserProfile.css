@@ -65,7 +65,22 @@ html {
 .profile-img {
   max-width: 100px;
 }
-
+#profilePhoto {
+  display: none;
+}
+#photoUploadClick {
+  border-radius: 50%;
+  padding: 0;
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  outline: none;
+  overflow: hidden;
+}
+#submitUploadPhoto {
+  width: 150px;
+  height: 30px;
+}
 .profile-name p,
 h4 {
   line-height: 0.3em;
@@ -519,4 +534,141 @@ input[type="checkbox"] {
 
 .noUi-tooltip {
   font-size: 10px;
+}
+
+#landing {
+  width: 90vh;
+}
+
+#landingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1em;
+  word-break: break-all;
+  text-align: left;
+}
+
+#landingContainer p {
+  font-weight: 100;
+}
+
+#landingContainer > button:hover {
+  background-color: rgba(210, 210, 210, 1);
+  cursor: pointer;
+}
+
+#landingContainer button {
+  display: flex;
+  text-align: left;
+  width: 100%;
+  background-color: rgba(210, 210, 210, 0.6);
+  border-radius: 5px;
+}
+
+.landingCard > h1 {
+  margin: 1em 0;
+}
+
+.landingBtn {
+  color: black;
+  width: min-content;
+  border: none;
+  margin-bottom: 1.5vh;
+}
+
+#landingPersonalCard {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+#landingPersonalCard div {
+  margin-top: 1em;
+}
+
+#landingPersonalCard .left {
+  align-self: flex-start;
+}
+
+.landingCard {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+}
+
+.landingCard > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.landingCard p {
+  margin: 0.5em 0;
+}
+
+#landingContainer h1 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+}
+#landingContainer h2 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+  line-height: 1em;
+}
+#landingContainer h3 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  font-size: 1.5em;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  letter-spacing: normal;
+  text-shadow: none;
+  width: max-content;
+  margin: 0;
+  text-transform: none;
+  text-align: left;
+}
+
+#landingContainer h4 {
+  width: 100%;
+  text-align: right;
+  margin: 0;
+}
+
+.landingEducation,
+.landingExperience {
+  width: 100%;
+}
+
+#landingContainer .landingSameLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#landingContainer i {
+  margin-right: 1vh;
+}
+
+.landingAvail {
+  display: flex;
+  flex-direction: column;
+}
+
+.landingCalDate {
+  margin-top: 0.5vh;
+  text-decoration: underline;
+}
+
+.landingAvail,
+.landingAvail div,
+.landingAvail div p {
+  margin: 0;
 }

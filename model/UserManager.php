@@ -49,7 +49,16 @@ class UserManager extends Manager
         $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
         $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
         $req->bindParam('email', $email, PDO::PARAM_STR);
-        $req->execute();
+        $wasAdded = $req->execute();
+        $req->closeCursor();
+        //if a user was added, we'll fetch this info and run one more query
+        //this query is to get the info for the session
+        if ($wasAdded) {
+            $req = $db->query("SELECT LAST_INSERT_ID() AS user_id, first_name, last_name FROM users WHERE id = LAST_INSERT_ID()");
+            return $req->fetch(PDO::FETCH_OBJ);
+        } else {
+            return false;
+        }
     }
     public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
@@ -81,16 +90,6 @@ class UserManager extends Manager
             return false;
         }
     }
-
-
-    //first company insert
-    //then user insert using company_id
-    //insert as user_bio $companyTitle
-
-
-    // public function getUserExperience($jobTitle, $yearsExperience, $companyName)
-    // {
-    // }
 
     public function getUserProfile($userId)
     {
@@ -224,6 +223,41 @@ class UserManager extends Manager
         return $req->rowCount();
     }
 
+    public function updateUserSkills($skill_id, $userId)
+    {
+        $db = $this->dbConnect();
+        $updateUserSkills = "INSERT IGNORE INTO user_skill_map (user_id, skill_id) VALUES (:user_id, :skill_id)";
+        $req = $db->prepare($updateUserSkills);
+        $req->bindParam('skill_id',  $skill_id,  PDO::PARAM_INT);
+        $req->bindParam('user_id',  $userId,  PDO::PARAM_INT);
+        $req->execute();
+        return $req->rowCount();
+    }
+
+    public function updateUserLanguages($language_id, $userId)
+    {
+        $db = $this->dbConnect();
+        $updateUserLanguages = "INSERT IGNORE INTO user_language_map (user_id, language_id) VALUES (:user_id, :language_id)";
+        $req = $db->prepare($updateUserLanguages);
+        $req->bindParam('user_id',  $userId,  PDO::PARAM_INT);
+        $req->bindParam('language_id',  $language_id,  PDO::PARAM_INT);
+        $req->execute();
+        return $req->rowCount();
+    }
+    // public function updateUserSkills($, $yearsExperience, $companyName, $userId)
+    // {
+    //     $db = $this->dbConnect();
+    //     $updateUserExp = "UPDATE professional_experience SET job_title = :inJobTitle, years_experience = :inYearsExperience, company_name = :inCompanyName WHERE user_id = :inUserID";
+    //     $req = $db->prepare($updateUserExp);
+    //     $req->bindParam('inJobTitle', $jobTitle, PDO::PARAM_STR);
+    //     $req->bindParam('inYearsExperience', $yearsExperience, PDO::PARAM_INT);
+    //     $req->bindParam('inCompanyName', $companyName, PDO::PARAM_STR);
+    //     $req->bindParam('inUserID', $userId, PDO::PARAM_INT);
+    //     $req->execute();
+    //     return $req->rowCount();
+    // }
+
+
     public function signInUser($email, $pwd)
     {
         $db = $this->dbConnect();
@@ -249,4 +283,20 @@ class UserManager extends Manager
 
     //     return $user;
     // }
+    public function uploadUserPhoto($newpath)
+    {
+        $db = $this->dbConnect();
+        $preparedinsertSql = "INSERT INTO users (profile_picture)
+        VALUES (:profilepicture)";
+        $req = $db->prepare($preparedinsertSql);
+        $req->bindParam('profile_picture', $newpath, PDO::PARAM_STR);
+    }
+    public function uploadUserResume($resume)
+    {
+        $db = $this->dbConnect();
+        $preparedinsertSql = "INSERT INTO users (resume_file_url)
+        VALUES (:resume)";
+        $req = $db->prepare($preparedinsertSql);
+        $req->bindParam('resume_file_url', $resume, PDO::PARAM_STR);
+    }
 }

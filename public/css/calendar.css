@@ -108,7 +108,7 @@ div {
   flex-direction: row;
 }
 
-button {
+#avail button {
   height: 2em;
   background-color: orange;
   color: white;

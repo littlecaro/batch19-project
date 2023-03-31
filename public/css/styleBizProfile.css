@@ -122,16 +122,16 @@ h4 {
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
-  left: -1.5rem;
   text-align: center;
   /* margin-bottom: 30px; current changes */
   position: relative;
   /* padding-left: 300px; */
   margin-bottom: 70px;
   display: flex;
-  width: 100%;
+  width: calc(100vw - 286px);
   flex-direction: column;
   align-items: center;
+  margin-left: 278px;
 }
 
 .main #personal {
