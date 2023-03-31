@@ -186,7 +186,6 @@ try {
                 parseTalentFilter($jobId);
                 showTalents(true, null);
             }
-
             // case "getUserSkills":
             //     require("./view/userProfileSkills.php");
             //     break;
@@ -254,6 +253,13 @@ try {
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
             updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            break;
+        case "userProfileSkillsSubmit":
+            $userId = $_SESSION['id'] ?? null; //TODO: change this userID
+            $skillsString = $_POST['skills'] ?? null;
+            $languagesString = $_POST['languages'] ?? null;
+            updateUserSkills($skillsString, $userId);
+            updateUserLanguages($languagesString, $userId);
             break;
 
         case "addNewJob":
