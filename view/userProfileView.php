@@ -55,8 +55,6 @@ ob_start();
 
 <!-- main -->
 <div class="main">
-  <<<<<<< HEAD <section id="personal">
-    =======
     <section id="landing">
 
       <?php include('./view/userProfileLanding.php') ?>
@@ -65,8 +63,6 @@ ob_start();
 
 
     <section id="personal" class="hidden">
-      >>>>>>> main
-
       <?php include('./view/userProfilePersonal.php') ?>
 
     </section>
