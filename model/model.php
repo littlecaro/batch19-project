@@ -87,9 +87,8 @@ function searchMessagesGet($term)
     // print_r($chats);
     return $chats;
 }
-function getJobPostings()
+function getJobPostings($user_id)
 {
-    $userId = 4;
 
     $userCompanyQuery = "SELECT
     users.company_id,
@@ -99,7 +98,7 @@ FROM
     companies ON users.company_id = companies.id WHERE users.id = :userId";
     $db = dbConnect();
     $query = $db->prepare($userCompanyQuery);
-    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
     $query->execute();
     $rec = $query->fetchAll(PDO::FETCH_OBJ);
     $companyId = $rec[0]->company_id;
@@ -131,9 +130,9 @@ FROM
     return $listings;
 }
 
-function getJobCard($jobId)
+function getJobCard($jobId, $userId)
 {
-    $userId = 4;
+    // $userId = 4;
     $userCompanyQuery = "SELECT
     users.company_id,
     users.id

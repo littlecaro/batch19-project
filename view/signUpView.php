@@ -30,6 +30,7 @@ ob_start();
 <div id="createAccount">
 
   <h3>CREATE AN ACCOUNT</h3>
+  <!-- why doesn't user sign up work? -->
   <form action="index.php?action=companySignUp" method="POST">
     <table id="table">
       <tr>
@@ -89,7 +90,7 @@ ob_start();
           </td>
         </tr>
       </table><br>
-      <button type="submit" value="SUBMIT" class="button" id="submit">SUBMIT</button>
+      <button type="submit" value="SUBMIT" class="button" id="sign-up-submit">SUBMIT</button>
     </form>
   </div>
   </div>

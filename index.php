@@ -12,6 +12,18 @@ try {
         case "userProfileView":
             showUserProfileView();
             break;
+        case "userPhotoUpload":
+            echo "<pre>";
+            print_r($_FILES);
+            $file = $_FILES['profilePhoto'];
+            uploadUserProfileImage($file);
+            break;
+        case "userResumeUpload":
+            echo "<pre>";
+            print_r($_FILES);
+            $resume = $_FILES['resume'];
+            uploadResume($resume);
+            break;
         case "userSignInGoogle":
             $token = $_POST['credential']; //post credentials 
             $decodedToken = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1])))); // decoding the json web token (JWT) into the array info
@@ -50,24 +62,25 @@ try {
             if ($firstName and $lastName and $email and $pwd and $pwd2 and $companyName and $companyTitle) {
                 //call a controller function
                 companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle);
+            } else if ($firstName and $lastName and $email and $pwd and $pwd2) {
+                userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
             }
             break;
 
         case "userSignIn":
             //make sure data is set
-            $email = isset($_POST['email']);
-            $pwd = isset($_POST['pwd']);
-
+            $email = $_POST['email'] ?? null;
+            $pwd = $_POST['pwd'] ?? null;
             if ($email and $pwd) {
                 //call a controller function
                 userSignIn($email, $pwd);
             }
             break;
-            // case "userProfile":
-            //     // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
-            //     // $city = !empty($_POST['city']) ? $_POST['city'] : null;
-            //     // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
-            //     // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
+        case "userProfile":
+            // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
+            // $city = !empty($_POST['city']) ? $_POST['city'] : null;
+            // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
+            // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
 
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
@@ -159,6 +172,7 @@ try {
             }
 
             break;
+
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -195,6 +209,7 @@ try {
             getEmployeeInfo();
             break;
         case "jobListings":
+            $user_id = $_SESSION['user_id'] ?? NULL;
             if (!empty($_GET['ListingId'])) {
                 $jobId = $_GET['ListingId'] ?? null;
                 $jobCard = showJobCard($jobId);
@@ -204,9 +219,15 @@ try {
 
             break;
         case "savedProfiles":
+            $companyManager = new CompanyManager();
+            $companyInfo = $companyManager->fetchCompanyInfo();
+
             require("./view/savedProfilesView.php");
             break;
         case "bookedMeetings":
+            $companyManager = new CompanyManager();
+            $companyInfo = $companyManager->fetchCompanyInfo();
+
             require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
@@ -260,9 +281,13 @@ try {
             $email = $_POST['email'] ?? null;
             $phone = $_POST['phone'] ?? null;
             $webSite = $_POST['webSite'] ?? null;
-            $logo = $_FILES['logoUpload'] ?? null;
+            $oldLogo = $_POST['oldLogo'] ?? null;
+            $logo = !empty($_FILES['logoUpload']['name']) ? $_FILES['logoUpload'] : null;
+            // echo "<pre>";
+            // print_r($_FILES);
+            // echo "logo; $logo";
             if ($bizName and $bizAddress and $email and $phone and $webSite) {
-                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
+                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
             } else {
                 throw new Exception("missing data");
             }
@@ -290,6 +315,10 @@ try {
             $id = (int)$id;
             $status = $_POST['status'] ?? null;
             updateJobStatus($id, $status);
+            break;
+        case "signOut";
+            session_destroy();
+            header("location:index.php");
             break;
         default:
             showIndex();

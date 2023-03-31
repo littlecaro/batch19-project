@@ -81,7 +81,16 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid) {
         //if data good, insert into database w model function
         $userManager = new UserManager();
-        $users = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+        $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+        if ($user) {
+            //create a session for when the user is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            print_r($_SESSION);
+        } else {
+            echo "Something went wrong.";
+        }
         require "./view/signUpView.php";
     } else {
         $msg = "Please fill in all inputs.";
@@ -153,7 +162,20 @@ function userSignIn($email, $pwd)
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-        header("Location: index.php?action=userProfile");
+        $_SESSION['company_id'] = $user->company_id;
+        $companyManager = new CompanyManager();
+        $companyInfo = $companyManager->fetchCompanyInfo();
+        echo $user->company_id;
+        $_SESSION['company_id'] = $companyInfo->id;
+        $_SESSION["profile_pic"] = $companyInfo->logo_img;
+        $_SESSION["company_name"] = $companyInfo->name;
+        $_SESSION["company_title"] = $user->user_bio;
+        $_SESSION["date_created"] = $companyInfo->date_created;
+        if ($_SESSION["company_id"] != null) {
+            header("Location: index.php?action=companyDashboard");
+        } else {
+            header("Location: index.php?action=userProfileView");
+        }
         exit;
     } else {
         throw new Exception("Invalid Information");
@@ -638,9 +660,9 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
         // TODO: finish this bish!
-        echo "Success! New job created. Get your tax money";
+        header("Location: ./index.php?action=jobListings");
     } else {
-        echo "FAIL!!! U DUN MESSED UP";
+        echo "Adding job failed, please contact the administrator";
     }
 }
 
@@ -676,15 +698,18 @@ function uploadImage($file)
     return $newPath;
 }
 
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
+function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
     if ($logo) {
         $logo = uploadImage($logo);
+    } else {
+        $logo = $oldLogo;
     }
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
-    if ($result) {
+    if ($result[0] and $result[1]) {
 
         header("location:index.php?action=companyDashboard");
     } else {
@@ -705,6 +730,7 @@ function getEmployeeInfo()
 function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
     if ($result) {
         header("location:index.php?action=employeeInfo");
@@ -715,30 +741,82 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 
 function fetchJobPostings()
 {
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $listings = getJobPostings();
+
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
-    $jobCard = getJobCard($jobId);
+    $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
 }
 function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
 {
+
     updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
+    $listings = getJobPostings($_SESSION["id"]);
     if (!empty($listings) && empty($jobId)) {
         foreach ($listings as $listing) {
             require "./view/components/jobPostingCard.php";
         }
     }
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
 }
 
 function updateJobStatus($id, $status)
 {
 
     setJobStatus($id, $status);
+}
+
+function uploadUserProfileImage($file)
+{
+    // md5 is considered insecure so generally we don't use it except for files
+    $hash = hash_file("md5", $file["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2);
+    $second = substr($hash, 2, 2);
+
+    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+
+    // allow read & write permissions for everyone
+    chmod("./public/images/uploaded/$first", 0777);
+    chmod("./public/images/uploaded/$first/$second", 0777);
+
+    $type = explode(".", $file['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newPath = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($file["tmp_name"], $newPath);
+
+    chmod($newPath, 0777);
+
+    return $newPath;
+}
+function uploadResume($resume)
+{
+    $hash = hash_file("md5", $resume["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2);
+    $second = substr($hash, 2, 2);
+
+    mkdir("./public/images/resume/$first/$second", 0777, true);
+    chmod("./public/images/resume/$first", 0777);
+    chmod("./public/images/resume/$first/$second", 0777);
+
+    $type = explode(".", $resume['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newResumeLivingPlace = "./public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
+    chmod($newResumeLivingPlace, 0777);
+
+    $userManager = new UserManager();
+    $newResumeLivingPlace = $userManager->uploadUserResume($resume);
+    header("Location:index.php?action=userProfile");
 }
 function savedSearchExists($jobId)
 {
