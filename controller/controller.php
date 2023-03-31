@@ -744,7 +744,7 @@ function fetchJobPostings()
 
     $companyManager = new CompanyManager();
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
-    $listings = getJobPostings();
+    $listings = getJobPostings($_SESSION["id"]);
 
     require("./view/jobListingsView.php");
 }
