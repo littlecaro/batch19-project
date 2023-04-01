@@ -1,6 +1,6 @@
 <div id="landingPersonalCard" class="landingCard">
     <div class="left">
-        <img src="<?= "$user->profile_picture"; ?>" alt="">
+        <img src="<?= "$user->profile_picture"; ?>" alt="" width="100" height="100">
     </div>
     <div class="right">
         <h1><?= "$user->first_name $user->last_name"; ?></h1>

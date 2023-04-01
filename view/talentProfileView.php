@@ -45,15 +45,15 @@ ob_start();
                 foreach ($entries as $entry) {
                     include("./view/components/landingCalendarCard.php");
                     ?>
-                    <form action="http://localhost/sites/batch19-project/index.php?action=bookInterview">
-                        <input type="hidden" name="talentID" value="<?= $id?>">
+                    <form action="http://localhost/sites/batch19-project/index.php?action=bookInterview" method="POST">
+                        <input type="hidden" name="uaID" value="<?= $entry->id?>">
                         <input type="hidden" name="jobID" value="<?= $jobID?>">
                         <button>Book interview</button>
                     </form>
                     <?php
                 } 
             } else {
-                echo "Not set";
+                echo "This user has no availability left. Click here to message and request.";
             }
             ?>
         </div>

@@ -848,7 +848,12 @@ function showTalentProfileView($id, $jobID) {
     require("./view/talentProfileView.php");
 }
 
-function bookInterview($id, $jobID) {
-    $calendarManager = new CalendarManager();
-    header("Location:index.php?action=talentProfile");
+function bookInterview($uaID, $id, $jobID) {
+    $compID = getCompanyID($id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    if (!$result) {
+        throw new Exception("Unable to schedule interview");
+    }
+    header("location: index.php?action=bookedMeetings");
 }

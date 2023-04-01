@@ -401,3 +401,17 @@ function updateTalentFilter($searchData, $user_id, $jobId)
     $query->bindParam(":userId", $userId, PDO::PARAM_INT);
     $query->execute();
 }
+
+function getCompanyID($userID) {
+    $userCompanyQuery = "SELECT users.company_id, users.id
+                            FROM users 
+                            INNER JOIN companies 
+                            ON users.company_id = companies.id 
+                            WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userID, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetch(PDO::FETCH_OBJ);
+    return $rec->company_id;
+}

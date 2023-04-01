@@ -186,19 +186,19 @@ try {
                 parseTalentFilter($jobId);
                 showTalents(true, null);
             }
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "userProfileView":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
+        // case "getUserSkills":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserLanguages":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserCities":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "companyDashboard":
             getCompanyInfo();
             break;
@@ -326,9 +326,13 @@ try {
             showTalentProfileView($id, $jobID);
             break;
         case "bookInterview":
-            $id = $_POST["talentID"] ?? null;
+            $uaID = $_POST['uaID'] ?? null;
+            $id = $_SESSION["id"] ?? null;
             $jobID = $_POST['jobID'] ?? null;
-            bookInterview($id, $jobID);
+            bookInterview($uaID, $id, $jobID);
+            break;
+        case "bookedMeetings":
+            require("./view/bookedMeetingsView.php");
             break;
         default:
             showIndex();
