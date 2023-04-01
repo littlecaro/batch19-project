@@ -258,8 +258,13 @@ try {
             $userId = $_SESSION['id'] ?? null; //TODO: change this userID
             $skillsString = $_POST['skills'] ?? null;
             $languagesString = $_POST['languages'] ?? null;
-            updateUserSkills($skillsString, $userId);
-            updateUserLanguages($languagesString, $userId);
+            if ($skillsString != null) {
+                updateUserSkills($skillsString, $userId);
+            }
+            if ($languagesString != null) {
+                updateUserLanguages($languagesString, $userId);
+            }
+            header("location: index.php?action=userProfileView");
             break;
 
         case "addNewJob":

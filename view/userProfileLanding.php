@@ -31,13 +31,37 @@
     <h1><i class="fa-solid fa-code"></i>Skills</h1>
     <button class="landingBtn" onclick="myFunction('skills')">
         <div class="landingSkills">
-                    <?php if(!empty($skill)){
-                        // include("./view/components/landingExperienceCard.php");
-                    } else {
-                        echo "Please click to fill in your first entry";
-                    } ?>
-            <p><b>Skills:</b> </p>
-            <p><b>Languages:</b> </p>
+                    <?php 
+                        $skills = showSkills();
+                        if(!empty($skills)){
+                            ?>
+                            <div class="technicalSkills"><p><b>Technical:</b></p>
+                            <?php
+                            foreach($skills as $skill) {
+                                include("./view/components/landingSkillCard.php");
+                            }
+                            ?>
+                            </div>
+                            <?php
+                        } else {
+                            echo "Please click to fill in your first entry";
+                        }
+                            
+                        $languages = showLanguages();
+                        if(!empty($languages)){
+                            ?>
+                            <div class="languageSkills"><p><b>Languages:</b> </p>
+                            <?php
+                            foreach($languages as $language) {
+                                include("./view/components/landingLanguageCard.php");
+                            }
+                            ?>
+                            </div>
+                            <?php
+                        } else {
+                            echo "Please click to fill in your first entry";
+                        }
+                        ?>
         </div>
     </button>
 
@@ -53,7 +77,7 @@
             }
 
             if (!empty($entries)) {
-                foreach ($entries as $entry) {
+                for ($i = 0; $i < count($entries); $i++) {
                     include("./view/components/landingCalendarCard.php");
                 } 
             } else {

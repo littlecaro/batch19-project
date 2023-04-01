@@ -415,3 +415,39 @@ function getCompanyID($userID) {
     $rec = $query->fetch(PDO::FETCH_OBJ);
     return $rec->company_id;
 }
+
+function showSkills() {
+    $skillQuer = 'SELECT user_skill_map.skill_id, skills.skills_fixed
+                FROM users 
+                INNER JOIN user_skill_map 
+                ON user_skill_map.user_id = users.id 
+                INNER JOIN skills 
+                ON user_skill_map.skill_id = skills.id
+                WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($skillQuer);
+    $query->bindParam(":userId", $_SESSION['id'], PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+
+function showLanguages() {
+    $langQuer = 'SELECT user_language_map.language_id, languages.language
+                FROM users 
+                INNER JOIN user_language_map 
+                ON user_language_map.user_id = users.id 
+                INNER JOIN languages 
+                ON user_language_map.language_id = languages.id
+                WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($langQuer);
+    $query->bindParam(":userId", $_SESSION['id'], PDO::PARAM_INT);
+    $query->execute();
+    $userLangs = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userLangs;
+}
+
+function showJobs() {
+    
+}

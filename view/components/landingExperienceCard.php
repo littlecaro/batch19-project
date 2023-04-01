@@ -1,4 +1,3 @@
-<!-- TODO: Will have more than one experience entry, so loop through and view until done.  -->
 <div class="landingCard">
 <h2><?= $experience->job_title; ?></h2>
         <div class="landingSameLine">

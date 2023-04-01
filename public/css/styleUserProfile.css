@@ -625,11 +625,14 @@ input[type="checkbox"] {
 
 .landingAvail {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
 }
 
 .landingCalDate {
   margin-top: 0.5vh;
+  padding: 0.5vh;
   text-decoration: underline;
 }
 
@@ -637,4 +640,39 @@ input[type="checkbox"] {
 .landingAvail div,
 .landingAvail div p {
   margin: 0;
+}
+
+.landingSkills > div {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.landingSkills > div p:not(p:first-of-type) {
+  background-color: #13c2c5;
+  padding: 1vh;
+  border-radius: 5px;
+}
+
+.languageSkills p:not(p:first-of-type) {
+  background-color: yellow !important;
+}
+
+.landingCalDate {
+  background-color: rgba(255, 0, 0, 0.426);
+}
+.landingCalTime {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.landingCalCard {
+  width: 18vh;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.landingCalCard > .timeMid {
+  border-top: none;
 }
