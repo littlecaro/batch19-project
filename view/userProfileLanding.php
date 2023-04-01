@@ -21,8 +21,11 @@
     <h1><i class="fa-solid fa-briefcase"></i>Experience</h1>
     <button class="landingBtn" onclick="myFunction('experience')">
         <div class="landingExperience">
-            <?php if(!empty($experience)){
-                        include("./view/components/landingExperienceCard.php");
+            <?php 
+                    $profExps = showJobs();
+                    if(!empty($experience)){
+                        foreach($profExps as $profExp)
+                            include("./view/components/landingExperienceCard.php");
                     } else {
                         echo "Please click to fill in your first entry";
                     } ?>

@@ -550,10 +550,6 @@ input[type="checkbox"] {
   gap: 2em;
 }
 
-#landingPersonalCard div {
-  margin-top: 1em;
-}
-
 #landingPersonalCard .left {
   align-self: flex-start;
 }
@@ -675,4 +671,14 @@ input[type="checkbox"] {
 
 .landingCalCard > .timeMid {
   border-top: none;
+}
+
+.landingExperience {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+#landingContainer > .landingBtn > div {
+  margin: 1em 0;
 }
