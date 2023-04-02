@@ -192,8 +192,8 @@ try {
             break;
         case "jobListings":
             $user_id = $_SESSION['user_id'] ?? NULL;
-            if (!empty($_GET['ListingId'])) {
-                $jobId = $_GET['ListingId'] ?? null;
+            if (!empty($_REQUEST['ListingId'])) {
+                $jobId = $_REQUEST['ListingId'] ?? null;
                 $jobCard = showJobCard($jobId);
             } else {
                 fetchJobPostings();

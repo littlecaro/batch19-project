@@ -7,7 +7,10 @@ ob_start();
 <div class="bizProfile">
     <div class="landingContainer" class="main">
         <h3>Talent Profile</h3><br>
-        <a href="http://localhost/sites/batch19-project/index.php?action=talentSearch&jobId=<?= $jobID ?>">Back to searches</a>        
+        <?php if ($jobID != null) {
+            echo "<a href='http://localhost/sites/batch19-project/index.php?action=talentSearch&jobId=<?= $jobID ?>'>Back to searches</a>";        
+        }
+        ?>
         <h1><i class="fa-solid fa-house"></i>Personal info</h1>
         <div class="landingPersonal">
             <?php include("./view/components/landingPersonalCard.php") ?>

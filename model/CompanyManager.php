@@ -113,7 +113,7 @@ class CompanyManager extends Manager
     {
         $compID = getCompanyID($_SESSION['id']);
         $db = $this->dbConnect();
-        $req = $db->prepare('SELECT u.first_name, u.last_name, j.title, ua.date, ua.time_start, r.id
+        $req = $db->prepare('SELECT u.first_name, u.last_name, j.title, ua.date, ua.time_start, r.id, u.id AS userID, j.id AS jobID
                             FROM reservations r
                                 INNER JOIN user_availability ua
                                 ON r.user_availability_id = ua.id

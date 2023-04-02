@@ -831,7 +831,7 @@ function savedSearchExists($jobId)
     }
 }
 
-function showTalentProfileView($id, $jobID) {
+function showTalentProfileView($id, $jobID = null) {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
