@@ -528,8 +528,18 @@ function loadCalendar() {
   }
 
   function deleteReservation(e) {
-    const reserveID = e.target.dataset.cancelid;
-    // console.log(reserveID);
+    let reserveID = e.target.dataset.cancelid;
+    if (reserveID == undefined) {
+      const cancels = document.querySelectorAll(".cancel");
+      reserveID = [];
+      for (let cancel of cancels) {
+        reserveID.push({
+          rID: `${cancel.dataset.cancelid}`,
+        });
+      }
+      reserveID = JSON.stringify(reserveID);
+    }
+
     let xhr = new XMLHttpRequest();
     xhr.open("POST", `./index.php?action=cancelMeeting&reserveID=${reserveID}`);
 

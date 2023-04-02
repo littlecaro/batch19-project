@@ -337,10 +337,14 @@ try {
             break;
         case "cancelMeeting":
             $rID = $_REQUEST['reserveID'] ?? null;
-            $companyManager = new CompanyManager();
-            $bookedMeetings = $companyManager->cancelMeeting($rID);
-            header("location: index.php?action=bookedMeetings");
-            break;
+            if ($rID[0] == '[') {
+                $rID = json_decode($rID, true);
+                deleteReservation($rID);
+                break;
+            } else {
+                deleteReservation($rID);
+                break;
+            }
         default:
             showIndex();
             break;

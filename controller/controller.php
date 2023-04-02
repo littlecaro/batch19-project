@@ -858,6 +858,31 @@ function bookInterview($uaID, $id, $jobID) {
     header("location: index.php?action=bookedMeetings");
 }
 
+function deleteReservation($rID) {
+    if (is_array($rID)) {
+        $rIDs = $rID;
+        for ($i = 0; $i < count($rIDs); $i++) {
+            $rID = strip_tags($rIDs[$i]['rID']);
+    
+            $companyManager = new CompanyManager();
+            $result = $companyManager->cancelMeeting($rID);
+        }
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        } else {
+            // header("location: index.php?action=bookedMeetings");
+        }
+    } else {
+        $companyManager = new CompanyManager();
+        $result = $companyManager->cancelMeeting($rID);
+        if (!$result) {
+        throw new Exception("Unable to delete entry");
+        } else {
+        header("location: index.php?action=bookedMeetings");
+        }
+    }
+}
+
 function calDateToStr($str) {
     $d = strtotime($str);
     return date("l, M jS", $d);
