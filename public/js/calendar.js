@@ -528,17 +528,16 @@ function loadCalendar() {
   }
 
   function deleteReservation(e) {
-    const entry = e.target.dataset.cancelid;
-    console.log(entry);
+    const reserveID = e.target.dataset.cancelid;
+    // console.log(reserveID);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", `./index.php?action=cancelMeeting&reserveID=${reserveID}`);
 
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("GET", `./index.php?action=deleteReservation&entry=${entry}`);
+    xhr.addEventListener("load", function () {
+      location.reload();
+      // console.log(xhr.responseText);
+    });
 
-    // xhr.addEventListener("load", function () {
-    //   location.reload();
-    //   // console.log(xhr.responseText);
-    // });
-
-    // xhr.send(null);
+    xhr.send(null);
   }
 }

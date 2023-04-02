@@ -18,7 +18,7 @@ ob_start();
             <?php if(!empty($education)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "Not set";
+                        echo "This user has not inserted any education.";
                     } ?>
         </div>
 
@@ -30,7 +30,7 @@ ob_start();
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "This user has not inserted any job experience";
+                        echo "This user has not inserted any job experience.";
                     } ?>
         </div>
 
@@ -49,7 +49,7 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "This user has not inserted any technical skills";
+                            echo "This user has not inserted any technical skills.<br>";
                         }
                             
                         $languages = showLanguages($id);
@@ -64,7 +64,7 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "This user has not inserted any languages";
+                            echo "This user has not inserted any languages.";
                         }
                         ?>
         </div>

@@ -81,7 +81,7 @@ try {
             // $city = !empty($_POST['city']) ? $_POST['city'] : null;
             // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-
+        
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
@@ -336,7 +336,7 @@ try {
             require("./view/bookedMeetingsView.php");
             break;
         case "cancelMeeting":
-            $rID = $_POST['reserveID'] ?? null;
+            $rID = $_REQUEST['reserveID'] ?? null;
             $companyManager = new CompanyManager();
             $bookedMeetings = $companyManager->cancelMeeting($rID);
             header("location: index.php?action=bookedMeetings");
