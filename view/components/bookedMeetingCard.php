@@ -8,7 +8,7 @@
         <div class="meetingSubCard">
                 <p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p>
                 <p>-</p>
-                <p><?= $bookedMeetings[$i]->title?></p>
+                <p class="bookedJob"><?= $bookedMeetings[$i]->title?></p>
                 <p>-</p>
                 <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
 
@@ -25,7 +25,7 @@
         <div class="meetingSubCard">
                 <p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p>
                 <p>-</p>
-                <p><?= $bookedMeetings[$i]->title?></p>
+                <p class="bookedJob"><?= $bookedMeetings[$i]->title?></p>
                 <p>-</p>
                 <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
             

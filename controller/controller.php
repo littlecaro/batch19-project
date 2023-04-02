@@ -856,11 +856,11 @@ function bookInterview($uaID, $id, $jobID) {
 function showBookedMeetings() {
     $companyManager = new CompanyManager();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
-    if (!$bookedMeetings) {
-        throw new Exception("Unable to fetch booked meetings");
-    } else {
+    // if (!$bookedMeetings) {
+    //     throw new Exception("Unable to fetch booked meetings");
+    // } else {
         require("./view/bookedMeetingsView.php");
-    }
+    // }
 }
 
 function deleteReservation($rID) {
@@ -885,6 +885,17 @@ function deleteReservation($rID) {
         } else {
         header("location: index.php?action=bookedMeetings");
         }
+    }
+}
+
+function deleteRoleMeetings($rJob) {
+    $compID = getCompanyID($_SESSION["id"]);
+    $companyManager = new CompanyManager();
+    $result = $companyManager->cancelRoleMeetings($rJob, $compID);
+    if (!$result) {
+        throw new Exception("Unable to delete meetings");
+    } else {
+        header("location: index.php?action=bookedMeetings");
     }
 }
 

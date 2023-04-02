@@ -139,4 +139,18 @@ class CompanyManager extends Manager
 
         return $req->execute();
     }
+
+    public function cancelRoleMeetings($rJob, $compID) {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE r 
+                                FROM reservations r
+                                INNER JOIN jobs j
+                                ON j.title = :rJob
+                                WHERE r.company_id = :compID
+                                AND  r.job_id = j.id');
+        $req->bindParam("rJob", $rJob, PDO::PARAM_STR);
+        $req->bindParam("compID", $compID, PDO::PARAM_INT);
+
+        return $req->execute();
+    }
 }

@@ -316,7 +316,7 @@ try {
             showBookedMeetings();
             break;
         case "cancelMeeting":
-            $rID = $_REQUEST['reserveID'] ?? null;
+            $rID = strip_tags($_REQUEST['reserveID']) ?? null;
             if ($rID[0] == '[') {
                 $rID = json_decode($rID, true);
                 deleteReservation($rID);
@@ -324,7 +324,11 @@ try {
             } else {
                 deleteReservation($rID);
                 break;
-            }
+            } 
+        case "cancelRoleMeetings":
+            $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
+            deleteRoleMeetings($rJob);
+            break;
         default:
             showIndex();
             break;
