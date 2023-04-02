@@ -858,6 +858,16 @@ function bookInterview($uaID, $id, $jobID) {
     header("location: index.php?action=bookedMeetings");
 }
 
+function showBookedMeetings() {
+    $companyManager = new CompanyManager();
+    $bookedMeetings = $companyManager->fetchBookedMeetings();
+    if (!$bookedMeetings) {
+        throw new Exception("Unable to fetch booked meetings");
+    } else {
+        require("./view/bookedMeetingsView.php");
+    }
+}
+
 function deleteReservation($rID) {
     if (is_array($rID)) {
         $rIDs = $rID;
