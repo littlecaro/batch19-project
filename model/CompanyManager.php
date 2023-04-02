@@ -108,4 +108,35 @@ class CompanyManager extends Manager
         $companyInfo = $req->fetch(PDO::FETCH_OBJ);
         return $companyInfo;
     }
+
+    public function fetchBookedMeetings()
+    {
+        $compID = getCompanyID($_SESSION['id']);
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT u.first_name, u.last_name, j.title, ua.date, ua.time_start, r.id
+                            FROM reservations r
+                                INNER JOIN user_availability ua
+                                ON r.user_availability_id = ua.id
+                                INNER JOIN jobs j
+                                ON r.job_id = j.id
+                                INNER JOIN users u
+                                ON u.id = ua.user_id
+                                WHERE r.company_id = :compID
+                                ORDER BY ua.date, ua.time_start');
+        $req->bindParam("compID", $compID, PDO::PARAM_INT); // TODO: get companyId from $_SESSION
+
+        $req->execute();
+        $bookedMeetings = $req->fetchAll(PDO::FETCH_OBJ);
+        return $bookedMeetings;
+    }
+
+    public function cancelMeeting($rID)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM reservations 
+                                WHERE id = :rID');
+        $req->bindParam("rID", $rID, PDO::PARAM_INT);
+
+        return $req->execute();
+    }
 }

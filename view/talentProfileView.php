@@ -73,10 +73,6 @@ ob_start();
         <div class="landingAvail">
             <?php
             
-            function calDateToStr($str) {
-                $d = strtotime($str);
-                return date("l, M jS", $d);
-            }
             if (!empty($entries)) {
                 for ($i = 0; $i < count($entries); $i++) {
                     include("./view/components/landingTalentCalCard.php");

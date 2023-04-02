@@ -224,12 +224,6 @@ try {
 
             require("./view/savedProfilesView.php");
             break;
-        case "bookedMeetings":
-            $companyManager = new CompanyManager();
-            $companyInfo = $companyManager->fetchCompanyInfo();
-
-            require("./view/bookedMeetingsView.php");
-            break;
         case "updateUserPersonal":
 
             $id = $_POST['id'];
@@ -337,7 +331,15 @@ try {
             bookInterview($uaID, $id, $jobID);
             break;
         case "bookedMeetings":
+            $companyManager = new CompanyManager();
+            $bookedMeetings = $companyManager->fetchBookedMeetings();
             require("./view/bookedMeetingsView.php");
+            break;
+        case "cancelMeeting":
+            $rID = $_POST['reserveID'] ?? null;
+            $companyManager = new CompanyManager();
+            $bookedMeetings = $companyManager->cancelMeeting($rID);
+            header("location: index.php?action=bookedMeetings");
             break;
         default:
             showIndex();

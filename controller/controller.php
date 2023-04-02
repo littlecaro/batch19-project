@@ -857,3 +857,8 @@ function bookInterview($uaID, $id, $jobID) {
     }
     header("location: index.php?action=bookedMeetings");
 }
+
+function calDateToStr($str) {
+    $d = strtotime($str);
+    return date("l, M jS", $d);
+}

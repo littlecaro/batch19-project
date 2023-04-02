@@ -7,6 +7,11 @@ ob_start();
 <div class="bizProfile">
     <div class="main">
         <h3>Booked Meetings</h3><br>
+        <?php 
+        for($i = 0; $i < count($bookedMeetings); $i++) {
+            require('./view/components/bookedMeetingCard.php');
+        }
+        ?>
     </div>
 </div>
 

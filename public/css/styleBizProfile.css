@@ -842,3 +842,28 @@ input[type="checkbox"] {
   background-color: yellow;
   cursor: pointer;
 }
+
+.bookedMeetingCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.bookedDate {
+  text-decoration: underline;
+  background-color: rgba(255, 0, 0, 0.426);
+  border-radius: 5px;
+  width: fit-content;
+  padding: 0 0.5vh;
+}
+
+.meetingSubCard {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.meetingSubCard button {
+  width: fit-content;
+  background-color: red;
+}

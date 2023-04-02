@@ -73,11 +73,6 @@
         <div class="landingAvail">
             <?php
             $entries = $calendarManager->loadCalendar($_SESSION['id']);
-            
-            function calDateToStr($str) {
-                $d = strtotime($str);
-                return date("l, M jS", $d);
-            }
 
             if (!empty($entries)) {
                 for ($i = 0; $i < count($entries); $i++) {
