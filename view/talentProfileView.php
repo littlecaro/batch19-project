@@ -25,8 +25,7 @@ ob_start();
         <h1><i class="fa-solid fa-briefcase"></i>Experience</h1>
         <div class="landingExperience">
             <?php   
-                    $profExps = showJobs($id);
-                    if(!empty($experience)){
+                    if(!empty($profExps)){
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
@@ -37,7 +36,6 @@ ob_start();
         <h1><i class="fa-solid fa-code"></i>Skills</h1>
         <div class="landingSkills">
                     <?php 
-                        $skills = showSkills($id);
                         if(!empty($skills)){
                             ?>
                             <div class="technicalSkills"><p><b>Technical:</b></p>
@@ -52,7 +50,6 @@ ob_start();
                             echo "This user has not inserted any technical skills.<br>";
                         }
                             
-                        $languages = showLanguages($id);
                         if(!empty($languages)){
                             ?>
                             <div class="languageSkills"><p><b>Languages:</b> </p>
