@@ -1,4 +1,4 @@
-<div id="landingPersonalCard" class="landingCard">
+<div class="landingPersonalCard" class="landingCard">
     <div class="left">
         <img src="<?= "$user->profile_picture"; ?>" alt="" width="100" height="100">
     </div>

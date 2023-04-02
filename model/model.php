@@ -416,7 +416,10 @@ function getCompanyID($userID) {
     return $rec->company_id;
 }
 
-function showSkills() {
+function showSkills($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
     $skillQuer = 'SELECT user_skill_map.skill_id, skills.skills_fixed
                 FROM users 
                     INNER JOIN user_skill_map 
@@ -426,13 +429,16 @@ function showSkills() {
                     WHERE users.id = :userId';
     $db = dbConnect();
     $query = $db->prepare($skillQuer);
-    $query->bindParam(":userId", $_SESSION['id'], PDO::PARAM_INT);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
     $query->execute();
     $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
     return $userSkills;
 }
 
-function showLanguages() {
+function showLanguages($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
     $langQuer = 'SELECT user_language_map.language_id, languages.language
                 FROM users 
                     INNER JOIN user_language_map 
@@ -442,13 +448,16 @@ function showLanguages() {
                     WHERE users.id = :userId';
     $db = dbConnect();
     $query = $db->prepare($langQuer);
-    $query->bindParam(":userId", $_SESSION['id'], PDO::PARAM_INT);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
     $query->execute();
     $userLangs = $query->fetchAll(PDO::FETCH_OBJ);
     return $userLangs;
 }
 
-function showJobs() {
+function showJobs($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
     $expQuer = 'SELECT pe.job_title, pe.company_name, pe.years_experience, pe.job_description, pe.city_id
                 FROM users 
                     INNER JOIN professional_experience pe 
@@ -456,7 +465,7 @@ function showJobs() {
                     WHERE users.id = :userId';
     $db = dbConnect();
     $query = $db->prepare($expQuer);
-    $query->bindParam(":userId", $_SESSION['id'], PDO::PARAM_INT);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
     $query->execute();
     $userExp = $query->fetchAll(PDO::FETCH_OBJ);
     return $userExp;

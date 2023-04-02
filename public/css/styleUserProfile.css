@@ -503,38 +503,30 @@ input[type="checkbox"] {
   font-size: 10px;
 }
 
-#landing {
-  width: 90vh;
-}
-
-#landingContainer {
+.landingContainer {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   gap: 1em;
   word-break: break-word;
   text-align: left;
+  width: 90vh;
 }
 
-#landingContainer p {
+.landingContainer p {
   font-weight: 100;
 }
 
-#landingContainer > button:hover {
+.landingContainer > button:hover {
   background-color: rgba(210, 210, 210, 1);
   cursor: pointer;
 }
 
-#landingContainer button {
+.landingContainer button {
   display: flex;
   text-align: left;
   width: 100%;
   background-color: rgba(210, 210, 210, 0.6);
   border-radius: 5px;
-}
-
-.landingCard > h1 {
-  margin: 1em 0;
 }
 
 .landingBtn {
@@ -544,13 +536,13 @@ input[type="checkbox"] {
   margin-bottom: 1.5vh;
 }
 
-#landingPersonalCard {
+.landingPersonalCard {
   display: flex;
   flex-direction: row;
   gap: 2em;
 }
 
-#landingPersonalCard .left {
+.landingPersonalCard .left {
   align-self: flex-start;
 }
 
@@ -569,14 +561,14 @@ input[type="checkbox"] {
   margin: 0.5em 0;
 }
 
-#landingContainer h1 {
+.landingContainer h1 {
   color: var(--header-color-primary);
   font-weight: 100;
   text-shadow: none;
   width: 100%;
   margin: 0;
 }
-#landingContainer h2 {
+.landingContainer h2 {
   color: var(--header-color-primary);
   font-weight: 100;
   text-shadow: none;
@@ -584,7 +576,7 @@ input[type="checkbox"] {
   margin: 0;
   line-height: 1em;
 }
-#landingContainer h3 {
+.landingContainer h3 {
   color: var(--header-color-primary);
   font-weight: 100;
   font-size: 1.5em;
@@ -597,7 +589,7 @@ input[type="checkbox"] {
   text-align: left;
 }
 
-#landingContainer h4 {
+.landingContainer h4 {
   width: 100%;
   text-align: right;
   margin: 0;
@@ -608,14 +600,14 @@ input[type="checkbox"] {
   width: 100%;
 }
 
-#landingContainer .landingSameLine {
+.landingContainer .landingSameLine {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-#landingContainer i {
+.landingContainer i {
   margin-right: 1vh;
 }
 
@@ -679,6 +671,6 @@ input[type="checkbox"] {
   gap: 1.5em;
 }
 
-#landingContainer > .landingBtn > div {
+.landingContainer > .landingBtn > div {
   margin: 1em 0;
 }

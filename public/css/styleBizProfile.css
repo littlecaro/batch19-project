@@ -160,7 +160,6 @@ body {
   background-color: white;
   background-size: cover;
   margin-top: 80px;
-  overflow: hidden;
 }
 
 .biz {
@@ -664,29 +663,28 @@ input[type="checkbox"] {
   width: 90vh;
 }
 
-#landingContainer {
+.landingContainer {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   gap: 1em;
-  word-break: break-all;
+  word-break: break-word;
   text-align: left;
+  width: 90vh;
 }
 
-#landingContainer p {
+.landingContainer p {
   font-weight: 100;
 }
 
-#landingContainer div {
-  display: flex;
-  text-align: left;
-  width: 100%;
-  background-color: rgba(210, 210, 210, 0.6);
-  border-radius: 5px;
+.landingContainer > button:hover {
+  background-color: rgba(210, 210, 210, 1);
+  cursor: pointer;
 }
 
-.landingCard > h1 {
-  margin: 1em 0;
+.landingContainer > div {
+  background-color: rgba(210, 210, 210, 0.6);
+  border-radius: 5px;
+  padding: 1em;
 }
 
 .landingBtn {
@@ -696,17 +694,13 @@ input[type="checkbox"] {
   margin-bottom: 1.5vh;
 }
 
-#landingPersonalCard {
+.landingPersonalCard {
   display: flex;
   flex-direction: row;
   gap: 2em;
 }
 
-#landingPersonalCard div {
-  margin-top: 1em;
-}
-
-#landingPersonalCard .left {
+.landingPersonalCard .left {
   align-self: flex-start;
 }
 
@@ -725,14 +719,14 @@ input[type="checkbox"] {
   margin: 0.5em 0;
 }
 
-#landingContainer h1 {
+.landingContainer h1 {
   color: var(--header-color-primary);
   font-weight: 100;
   text-shadow: none;
   width: 100%;
   margin: 0;
 }
-#landingContainer h2 {
+.landingContainer h2 {
   color: var(--header-color-primary);
   font-weight: 100;
   text-shadow: none;
@@ -740,7 +734,7 @@ input[type="checkbox"] {
   margin: 0;
   line-height: 1em;
 }
-#landingContainer h3 {
+.landingContainer h3 {
   color: var(--header-color-primary);
   font-weight: 100;
   font-size: 1.5em;
@@ -753,7 +747,7 @@ input[type="checkbox"] {
   text-align: left;
 }
 
-#landingContainer h4 {
+.landingContainer h4 {
   width: 100%;
   text-align: right;
   margin: 0;
@@ -764,24 +758,27 @@ input[type="checkbox"] {
   width: 100%;
 }
 
-#landingContainer .landingSameLine {
+.landingContainer .landingSameLine {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-#landingContainer i {
+.landingContainer i {
   margin-right: 1vh;
 }
 
 .landingAvail {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
 }
 
 .landingCalDate {
   margin-top: 0.5vh;
+  padding: 0.5vh;
   text-decoration: underline;
 }
 
@@ -789,4 +786,59 @@ input[type="checkbox"] {
 .landingAvail div,
 .landingAvail div p {
   margin: 0;
+}
+
+.landingSkills > div {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.landingSkills > div p:not(p:first-of-type) {
+  background-color: #13c2c5;
+  padding: 1vh;
+  border-radius: 5px;
+}
+
+.languageSkills p:not(p:first-of-type) {
+  background-color: yellow !important;
+}
+
+.landingCalDate {
+  background-color: rgba(255, 0, 0, 0.426);
+}
+.landingCalTime {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.landingCalCard {
+  width: 18vh;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.landingCalCard > .timeMid {
+  border-top: none;
+}
+
+.landingExperience {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.landingContainer > .landingBtn > div {
+  margin: 1em 0;
+}
+
+.landingCalTime > form button {
+  all: unset;
+  width: 100%;
+}
+
+.landingCalTime > form button:hover {
+  background-color: yellow;
+  cursor: pointer;
 }

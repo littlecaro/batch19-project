@@ -1,4 +1,4 @@
-<div id="landingContainer">
+<div class="landingContainer">
     <h1><i class="fa-solid fa-house"></i>Personal info</h1>
     <button class="landingBtn" onclick="myFunction('personal')">
     <!-- TODO: Split up the two div buttons, one will link to profile pic upload. -->
