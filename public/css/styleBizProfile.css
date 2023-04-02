@@ -846,7 +846,10 @@ input[type="checkbox"] {
 .bookedMeetingCard {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+}
+
+.bookedMeetingCard {
+  margin-top: 2.5vh;
 }
 
 .bookedDate {
@@ -866,4 +869,8 @@ input[type="checkbox"] {
 .meetingSubCard button {
   width: fit-content;
   background-color: red;
+}
+
+.bookedMeetingCard p {
+  margin: 1vh 0;
 }

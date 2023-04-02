@@ -7,13 +7,16 @@
         </div>
         <div class="meetingSubCard">
                 <p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p>
+                <p>-</p>
                 <p><?= $bookedMeetings[$i]->title?></p>
+                <p>-</p>
                 <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
 
             <form action="index.php?action=cancelMeeting" method="POST">
                 <input type="hidden" name="reserveID" value="<?=$bookedMeetings[$i]->id?>">
-                <button>Click to cancel</button>
+                <button>X</button>
             </form>
+            <input type="checkbox" name="cancel" value="<?=$bookedMeetings[$i]->id?>">
         </div>
     <?php
         $prevDate = strtotime($bookedMeetings[$i]->date);
@@ -21,13 +24,16 @@
         ?>
         <div class="meetingSubCard">
                 <p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p>
+                <p>-</p>
                 <p><?= $bookedMeetings[$i]->title?></p>
+                <p>-</p>
                 <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
             
             <form action="index.php?action=cancelMeeting" method="POST">
                 <input type="hidden" name="reserveID" value="<?=$bookedMeetings[$i]->id?>">
-                <button>Click to cancel</button>
+                <button>X</button>
             </form>
+            <input type="checkbox" name="cancel" value="<?=$bookedMeetings[$i]->id?>">
         </div>
     <?php
     }
