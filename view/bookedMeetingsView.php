@@ -7,17 +7,26 @@ ob_start();
 <div class="bizProfile">
     <div class="main">
         <h3>Booked Meetings</h3><br>
-        <?php 
-        if ($bookedMeetings) {
-        for($i = 0; $i < count($bookedMeetings); $i++) {
-            require('./view/components/bookedMeetingCard.php');
-        }
-        ?>
-        <button onclick="cancelAllBookedMeetings()">Cancel all selected interviews</button>
-        <label for="roles">Or cancel by role</label>
-        <select name="roles" id="roles">
-        </select>
-        <button id="cancelRolesBtn">Cancel all meetings for selected role</button>
+        <div class="bookedMeetings">
+            <?php 
+            if ($bookedMeetings) {
+            for($i = 0; $i < count($bookedMeetings); $i++) {
+                require('./view/components/bookedMeetingCard.php');
+            }
+            ?>
+            <div class="cancelContainer">
+                <button onclick="cancelAllBookedMeetings()">Cancel all selected interviews</button>
+                <div class="cancelSelection">
+                    <label for="roles">Or cancel by role</label>
+                    <select name="roles" id="roles">
+                        <option value="null">Select a role</option>
+                    </select>
+                </div>
+                <div>
+                    <button id="cancelRolesBtn">Cancel all meetings for selected role</button>
+                </div>
+            </div>
+        </div>
     <?php
     }
     ?>

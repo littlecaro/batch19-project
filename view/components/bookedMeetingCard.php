@@ -31,12 +31,19 @@
     } else {
         ?>
         <div class="meetingSubCard">
-                <p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p>
-                <p>-</p>
-                <p class="bookedJob"><?= $bookedMeetings[$i]->title?></p>
-                <p>-</p>
-                <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
-            
+            <form action="index.php?action=talentProfile" method="POST">
+            <input type="hidden" name="talentID" value="<?=$bookedMeetings[$i]->userID?>">
+                    <button><p><?= $bookedMeetings[$i]->first_name . " " . $bookedMeetings[$i]->last_name?> </p></button>
+            </form>
+            <p>-</p>
+            <form action="index.php?action=jobListings&ListingId=<?= $bookedMeetings[$i]->jobID?>" method="POST">
+                <button>
+                    <p class="bookedJob"><?= $bookedMeetings[$i]->title?></p>
+                </button>
+            </form>
+            <p>-</p>
+            <p><?= substr($bookedMeetings[$i]->time_start, 0, 5)?></p>
+        
             <form action="index.php?action=cancelMeeting" method="POST">
                 <input type="hidden" name="reserveID" value="<?=$bookedMeetings[$i]->id?>">
                 <button>X</button>
