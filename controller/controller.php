@@ -840,6 +840,7 @@ function showTalentProfileView($id, $jobID = null) {
     $languages = showLanguages($id);
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($id);
+    $interviews = $calendarManager->loadTalentInterviews($id);
     require("./view/talentProfileView.php");
 }
 

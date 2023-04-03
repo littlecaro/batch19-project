@@ -16,6 +16,8 @@ if ($i == 0 OR $prevDate != strtotime($receives[$i]->date)) {
 } else {
     ?>
     <div class="landingCalTime timeMid">
+        <p><?= $receives[$i]->title ?>,</p>
+        <p><?= $receives[$i]->name ?>,</p>
         <p><?= substr($receives[$i]->time_start, 0, 5) ?></p>
     </div>
     <?php

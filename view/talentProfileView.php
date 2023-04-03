@@ -69,18 +69,35 @@ ob_start();
                         ?>
         </div>
 
-        <h1><i class="fa-regular fa-calendar-days"></i>Availability - click time to book an interview</h1>
-        <div class="landingAvail">
             <?php
-            
-            if (!empty($entries)) {
-                for ($i = 0; $i < count($entries); $i++) {
-                    include("./view/components/landingTalentCalCard.php");
-                    ?>
-                    <?php
+
+            if (!empty($interviews)) {
+                ?>
+                <h1><i class="fa-solid fa-handshake-simple"></i>
+                You already have an interview scheduled with <?= $user->first_name ?? 'user'?></h1>
+                <div class="landingAvail">
+                <?php
+                print_r($interviews);
+                for ($i = 0; $i < count($interviews); $i++) {
+                    include("./view/components/landingTalentBookedMeetings.php");
                 } 
             } else {
-                echo "This user has no current availability. Click here to message and request.";
+                ?>
+                <h1><i class="fa-regular fa-calendar-days"></i>Availability - click time to book an interview</h1>
+                <div class="landingAvail">
+                    <?php
+                    if (!empty($entries)) {
+                        for ($i = 0; $i < count($entries); $i++) {
+                            include("./view/components/landingTalentCalCard.php");
+                            ?>
+                            <?php
+                        } 
+                    } else {
+                        echo "This user has no current availability. Click here to message and request.";
+                    }
+                    ?>
+                </div>
+                <?php
             }
             ?>
         </div>
