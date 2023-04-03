@@ -10,7 +10,7 @@ class CalendarManager extends Manager
         $user_id = strip_tags($user_id);
 
         $req = $db->prepare(
-                            'SELECT ua.date, ua.time_start 
+                            'SELECT ua.date, ua.time_start, ua.id
                             FROM user_availability ua
                             WHERE NOT EXISTS
                                 (SELECT user_availability_id FROM reservations r WHERE r.user_availability_id = ua.id )
@@ -84,6 +84,20 @@ class CalendarManager extends Manager
         $query->bindParam('user_id', $_SESSION['id'], PDO::PARAM_INT);
         $query->bindParam('date_php', strip_tags($date), PDO::PARAM_STR);
         $query->bindParam('time_php', strip_tags($time), PDO::PARAM_STR);
+
+        return $query->execute();
+    }
+
+    public function insertMeeting($uaID, $compID, $jobID) {
+        $db = $this->dbConnect();
+
+        $query = '  INSERT INTO reservations (user_availability_id, company_id, job_id) 
+                    VALUES (:uaID, :compID, :jobID)';
+
+        $query = $db->prepare($query);
+        $query->bindParam('uaID', $uaID, PDO::PARAM_INT);
+        $query->bindParam('compID', $compID, PDO::PARAM_INT);
+        $query->bindParam('jobID', $jobID, PDO::PARAM_INT);
 
         return $query->execute();
     }

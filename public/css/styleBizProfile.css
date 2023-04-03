@@ -685,3 +685,266 @@ input[type="checkbox"] {
 #logoUpload {
   padding-top: 10px;
 }
+.talentSearchMain form,
+.talentSearchMain button {
+  all: unset;
+  cursor: pointer;
+}
+
+#landing {
+  width: 90vh;
+}
+
+.landingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  word-break: break-word;
+  text-align: left;
+  width: 90vh;
+}
+
+.landingContainer p {
+  font-weight: 100;
+}
+
+.landingContainer > button:hover {
+  background-color: rgba(210, 210, 210, 1);
+  cursor: pointer;
+}
+
+.landingContainer > div {
+  background-color: rgba(210, 210, 210, 0.6);
+  border-radius: 5px;
+  padding: 1em;
+}
+
+.landingBtn {
+  color: black;
+  width: min-content;
+  border: none;
+  margin-bottom: 1.5vh;
+}
+
+.landingPersonalCard {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+.landingPersonalCard .left {
+  align-self: flex-start;
+}
+
+.landingCard {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+}
+
+.landingCard > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.landingCard p {
+  margin: 0.5em 0;
+}
+
+.landingContainer h1 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+}
+.landingContainer h2 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+  line-height: 1em;
+}
+.landingContainer h3 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  font-size: 1.5em;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  letter-spacing: normal;
+  text-shadow: none;
+  width: max-content;
+  margin: 0;
+  text-transform: none;
+  text-align: left;
+}
+
+.landingContainer h4 {
+  width: 100%;
+  text-align: right;
+  margin: 0;
+}
+
+.landingEducation,
+.landingExperience {
+  width: 100%;
+}
+
+.landingContainer .landingSameLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landingContainer i {
+  margin-right: 1vh;
+}
+
+.landingAvail {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.landingCalDate {
+  margin-top: 0.5vh;
+  padding: 0.5vh;
+  text-decoration: underline;
+}
+
+.landingAvail,
+.landingAvail div,
+.landingAvail div p {
+  margin: 0;
+}
+
+.landingSkills > div {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.landingSkills > div p:not(p:first-of-type) {
+  background-color: #13c2c5;
+  padding: 1vh;
+  border-radius: 5px;
+}
+
+.languageSkills p:not(p:first-of-type) {
+  background-color: yellow !important;
+}
+
+.landingCalDate {
+  background-color: rgba(255, 0, 0, 0.426);
+}
+.landingCalTime {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.landingCalCard {
+  width: 18vh;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.landingCalCard > .timeMid {
+  border-top: none;
+}
+
+.landingExperience {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.landingContainer > .landingBtn > div {
+  margin: 1em 0;
+}
+
+.landingCalTime > form button {
+  all: unset;
+  width: 100%;
+}
+
+.landingCalTime > form button:hover {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+.bookedMeetingCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.bookedMeetingCard {
+  margin-top: 2.5vh;
+}
+
+.bookedDate {
+  text-decoration: underline;
+  background-color: rgba(255, 0, 0, 0.426);
+  border-radius: 5px;
+  width: fit-content;
+  padding: 0 0.5vh;
+}
+
+.meetingSubCard {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-top: 0.25em;
+}
+
+.bookedMeetings button {
+  all: unset;
+}
+
+.meetingSubCard > form:nth-of-type(1) > button,
+.meetingSubCard > form:nth-of-type(2) > button {
+  background-color: rgba(210, 210, 210, 0.6);
+  padding: 0 1vh;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.meetingSubCard > form:last-of-type button {
+  width: fit-content;
+  background-color: red;
+  padding: 0 0.2em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.bookedMeetingCard p {
+  margin: 1vh 0;
+}
+
+.bookedMeetings input {
+  scale: 0.5;
+}
+
+.cancelContainer {
+  margin-top: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.cancelSelection {
+  margin-top: 1em;
+}
+
+.cancelContainer > button,
+#cancelRolesBtn {
+  width: fit-content;
+  background-color: red;
+  padding: 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}

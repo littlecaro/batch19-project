@@ -21,7 +21,32 @@ ob_start();
     <div class="menus">
         <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
 
+<<<<<<< HEAD
         <button onclick="myFunction('resume')"><i class="fa-solid fa-magnifying-glass"></i>Resume/CV</button>
+=======
+  <!-- profile photo upload here -->
+  <button class="profile" onclick="myFunction('landing')">
+  <!-- TODO: MOVE THE PROFILE PHOTO UPLOAD TO THE LANDING USER PROFILE VIEW PAGE -->
+    <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
+      <button id="photoUploadClick" type="button" onclick="profilePhoto.click()">
+        <img id="imgPreview" src="./public/images/default.svg" alt="" width="100" height="100" />
+      </button>
+      <p>
+        <label for="profilePhoto">Click photo to update</label>
+        <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" />
+      </p>
+      <p>
+        <input id="submitUploadPhoto" type="submit" value="UPLOAD" />
+      </p>
+    </form> -->
+    <!-- <div class="profile-name">
+            <h4>Elon Musk</h4>
+            <p>Space</p>
+        </div> -->
+  </button>
+  <div class="menus">
+    <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
+>>>>>>> main
 
         <button onclick="myFunction('education')"><i class="fa-solid fa-chart-simple"></i>Education</button>
 
