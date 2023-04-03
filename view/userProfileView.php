@@ -47,21 +47,21 @@ ob_start();
     </section>
 
     <section id="education" class="hidden">
-        <p>Your education level</p>
+
 
         <?php include('./view/userProfileEducation.php') ?>
 
     </section>
 
     <section id="experience" class="hidden">
-        <p>Your experiences</p>
+
 
         <?php include('./view/userProfileExperience.php') ?>
 
     </section>
 
     <section id="skills" class="hidden">
-        <p>Your Skills</p>
+
 
         <?php include('./view/userProfileSkills.php') ?>
 

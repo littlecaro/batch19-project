@@ -184,7 +184,6 @@ try {
             } else {
                 fetchJobPostings();
             }
-
             break;
         case "savedProfiles":
             require("./view/savedProfilesView.php");
@@ -210,11 +209,13 @@ try {
             break;
 
         case "updateUserExperience": //DONE
+            // print_r($_POST);
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
-            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            $id = $_POST['jobID'];
+            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
             break;
 
         case "addNewUserExperience":
@@ -223,6 +224,11 @@ try {
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
             addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+            break;
+
+        case "deleteUserExperience":
+            $id = $_POST['jobID'];
+            deleteUserExperience($id);
             break;
 
         case "addNewJob":

@@ -491,30 +491,42 @@ function updateUserEducation($userId, $degree, $degreeLevel)
     }
 }
 
-function addNewUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+function addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId)
 {
     $userManager = new UserManager();
-    $newExperienceUpdated = $userManager->insertUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
-    // echo $newExperienceUpdated;
-    if ($newExperienceUpdated === 1) {
+    $newExperienceUpdated = $userManager->addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+    echo $newExperienceUpdated;
+    if ($newExperienceUpdated == 1) {
         echo "Successfully Updated";
     } else {
         echo "Something went wrong.";
     }
 }
 
-function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id)
 {
-
     $userManager = new UserManager();
-    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
     echo $wasExperienceUpdated;
-    // if ($wasExperienceUpdated === 1) {
-    //     echo "Successfully Updated";
-    // } else {
-    //     echo "Something went wrong.";
-    // }
+    if ($wasExperienceUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
 }
+
+function deleteUserExperience($id)
+{
+    $userManager = new UserManager();
+    $wasExperienceDeleted = $userManager->deleteUserExperience($id);
+    echo $wasExperienceDeleted;
+    if ($wasExperienceDeleted === 1) {
+        echo "Successfully Deleted";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
 function createJobForm()
 {
     $userManager = new UserManager();
