@@ -401,3 +401,72 @@ function updateTalentFilter($searchData, $user_id, $jobId)
     $query->bindParam(":userId", $userId, PDO::PARAM_INT);
     $query->execute();
 }
+
+function getCompanyID($userID) {
+    $userCompanyQuery = "SELECT users.company_id, users.id
+                            FROM users 
+                            INNER JOIN companies 
+                            ON users.company_id = companies.id 
+                            WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userID, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetch(PDO::FETCH_OBJ);
+    return $rec->company_id;
+}
+
+function showSkills($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $skillQuer = 'SELECT user_skill_map.skill_id, skills.skills_fixed
+                FROM users 
+                    INNER JOIN user_skill_map 
+                    ON user_skill_map.user_id = users.id 
+                    INNER JOIN skills 
+                    ON user_skill_map.skill_id = skills.id
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($skillQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+
+function showLanguages($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $langQuer = 'SELECT user_language_map.language_id, languages.language
+                FROM users 
+                    INNER JOIN user_language_map 
+                    ON user_language_map.user_id = users.id 
+                    INNER JOIN languages 
+                    ON user_language_map.language_id = languages.id
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($langQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userLangs = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userLangs;
+}
+
+function showJobs($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $expQuer = 'SELECT pe.job_title, pe.company_name, pe.years_experience, pe.job_description, pe.city_id
+                FROM users 
+                    INNER JOIN professional_experience pe 
+                    ON pe.user_id = users.id 
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($expQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userExp = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userExp;
+}

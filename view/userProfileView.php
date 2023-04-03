@@ -20,8 +20,9 @@ ob_start();
     </button> -->
 
   <!-- profile photo upload here -->
-  <div class="profile">
-    <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
+  <button class="profile" onclick="myFunction('landing')">
+  <!-- TODO: MOVE THE PROFILE PHOTO UPLOAD TO THE LANDING USER PROFILE VIEW PAGE -->
+    <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
       <button id="photoUploadClick" type="button" onclick="profilePhoto.click()">
         <img id="imgPreview" src="./public/images/default.svg" alt="" width="100" height="100" />
       </button>
@@ -32,12 +33,12 @@ ob_start();
       <p>
         <input id="submitUploadPhoto" type="submit" value="UPLOAD" />
       </p>
-    </form>
+    </form> -->
     <!-- <div class="profile-name">
             <h4>Elon Musk</h4>
             <p>Space</p>
         </div> -->
-  </div>
+  </button>
   <div class="menus">
     <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
 

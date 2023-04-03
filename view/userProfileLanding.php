@@ -1,4 +1,4 @@
-<div id="landingContainer">
+<div class="landingContainer">
     <h1><i class="fa-solid fa-house"></i>Personal info</h1>
     <button class="landingBtn" onclick="myFunction('personal')">
     <!-- TODO: Split up the two div buttons, one will link to profile pic upload. -->
@@ -21,8 +21,11 @@
     <h1><i class="fa-solid fa-briefcase"></i>Experience</h1>
     <button class="landingBtn" onclick="myFunction('experience')">
         <div class="landingExperience">
-            <?php if(!empty($experience)){
-                        include("./view/components/landingExperienceCard.php");
+            <?php 
+                    $profExps = showJobs();
+                    if(!empty($experience)){
+                        foreach($profExps as $profExp)
+                            include("./view/components/landingExperienceCard.php");
                     } else {
                         echo "Please click to fill in your first entry";
                     } ?>
@@ -31,13 +34,37 @@
     <h1><i class="fa-solid fa-code"></i>Skills</h1>
     <button class="landingBtn" onclick="myFunction('skills')">
         <div class="landingSkills">
-                    <?php if(!empty($skill)){
-                        // include("./view/components/landingExperienceCard.php");
-                    } else {
-                        echo "Please click to fill in your first entry";
-                    } ?>
-            <p><b>Skills:</b> </p>
-            <p><b>Languages:</b> </p>
+                    <?php 
+                        $skills = showSkills();
+                        if(!empty($skills)){
+                            ?>
+                            <div class="technicalSkills"><p><b>Technical:</b></p>
+                            <?php
+                            foreach($skills as $skill) {
+                                include("./view/components/landingSkillCard.php");
+                            }
+                            ?>
+                            </div>
+                            <?php
+                        } else {
+                            echo "Please click to fill in your first entry";
+                        }
+                            
+                        $languages = showLanguages();
+                        if(!empty($languages)){
+                            ?>
+                            <div class="languageSkills"><p><b>Languages:</b> </p>
+                            <?php
+                            foreach($languages as $language) {
+                                include("./view/components/landingLanguageCard.php");
+                            }
+                            ?>
+                            </div>
+                            <?php
+                        } else {
+                            echo "Please click to fill in your first entry";
+                        }
+                        ?>
         </div>
     </button>
 
@@ -46,14 +73,9 @@
         <div class="landingAvail">
             <?php
             $entries = $calendarManager->loadCalendar($_SESSION['id']);
-            
-            function calDateToStr($str) {
-                $d = strtotime($str);
-                return date("l, M jS", $d);
-            }
 
             if (!empty($entries)) {
-                foreach ($entries as $entry) {
+                for ($i = 0; $i < count($entries); $i++) {
                     include("./view/components/landingCalendarCard.php");
                 } 
             } else {

@@ -831,24 +831,75 @@ function savedSearchExists($jobId)
     }
 }
 
-function showTalentProfileView($id, $jobID) {
+function showTalentProfileView($id, $jobID = null) {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($id);
-    $experience = $userManager->getUserExperience($id);
     $education = $userManager->getUserEducation($id);
-    $skills = $userManager->getUserSkills($id);
-    $cityName = $userManager->getCityName($user->city_id);
-    // $educationLevel = $userManager->getEducationLevel($education->degree_level);
-    $allSkills = $userManager->getSkillsList();
-    $allLanguages = $userManager->getLanguagesList();
-    $allCities = $userManager->getCitiesList();
+    $profExps = showJobs($id);
+    $skills = showSkills($id);
+    $languages = showLanguages($id);
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($id);
-    // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/talentProfileView.php");
 }
 
-function bookInterview($id, $jobID) {
-    $calendarManager = new CalendarManager();
-    header("Location:index.php?action=talentProfile");
+function bookInterview($uaID, $id, $jobID) {
+    $compID = getCompanyID($id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    if (!$result) {
+        throw new Exception("Unable to schedule interview");
+    }
+    header("location: index.php?action=bookedMeetings");
+}
+
+function showBookedMeetings() {
+    $companyManager = new CompanyManager();
+    $bookedMeetings = $companyManager->fetchBookedMeetings();
+    // if (!$bookedMeetings) {
+    //     throw new Exception("Unable to fetch booked meetings");
+    // } else {
+        require("./view/bookedMeetingsView.php");
+    // }
+}
+
+function deleteReservation($rID) {
+    if (is_array($rID)) {
+        $rIDs = $rID;
+        for ($i = 0; $i < count($rIDs); $i++) {
+            $rID = strip_tags($rIDs[$i]['rID']);
+    
+            $companyManager = new CompanyManager();
+            $result = $companyManager->cancelMeeting($rID);
+        }
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        } else {
+            // header("location: index.php?action=bookedMeetings");
+        }
+    } else {
+        $companyManager = new CompanyManager();
+        $result = $companyManager->cancelMeeting($rID);
+        if (!$result) {
+        throw new Exception("Unable to delete entry");
+        } else {
+        header("location: index.php?action=bookedMeetings");
+        }
+    }
+}
+
+function deleteRoleMeetings($rJob) {
+    $compID = getCompanyID($_SESSION["id"]);
+    $companyManager = new CompanyManager();
+    $result = $companyManager->cancelRoleMeetings($rJob, $compID);
+    if (!$result) {
+        throw new Exception("Unable to delete meetings");
+    } else {
+        header("location: index.php?action=bookedMeetings");
+    }
+}
+
+function calDateToStr($str) {
+    $d = strtotime($str);
+    return date("l, M jS", $d);
 }
