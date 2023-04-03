@@ -819,6 +819,14 @@ input[type="checkbox"] {
   text-align: center;
 }
 
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
+}
+
 .landingCalCard > .timeMid {
   border-top: none;
 }

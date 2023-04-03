@@ -4,7 +4,7 @@
 // HTML structure in place to show more than one.
         if ($i == 0 OR $prevDate != strtotime($interviews[$i]->date)) {
         ?>
-        <div class="landingCalCard">
+        <div class="landingCalCard landingInt">
             <div class="landingCalDate">
                 <p><?= calDateToStr($interviews[$i]->date) ?></p>
             </div>
