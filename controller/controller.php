@@ -573,6 +573,7 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
     // $educationLevel = $userManager->getEducationLevel($education->degree_level);
     $allSkills = $userManager->getSkillsList();
@@ -586,10 +587,15 @@ function showUserProfileView()
 }
 
 
-function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
     $userManager = new UserManager();
-    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    if ($profilePic) {
+        $profilePic = uploadImage($profilePic);
+    } else {
+        $profilePic = $oldImage;
+    }
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
         echo "Successfully Updated";
@@ -623,6 +629,27 @@ function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId
     //     echo "Something went wrong.";
     // }
 }
+function updateUserSkills($skillsString, $userId)
+{
+    $userManager = new UserManager();
+    $skillsArray = explode('&', $skillsString);
+    // echo $skillsArray;
+    foreach ($skillsArray as $skill_item) {
+        $skill_id = explode('|', $skill_item)[1];
+        $wasSkillsUpdated = $userManager->updateUserSkills($skill_id, $userId);
+    }
+    echo $wasSkillsUpdated;
+}
+function updateUserLanguages($languagesString, $userId)
+{
+    $userManager = new UserManager();
+    $languagesArray = explode('&', $languagesString);
+    foreach ($languagesArray as $language_item) {
+        $language_id = explode('|', $language_item)[1];
+        $wasLanguagesUpdated = $userManager->updateUserLanguages($language_id, $userId);
+    }
+    echo $wasLanguagesUpdated;
+}
 function createJobForm()
 {
     $userManager = new UserManager();
@@ -645,9 +672,9 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
         // TODO: finish this bish!
-        echo "Success! New job created. Get your tax money";
+        header("Location: ./index.php?action=jobListings");
     } else {
-        echo "FAIL!!! U DUN MESSED UP";
+        echo "Adding job failed, please contact the administrator";
     }
 }
 
@@ -683,15 +710,18 @@ function uploadImage($file)
     return $newPath;
 }
 
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
+function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
     if ($logo) {
         $logo = uploadImage($logo);
+    } else {
+        $logo = $oldLogo;
     }
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
-    if ($result) {
+    if ($result[0] and $result[1]) {
 
         header("location:index.php?action=companyDashboard");
     } else {
@@ -712,6 +742,7 @@ function getEmployeeInfo()
 function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
     if ($result) {
         header("location:index.php?action=employeeInfo");
@@ -722,24 +753,31 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 
 function fetchJobPostings()
 {
-    $listings = getJobPostings();
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+    $listings = getJobPostings($_SESSION["id"]);
+
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
-    $jobCard = getJobCard($jobId);
+    $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
 }
 function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
 {
+
     updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
+    $listings = getJobPostings($_SESSION["id"]);
     if (!empty($listings) && empty($jobId)) {
         foreach ($listings as $listing) {
             require "./view/components/jobPostingCard.php";
         }
     }
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
 }
 
 function updateJobStatus($id, $status)
@@ -748,34 +786,28 @@ function updateJobStatus($id, $status)
     setJobStatus($id, $status);
 }
 
-function uploadUserProfileImage($file)
-{
-    // md5 is considered insecure so generally we don't use it except for files
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2); 
+// function uploadUserProfileImage($file)
+// {
+//     // md5 is considered insecure so generally we don't use it except for files
+//     $hash = hash_file("md5", $file["tmp_name"]);
+//     echo $hash;
+//     $first = substr($hash, 0, 2);
+//     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+//     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+//     // allow read & write permissions for everyone
+//     chmod("./public/images/uploaded/$first", 0777);
+//     chmod("./public/images/uploaded/$first/$second", 0777);
 
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
+//     $type = explode(".", $file['name'])[1];
+//     $filename = substr($hash, 4) . "." . $type;
+//     $newPath = "./public/images/uploaded/$first/$second/$filename";
+//     move_uploaded_file($file["tmp_name"], $newPath);
+//     chmod($newPath, 0777);
 
-    chmod($newPath, 0777);
-
-    return $newPath;
-    if (isset($_FILES['profilePhoto'])){
-        //validate size, type, 
-        uploadImage($_FILES['profilePhoto']);
-        header("location: index.php?action=userProfileView");
-    }
-}
+//     return $newPath;
+// }
 function uploadResume($resume)
 {
     $hash = hash_file("md5", $resume["tmp_name"]);
@@ -855,4 +887,77 @@ function savedSearchExists($jobId)
     } else {
         return false;
     }
+}
+
+function showTalentProfileView($id, $jobID = null) {
+    $userManager = new UserManager();
+    $user = $userManager->getUserProfile($id);
+    $education = $userManager->getUserEducation($id);
+    $profExps = showJobs($id);
+    $skills = showSkills($id);
+    $languages = showLanguages($id);
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($id);
+    require("./view/talentProfileView.php");
+}
+
+function bookInterview($uaID, $id, $jobID) {
+    $compID = getCompanyID($id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    if (!$result) {
+        throw new Exception("Unable to schedule interview");
+    }
+    header("location: index.php?action=bookedMeetings");
+}
+
+function showBookedMeetings() {
+    $companyManager = new CompanyManager();
+    $bookedMeetings = $companyManager->fetchBookedMeetings();
+    // if (!$bookedMeetings) {
+    //     throw new Exception("Unable to fetch booked meetings");
+    // } else {
+        require("./view/bookedMeetingsView.php");
+    // }
+}
+
+function deleteReservation($rID) {
+    if (is_array($rID)) {
+        $rIDs = $rID;
+        for ($i = 0; $i < count($rIDs); $i++) {
+            $rID = strip_tags($rIDs[$i]['rID']);
+    
+            $companyManager = new CompanyManager();
+            $result = $companyManager->cancelMeeting($rID);
+        }
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        } else {
+            // header("location: index.php?action=bookedMeetings");
+        }
+    } else {
+        $companyManager = new CompanyManager();
+        $result = $companyManager->cancelMeeting($rID);
+        if (!$result) {
+        throw new Exception("Unable to delete entry");
+        } else {
+        header("location: index.php?action=bookedMeetings");
+        }
+    }
+}
+
+function deleteRoleMeetings($rJob) {
+    $compID = getCompanyID($_SESSION["id"]);
+    $companyManager = new CompanyManager();
+    $result = $companyManager->cancelRoleMeetings($rJob, $compID);
+    if (!$result) {
+        throw new Exception("Unable to delete meetings");
+    } else {
+        header("location: index.php?action=bookedMeetings");
+    }
+}
+
+function calDateToStr($str) {
+    $d = strtotime($str);
+    return date("l, M jS", $d);
 }

@@ -4,7 +4,8 @@
 }
 
 .cal-container {
-  margin-left: 220px;
+  padding: 25px;
+  width: 98%;
 }
 
 table {
@@ -46,6 +47,10 @@ td {
   gap: 1em;
 }
 
+.timeMid {
+  margin-top: 1vh;
+}
+
 .cal {
   display: flex;
   flex-direction: column;
@@ -54,11 +59,11 @@ td {
 table:hover {
   cursor: grab;
 }
-
+/* 
 div {
   display: flex;
   justify-content: center;
-}
+} */
 
 .selected {
   background-color: orange;
@@ -107,7 +112,7 @@ div {
   flex-direction: row;
 }
 
-button {
+#avail button {
   height: 2em;
   background-color: orange;
   color: white;

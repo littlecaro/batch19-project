@@ -9,13 +9,13 @@ function myFunction(id) {
 }
 
 // script for profile photo upload
-profilePhoto.onchange = () => {
-  const file = profilePhoto.files[0];
-  console.log(file);
-  if (file) {
-    imgPreview.src = URL.createObjectURL(file);
-  }
-};
+// profilePhoto.onchange = () => {
+//   const file = profilePhoto.files[0];
+//   console.log(file);
+//   if (file) {
+//     imgPreview.src = URL.createObjectURL(file);
+//   }
+// };
 
 //script for resume upload
 // resume.onchange = () => {
@@ -25,6 +25,7 @@ profilePhoto.onchange = () => {
 //     imgPreview.src = URL.createObjectURL(file);
 //   }
 // };
+
 let hasCalendarLoaded = false;
 function showCalendarPage() {
   myFunction("avail");

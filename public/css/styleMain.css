@@ -14,7 +14,7 @@
   --background-color-footer: #afd5fe;
 }
 
-#all-of-main {
+body {
   background: var(--text-color-primary);
   background: linear-gradient(
     29deg,
@@ -97,6 +97,16 @@ contain the landing page in a wrapper... HTML and body should have width and hei
   padding: 0 20px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.menu button {
+  background-color: transparent;
+  border: 2px solid white;
+  height: 30px;
+}
+
+.menu {
+  padding: 25px 5% 0 0;
 }
 
 .topbutton:hover {
