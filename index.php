@@ -81,7 +81,7 @@ try {
             // $city = !empty($_POST['city']) ? $_POST['city'] : null;
             // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-
+        
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
@@ -146,10 +146,6 @@ try {
                 throw new Exception("No calender inputs submitted");
             }
             break;
-            // case "loadCalendar":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
         case "deleteCalendarEntry":
             $entry = $_REQUEST['entry'] ?? "";
             if ($entry) {
@@ -172,7 +168,6 @@ try {
             }
 
             break;
-
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -186,19 +181,6 @@ try {
                 parseTalentFilter($jobId);
                 showTalents(true, null);
             }
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "userProfileView":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
         case "companyDashboard":
             getCompanyInfo();
             break;
@@ -210,8 +192,8 @@ try {
             break;
         case "jobListings":
             $user_id = $_SESSION['user_id'] ?? NULL;
-            if (!empty($_GET['ListingId'])) {
-                $jobId = $_GET['ListingId'] ?? null;
+            if (!empty($_REQUEST['ListingId'])) {
+                $jobId = $_REQUEST['ListingId'] ?? null;
                 $jobCard = showJobCard($jobId);
             } else {
                 fetchJobPostings();
@@ -223,12 +205,6 @@ try {
             $companyInfo = $companyManager->fetchCompanyInfo();
 
             require("./view/savedProfilesView.php");
-            break;
-        case "bookedMeetings":
-            $companyManager = new CompanyManager();
-            $companyInfo = $companyManager->fetchCompanyInfo();
-
-            require("./view/bookedMeetingsView.php");
             break;
         case "updateUserPersonal":
 
@@ -265,8 +241,13 @@ try {
             $userId = $_SESSION['id'] ?? null; //TODO: change this userID
             $skillsString = $_POST['skills'] ?? null;
             $languagesString = $_POST['languages'] ?? null;
-            updateUserSkills($skillsString, $userId);
-            updateUserLanguages($languagesString, $userId);
+            if ($skillsString != null) {
+                updateUserSkills($skillsString, $userId);
+            }
+            if ($languagesString != null) {
+                updateUserLanguages($languagesString, $userId);
+            }
+            header("location: index.php?action=userProfileView");
             break;
 
         case "addNewJob":
@@ -326,6 +307,34 @@ try {
         case "signOut";
             session_destroy();
             header("location:index.php");
+            break;
+        case "talentProfile":
+            $id = $_POST["talentID"] ?? null;
+            $jobID = $_POST['jobID'] ?? null;
+            showTalentProfileView($id, $jobID);
+            break;
+        case "bookInterview":
+            $uaID = $_POST['uaID'] ?? null;
+            $id = $_SESSION["id"] ?? null;
+            $jobID = $_POST['jobID'] ?? null;
+            bookInterview($uaID, $id, $jobID);
+            break;
+        case "bookedMeetings":
+            showBookedMeetings();
+            break;
+        case "cancelMeeting":
+            $rID = strip_tags($_REQUEST['reserveID']) ?? null;
+            if ($rID[0] == '[') {
+                $rID = json_decode($rID, true);
+                deleteReservation($rID);
+                break;
+            } else {
+                deleteReservation($rID);
+                break;
+            } 
+        case "cancelRoleMeetings":
+            $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
+            deleteRoleMeetings($rJob);
             break;
         default:
             showIndex();

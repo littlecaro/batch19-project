@@ -47,6 +47,10 @@ td {
   gap: 1em;
 }
 
+.timeMid {
+  margin-top: 1vh;
+}
+
 .cal {
   display: flex;
   flex-direction: column;
