@@ -15,8 +15,8 @@ try {
         case "userPhotoUpload":
             echo "<pre>";
             print_r($_FILES);
-            $file = $_FILES['profilePhoto'];
-            uploadUserProfileImage($file);
+            $file = $_FILES['imageUpload'];
+            uploadImage($file);
             break;
         case "userResumeUpload":
             echo "<pre>";
@@ -237,7 +237,14 @@ try {
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
-            updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            $oldImage = $_POST['oldImage'] ?? null;
+            $profilePic = !empty($_FILES['imageUpload']['name']) ? $_FILES['imageUpload'] : null;
+            $file = $_FILES['imageUpload'];
+            // print_r($_FILES['imageUpload']);
+            // uploadUserProfileImage($file);
+
+            updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
+
             // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;

@@ -13,7 +13,7 @@
     <title>WaygukIn</title>
 
 <body>
-    <?php require("./view/components/userProfileHeader.php"); ?>
+    <?php require("./view/components/companyHeader.php"); ?>
     <?= $content; ?>
 </body>
 
