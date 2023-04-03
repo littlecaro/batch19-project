@@ -567,6 +567,7 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
     // $educationLevel = $userManager->getEducationLevel($education->degree_level);
     $allSkills = $userManager->getSkillsList();
@@ -580,10 +581,15 @@ function showUserProfileView()
 }
 
 
-function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
     $userManager = new UserManager();
-    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    if ($profilePic) {
+        $profilePic = uploadImage($profilePic);
+    } else {
+        $profilePic = $oldImage;
+    }
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
         echo "Successfully Updated";
@@ -774,29 +780,28 @@ function updateJobStatus($id, $status)
     setJobStatus($id, $status);
 }
 
-function uploadUserProfileImage($file)
-{
-    // md5 is considered insecure so generally we don't use it except for files
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2);
+// function uploadUserProfileImage($file)
+// {
+//     // md5 is considered insecure so generally we don't use it except for files
+//     $hash = hash_file("md5", $file["tmp_name"]);
+//     echo $hash;
+//     $first = substr($hash, 0, 2);
+//     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+//     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+//     // allow read & write permissions for everyone
+//     chmod("./public/images/uploaded/$first", 0777);
+//     chmod("./public/images/uploaded/$first/$second", 0777);
 
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
+//     $type = explode(".", $file['name'])[1];
+//     $filename = substr($hash, 4) . "." . $type;
+//     $newPath = "./public/images/uploaded/$first/$second/$filename";
+//     move_uploaded_file($file["tmp_name"], $newPath);
+//     chmod($newPath, 0777);
 
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
+//     return $newPath;
+// }
 function uploadResume($resume)
 {
     $hash = hash_file("md5", $resume["tmp_name"]);

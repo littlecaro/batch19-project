@@ -3,9 +3,10 @@
   width: 100%;
 }
 
-/* .cal-container {
-  margin-left: 220px;
-} */
+.cal-container {
+  padding: 25px;
+  width: 98%;
+}
 
 table {
   border-collapse: collapse;
@@ -58,6 +59,11 @@ td {
 table:hover {
   cursor: grab;
 }
+/* 
+div {
+  display: flex;
+  justify-content: center;
+} */
 
 .selected {
   background-color: orange;

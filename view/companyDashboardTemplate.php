@@ -14,5 +14,6 @@
 <body>
     <?php require("./view/components/companyHeader.php"); ?>
     <?php require("./view/components/companySidebar.php"); ?>
+    <?php require("./view/components/footer.php"); ?>
     <?= $content; ?>
 </body>

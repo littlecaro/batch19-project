@@ -5,12 +5,15 @@ if (cityName) {
 function updateUserPersonal(e) {
   e.preventDefault();
   // console.log(city.options[city.selectedIndex].value);
-  console.log(cityName);
+  // console.log(cityName);
   const formData = new FormData();
   formData.append("phoneNb", phoneNb.value);
   formData.append("city", city.options[city.selectedIndex].value); // TODO:
   formData.append("salary", salary.value);
   formData.append("id", id.value);
+  const file = imageUpload.files[0];
+  formData.append("imageUpload", file);
+  console.log(imageUpload.files[0]);
   var inputs = document.querySelectorAll('input[type="radio"]');
   // console.log(inputs);
   for (var i = 0; i < inputs.length; i++) {
