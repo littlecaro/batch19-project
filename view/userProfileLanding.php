@@ -47,7 +47,7 @@
                             </div>
                             <?php
                         } else {
-                            echo "Please click to fill in your first entry";
+                            echo "No technical skills uploaded.<br>";
                         }
                             
                         $languages = showLanguages();
@@ -62,7 +62,7 @@
                             </div>
                             <?php
                         } else {
-                            echo "Please click to fill in your first entry";
+                            echo "<br>No languages uploaded.";
                         }
                         ?>
         </div>
@@ -73,6 +73,23 @@
         <div class="landingAvail">
             <?php
             $entries = $calendarManager->loadCalendar($_SESSION['id']);
+
+            if (!empty($entries)) {
+                for ($i = 0; $i < count($entries); $i++) {
+                    include("./view/components/landingCalendarCard.php");
+                } 
+            } else {
+                echo "Please click to fill in your first entry";
+            }
+            ?>
+        </div>
+    </button>
+
+    <h1><i class="fa-solid fa-handshake-simple"></i>Interviews</h1>
+    <button class="landingBtn" onclick="showCalendarPage()">
+        <div class="landingAvail">
+            <?php
+            $entries = $calendarManager->loadInterviews($_SESSION['id']);
 
             if (!empty($entries)) {
                 for ($i = 0; $i < count($entries); $i++) {
