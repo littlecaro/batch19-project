@@ -66,51 +66,6 @@ ob_start();
         <?php include('./view/userProfilePersonal.php') ?>
 
     </section>
-    <section id="resume" class="hidden">
-      <div id="resume">
-        <form
-        action="index.php?action=userResumeUpload"
-        method="post"
-        enctype="multipart/form-data"
-        >
-        <p>
-              <h2>Resume/CV</h2>
-              <input
-                type="file"
-                name="resume"
-                id="resume"
-                accept=".pdf"
-              />
-            </p>
-            <p>
-              <input id="submitResume" type="submit" value="Save" />
-            </p>
-          </form>
-        </div>
-    </section>
-
-    <section id="resume" class="hidden">
-      <div id="resume">
-        <form
-        action="index.php?action=userResumeUpload"
-        method="post"
-        enctype="multipart/form-data"
-        >
-        <p>
-              <h2>Resume/CV</h2>
-              <input
-                type="file"
-                name="resume"
-                id="resume"
-                accept=".pdf"
-              />
-            </p>
-            <p>
-              <input id="submitResume" type="submit" value="UPLOAD" />
-            </p>
-          </form>
-        </div>
-    </section>
 
     <section id="education" class="hidden">
         <p>Your education level</p>

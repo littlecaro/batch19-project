@@ -19,8 +19,8 @@ try {
             uploadUserProfileImage($file);
             break;
         case "userResumeUpload":
-            echo "<pre>";
-            print_r($_FILES);
+            // echo "<pre>";
+            // print_r($_FILES);
             $resume = $_FILES['resume'];
             uploadResume($resume);
             break;
@@ -37,18 +37,6 @@ try {
             break;
         case "userSignInView":
             showUserSignIn();
-            break;
-        case "userSignUp":
-            //make sure data exists
-            $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
-            $lastName = !empty($_POST['lName']) ? $_POST['lName'] : null;
-            $email = !empty($_POST['email']) ? $_POST['email'] : null;
-            $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
-            $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
-            if ($firstName and $lastName and $email and $pwd and $pwd2) {
-                //call a controller function
-                userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
-            }
             break;
         case "companySignUp":
             $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
@@ -74,7 +62,7 @@ try {
 
             if ($email and $pwd) {
                 //call a controller function
-                userSignIn($email, $pwd);
+                userSignIn($_POST['email'], $_POST['pwd']);
             }
             break;
             // case "userProfile":

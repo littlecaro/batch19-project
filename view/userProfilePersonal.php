@@ -86,7 +86,7 @@
                                                                 echo "checked";
                                                             } ?> />
     </p>
-
+                                                            
     <input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
     <input type="submit" value="Save">
     <p id="personalUpdateStatus"></p>
@@ -94,3 +94,24 @@
     </script>
     <script defer src="./public/js/updateUserPersonal.js"></script>
 </form>
+<br>
+<div id="resume">
+        <form
+        action="index.php?action=userResumeUpload"
+        method="post"
+        enctype="multipart/form-data"
+        >
+        <p>
+              <h2>Resume/CV</h2>
+              <input
+                type="file"
+                name="resume"
+                id="resume"
+                accept=".pdf"
+              />
+            </p>
+            <p>
+              <input id="submitResume" type="submit" value="Save" />
+            </p>
+          </form>
+        </div>
