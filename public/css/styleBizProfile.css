@@ -544,8 +544,8 @@ input[type="checkbox"] {
 .noUi-tooltip {
   font-size: 10px;
 }
-.addaJobBtn {
-}
+/* .addaJobBtn {
+} */
 /* Styles for job listing cards*/
 .jobListingWrapper {
   display: flex;
@@ -638,10 +638,10 @@ input[type="checkbox"] {
 .jobPostingCardFull {
   text-align: left;
 }
-.aboutTheCompany {
-  /* display: flex; */
-  /* flex-direction: column; */
-}
+/* .aboutTheCompany { */
+/* display: flex; */
+/* flex-direction: column; */
+/* } */
 .aboutTheCompany img {
   height: 50px;
 }
