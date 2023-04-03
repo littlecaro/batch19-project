@@ -6,11 +6,27 @@ ob_start();
 <!-- main -->
 <div class="bizProfile">
     <div class="landingContainer" class="main">
+        <div id="talentHead">
         <h3>Talent Profile</h3><br>
+        <?php 
+                if (!empty($user->resume_file_url)) {
+                    ?>
+                        <a href="<?=$user->resume_file_url?>">Click here to open <?=$user->first_name?>'s resume</a> 
+                    <?php } ?>
+        <div class="talentBack">
         <?php if ($jobID != null) {
-            echo "<a href='http://localhost/sites/batch19-project/index.php?action=talentSearch&jobId=<?= $jobID ?>'>Back to searches</a>";        
+            ?>
+                    <a href="index.php?action=talentSearch&jobId=<?= $jobID ?>"><i class='fa-regular fa-hand-point-left'></i>Back to searches</a>
+            </div>
+            <?php
+        } else {
+            ?>
+                <a href="index.php?action=bookedMeetings"><i class='fa-regular fa-hand-point-left'></i>Back to meetings</a>
+            </div>
+            <?php
         }
         ?>
+        </div>
         <h1><i class="fa-solid fa-house"></i>Personal info</h1>
         <div class="landingPersonal">
             <?php include("./view/components/landingPersonalCard.php") ?>
@@ -21,7 +37,7 @@ ob_start();
             <?php if(!empty($education)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "This user has not inserted any education.";
+                        echo "<b>This user has not inserted any education.</b>";
                     } ?>
         </div>
 
@@ -32,7 +48,7 @@ ob_start();
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "This user has not inserted any job experience.";
+                        echo "<b>This user has not inserted any job experience.</b>";
                     } ?>
         </div>
 
@@ -50,7 +66,7 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "This user has not inserted any technical skills.<br>";
+                            echo "<b>This user has not inserted any technical skills.</b><br>";
                         }
                             
                         if(!empty($languages)){
@@ -64,7 +80,7 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "This user has not inserted any languages.";
+                            echo "<b><br>This user has not inserted any languages.</b>";
                         }
                         ?>
         </div>
@@ -92,7 +108,7 @@ ob_start();
                             <?php
                         } 
                     } else {
-                        echo "This user has no current availability. Click here to message and request.";
+                        echo "<b>This user has no current availability. Click here to message and request.</b>";
                     }
                     ?>
                 </div>

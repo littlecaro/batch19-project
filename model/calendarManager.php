@@ -103,7 +103,7 @@ class CalendarManager extends Manager
     }
 
     public function loadTalentInterviews($id) {
-        $compID = getCompanyID($id);
+        $compID = getCompanyID($_SESSION['id']);
 
         $db = $this->dbConnect();
 
