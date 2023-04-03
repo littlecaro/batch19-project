@@ -19,7 +19,7 @@ html {
 
 .sidebar {
   width: 220px;
-  height: 100%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,6 +36,7 @@ html {
   position: fixed;
   left: 0;
   top: 80px;
+  overflow: scroll;
 }
 
 .sidebar .logo a {
