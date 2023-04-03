@@ -3,14 +3,15 @@ require_once "Manager.php";
 class UserManager extends Manager
 {
 
-    public function getUserByEmail($userEmail)
+    public function getUserByEmail($email)
     {
         $db = $this->dbConnect();
-        $sqlEmail = $db->prepare('SELECT * FROM users WHERE email = ?'); // query prepare the DB to see if the user exists - asking data from the users table 
-        $sqlEmail->execute([$userEmail]); // ^ asking for the id, email... info ^
-        $user = $sqlEmail->fetch(PDO::FETCH_OBJ);
+        $req = $db->prepare("SELECT * FROM users WHERE email = ?"); // query prepare the DB to see if the user exists - asking data from the users table 
+        $req->execute([$email]); // ^ asking for the id, email... info ^
+        $user = $req->fetch(PDO::FETCH_OBJ);
         return $user;
     }
+
 
     public function insertUserGoogle($firstName, $lastName, $email, $picture)
     {
@@ -285,6 +286,8 @@ class UserManager extends Manager
         $user = $req->fetch(PDO::FETCH_OBJ);
 
         //verify the password and then start a session
+
+        //do an if statement to check if user is company or single user and header to their profile page
         if ($user and password_verify($_POST['pwd'], $user->password)) {
             $_SESSION['email'] = $_POST['email'];
             exit;
@@ -302,13 +305,24 @@ class UserManager extends Manager
 
     //     return $user;
     // }
-
     public function uploadUserResume($resume)
     {
         $db = $this->dbConnect();
-        $preparedinsertSql = "INSERT INTO users (resume_file_url)
-        VALUES (:resume)";
+        $preparedinsertSql = "UPDATE users 
+                                SET resume_file_url = :resume
+                                WHERE users.id = :userID";
         $req = $db->prepare($preparedinsertSql);
-        $req->bindParam('resume_file_url', $resume, PDO::PARAM_STR);
+        $req->bindParam('resume', $resume, PDO::PARAM_STR);
+        $req->bindParam('userID', $_SESSION['id'], PDO::PARAM_INT);
+        $wasAdded = $req->execute();
+
+        if ($wasAdded) {
+            $req = $db->query("SELECT resume_file_url FROM users WHERE id = ?");
+            $req->bindParam('id', $_SESSION['id'], PDO::PARAM_INT);
+            $cvresume = $req->fetch(PDO::FETCH_ASSOC);
+            
+        } else {
+            return false;
+        }
     }
 }

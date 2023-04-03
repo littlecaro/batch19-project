@@ -674,7 +674,6 @@ input[type="checkbox"] {
   margin: 0;
 }
 
-<<<<<<< HEAD
 .usertable td {
   border: none;
   color: black;
@@ -683,7 +682,7 @@ input[type="checkbox"] {
 
 .usertable .selected {
   background-color: none;
-=======
+}
 .landingSkills > div {
   display: flex;
   gap: 1em;
@@ -727,5 +726,4 @@ input[type="checkbox"] {
 
 .landingContainer > .landingBtn > div {
   margin: 1em 0;
->>>>>>> main
 }
