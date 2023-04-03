@@ -89,11 +89,11 @@
     <button class="landingBtn" onclick="showCalendarPage()">
         <div class="landingAvail">
             <?php
-            $entries = $calendarManager->loadInterviews($_SESSION['id']);
+            $receives = $calendarManager->loadInterviews($_SESSION['id']);
 
-            if (!empty($entries)) {
-                for ($i = 0; $i < count($entries); $i++) {
-                    include("./view/components/landingCalendarCard.php");
+            if (!empty($receives)) {
+                for ($i = 0; $i < count($receives); $i++) {
+                    include("./view/components/landingInterviewCard.php");
                 } 
             } else {
                 echo "Please click to fill in your first entry";

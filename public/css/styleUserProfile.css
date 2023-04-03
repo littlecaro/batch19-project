@@ -655,10 +655,18 @@ input[type="checkbox"] {
 }
 
 .landingCalCard {
-  width: 18vh;
+  width: 20vh;
   border-radius: 5px;
   overflow: hidden;
   text-align: center;
+}
+
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
 }
 
 .landingCalCard > .timeMid {
