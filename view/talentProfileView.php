@@ -77,7 +77,6 @@ ob_start();
                 You already have an interview scheduled with <?= $user->first_name ?? 'user'?></h1>
                 <div class="landingAvail">
                 <?php
-                print_r($interviews);
                 for ($i = 0; $i < count($interviews); $i++) {
                     include("./view/components/landingTalentBookedMeetings.php");
                 } 
