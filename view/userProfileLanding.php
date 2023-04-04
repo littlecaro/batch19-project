@@ -23,7 +23,7 @@
         <div class="landingExperience">
             <?php 
                     $profExps = showJobs();
-                    if(!empty($experience)){
+                    if(!empty($profExps)){
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {

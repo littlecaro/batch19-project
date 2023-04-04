@@ -370,21 +370,24 @@ class UserManager extends Manager
 
     //     return $user;
     // }
+
     public function uploadUserResume($resume)
     {
         $db = $this->dbConnect();
         $preparedinsertSql = "UPDATE users 
-                                SET resume_file_url = :resume
+                                SET resume_file_url = :Inresume
                                 WHERE users.id = :userID";
         $req = $db->prepare($preparedinsertSql);
-        $req->bindParam('resume', $resume, PDO::PARAM_STR);
+        $req->bindParam('Inresume', $resume, PDO::PARAM_STR);
         $req->bindParam('userID', $_SESSION['id'], PDO::PARAM_INT);
         $wasAdded = $req->execute();
 
         if ($wasAdded) {
-            $req = $db->query("SELECT resume_file_url FROM users WHERE id = ?");
-            $req->bindParam('id', $_SESSION['id'], PDO::PARAM_INT);
+            $req = $db->prepare("SELECT resume_file_url FROM users WHERE id = :Inid");
+            $req->bindParam('Inid', $_SESSION['id'], PDO::PARAM_INT);
+            $req->execute();
             $cvresume = $req->fetch(PDO::FETCH_ASSOC);
+            return $cvresume;
         } else {
             return false;
         }

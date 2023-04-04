@@ -230,6 +230,7 @@ label[for="slider"] {
 }
 .searchTags {
   display: flex;
+  justify-content: center;
 }
 .talentCardHeadLeft {
   display: flex;
