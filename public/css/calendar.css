@@ -8,25 +8,25 @@
   width: 98%;
 }
 
-table {
+.cal-container table {
   border-collapse: collapse;
   width: 90%;
 }
 
-td,
-th {
+.cal-container td,
+.cal-container th {
   width: 20vh;
   height: 2.5vh;
   text-align: center;
 }
 
-td {
+.cal-container td {
   border: 1px solid black;
   text-align: center;
   color: white;
 }
 
-.times {
+.cal-container .times {
   width: 5vh;
 }
 
@@ -54,6 +54,7 @@ td {
 .cal {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 table:hover {

@@ -852,6 +852,14 @@ input[type="checkbox"] {
   text-align: center;
 }
 
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
+}
+
 .landingCalCard > .timeMid {
   border-top: none;
 }
@@ -947,4 +955,25 @@ input[type="checkbox"] {
   padding: 0.5em;
   border-radius: 5px;
   cursor: pointer;
+}
+
+#talentHead {
+  all: unset;
+  display: flex;
+  gap: 1em;
+  margin-top: 1vh;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#talentHead a {
+  all: unset;
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1vh;
+  cursor: pointer;
+  color: white;
 }
