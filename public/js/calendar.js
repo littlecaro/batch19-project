@@ -1,7 +1,7 @@
 function loadCalendar() {
   let offset = 0;
-  // console.log(entries);
-  // console.log(receives);
+  console.log(entries);
+  console.log(receives);
 
   const calendar = document.querySelector(".calendar");
 
@@ -207,8 +207,8 @@ function loadCalendar() {
 
   let isMouseUp = true;
   function highlight() {
-    let table = document.querySelector("table");
-    let tds = document.querySelectorAll("td");
+    let table = document.querySelector(".calendar");
+    let tds = document.querySelectorAll(".calendar td");
     // is user leaves the table with
     table.addEventListener("mousedown", function (e) {
       isMouseUp = false;

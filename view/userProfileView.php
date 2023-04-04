@@ -9,14 +9,14 @@ ob_start();
 <!-- part of website icon: we can choose from navibar or can create our own -->
 <!--sidebar  -->
 <div class="sidebar">
-    <div class="profile">
+    <button class="profile" onclick="myFunction('landing')">
         <!-- We need here a profile picture -->
         <img class="profile-img" src="<?= $user->profile_picture ?? "./public/images/default.svg" ?>" alt="Elon Musk's photo looking head to left"><br>
         <div class="profile-name">
             <h4><?= $user->first_name . " " . $user->last_name  ?? "Your name" ?></h4>
             <p>Member since <?= $user->date_created ?? "YYYY-MM-DD" ?></p>
         </div>
-    </div>
+    </button>
     <div class="menus">
         <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
   <!-- profile photo upload here -->

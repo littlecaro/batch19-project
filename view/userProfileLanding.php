@@ -13,7 +13,7 @@
             <?php if(!empty($education)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Please click to fill in your first entry.";
                     } ?>
         </div>
     </button>
@@ -27,7 +27,7 @@
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Please click to fill in your first entry.";
                     } ?>
         </div>
     </button>
@@ -79,7 +79,7 @@
                     include("./view/components/landingCalendarCard.php");
                 } 
             } else {
-                echo "Please click to fill in your first entry";
+                echo "Please click to fill in your first entry.";
             }
             ?>
         </div>
@@ -96,7 +96,7 @@
                     include("./view/components/landingInterviewCard.php");
                 } 
             } else {
-                echo "Please click to fill in your first entry";
+                echo "No interviews scheduled.";
             }
             ?>
         </div>
