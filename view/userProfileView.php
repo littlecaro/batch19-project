@@ -44,7 +44,9 @@ ob_start();
         <button onclick="myFunction('skills')"><i class="fa-solid fa-bookmark"></i></i>Skills</button>
 
         <button onclick="showCalendarPage()"><i class="fa-solid fa-message"></i>Availability</button>
+    </div>
 </div>
+
 
 <!-- main -->
 <div class="main">
