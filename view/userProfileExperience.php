@@ -98,9 +98,7 @@ value="<?= $_SESSION['id']; ?>"> -->
             //this is to get the specif info on each card to edit
         });
     }
-    // DUN WORK
-    // for (editBtn of editBtns) { editBtn.addEventListener("click", () => { modalEdit.showModal(); });
-    // console.log(e.target.parentNode.textContent);}
+    // DUN WORK // for (editBtn of editBtns) { editBtn.addEventListener("click", () => { modalEdit.showModal(); }); // console.log(e.target.parentNode.textContent);}
     const closeEditBtns = document.getElementsByClassName("closeEditExpBtn"); // button for cancel
 
     for (closeEditBtn of closeEditBtns) {
@@ -109,7 +107,7 @@ value="<?= $_SESSION['id']; ?>"> -->
             e.target.parentNode.parentNode.parentNode.close();
         })
     }
-    const modalBoxs = document.getElementsByClassName("editExperience"); // button for update
+    const modalBoxs = document.getElementsByClassName("editExperience"); // the update btn in JS file
     for (let modalBox of modalBoxs) {
         modalBox.addEventListener("click", function(e) {
             if (event.target === modalBox) {
@@ -117,16 +115,39 @@ value="<?= $_SESSION['id']; ?>"> -->
             }
         })
     }
-    const modalDeletes = document.getElementsByClassName("deleteExpBtn");
-    console.log(modalDeletes);
+    const modalDeletes = document.getElementsByClassName("deleteExpBtn"); //delete btn
+    // console.log(modalDeletes);
     for (let modalDelete of modalDeletes) {
         modalDelete.addEventListener("click", (e) => {
+            e.preventDefault();
+            // console.log(e);
+            const formData = new FormData();
 
+            formData.append("jobID", e.target.value);
+
+            console.log("jobID:", e.target.value); //showing job ID
+            // console.log(e); // shows everything
+            let xhr = new XMLHttpRequest(); // it didn't work on the JS file so copied and pasted it into here directly.
+            xhr.open(
+                "POST",
+                `http://localhost/sites/batch19-project/index.php?action=deleteUserExperience`
+            );
+            xhr.addEventListener("readystatechange", function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    window.location.href =
+                        "http://localhost/sites/batch19-project/index.php?action=userProfileView";
+                    let response = xhr.responseText;
+                    experienceUpdateStatus.textContent = response;
+                    console.log(response); // 2nd step // shows the "query" DELETE FROM database table...
+                }
+            });
+            xhr.send(formData);
         })
     }
 </script>
 
 <script defer src="./public/js/addNewUserExperience.js"></script>
+<!-- <script defer src="./public/js/deleteUserExperience.js"></script> -->
 <script>
     const modalAdd = document.querySelector("#addExperience")
 

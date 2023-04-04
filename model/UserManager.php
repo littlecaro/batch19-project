@@ -138,7 +138,7 @@ class UserManager extends Manager
         $db = $this->dbConnect();
 
         $query = "DELETE FROM professional_experience WHERE id = :inID";
-
+        echo $query; // 1st step
         $query = $db->prepare($query);
         $query->bindParam('inID', $id, PDO::PARAM_INT);
 

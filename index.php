@@ -228,6 +228,7 @@ try {
 
         case "deleteUserExperience":
             $id = $_POST['jobID'];
+            echo $id;
             deleteUserExperience($id);
             break;
 

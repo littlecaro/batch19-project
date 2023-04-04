@@ -19,8 +19,8 @@ function addNewUserExperience(e) {
   );
   xhr.addEventListener("readystatechange", function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
-      // window.location.href =
-      //   "http://localhost/sites/batch19-project/index.php?action=userProfileView";
+      window.location.href =
+        "http://localhost/sites/batch19-project/index.php?action=userProfileView";
       let response = xhr.responseText;
       experienceUpdateStatus.textContent = response;
     }

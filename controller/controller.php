@@ -520,7 +520,8 @@ function deleteUserExperience($id)
     $userManager = new UserManager();
     $wasExperienceDeleted = $userManager->deleteUserExperience($id);
     echo $wasExperienceDeleted;
-    if ($wasExperienceDeleted === 1) {
+    if ($wasExperienceDeleted == 1) {
+        // echo $wasExperienceDeleted;
         echo "Successfully Deleted";
     } else {
         echo "Something went wrong.";
