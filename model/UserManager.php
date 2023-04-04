@@ -21,9 +21,7 @@ class UserManager extends Manager
         VALUES (:inFirst_name, :inLast_name, :inEmail, :inProfile_picture, 0); 
         SET @last_id_in_table1 = LAST_INSERT_ID(); 
         INSERT INTO education (user_id) VALUES (@last_id_in_table1);  --// inserting id for education
-        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1); -- // inserting id for professional
-        INSERT INTO user_skill_map (user_id) VALUES (@last_id_table1);';
-
+        INSERT INTO professional_experience (user_id) VALUES (@last_id_in_table1);'; // inserting id for professional
 
         $req = $db->prepare($insertUser);
         // your value is the decodedToken from the JSon and -> selecting the specific title from there
@@ -61,6 +59,91 @@ class UserManager extends Manager
             return false;
         }
     }
+
+    // public function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+    // {
+    //     $db = $this->dbConnect();
+    //     // this is to check and get the city id from the cities table. cities -> city_id(matching the city name) -> pass id inside users.
+    //     $getCityId = "SELECT id FROM cities where name = :inCity AND country_code = 'KR' "; //query
+    //     $req = $db->prepare($getCityId);
+    //     $req->bindParam(':inCity', $city, PDO::PARAM_STR);
+    //     $cityId = $req->execute();
+    //     $cityId = $req->fetchAll(PDO::FETCH_OBJ);
+    //     $cityId = $cityId[0]->id ?? NULL; // the city id in table cities
+
+    //     $updateUserP = "UPDATE users SET phone_number = :inPhoneNb, city_id = :inCity, visa_sponsorship = :inVisa, desired_salary = :inSalary WHERE id = :id";
+    //     $req = $db->prepare($updateUserP);
+    //     $req->bindParam('id', $id, PDO::PARAM_INT);
+    //     $req->bindParam('inPhoneNb', $phoneNb, PDO::PARAM_INT);
+    //     $req->bindParam(':inCity', $cityId, PDO::PARAM_STR);
+    //     $req->bindParam('inSalary', $salary, PDO::PARAM_INT);
+    //     $req->bindParam('inVisa', $visa, PDO::PARAM_INT);
+    //     $result2 = $req->execute();
+    //     return //htmlspecialchars
+    //         $result2;
+    // }
+
+    public function getUserEducation($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT * FROM education WHERE user_id = ?");
+        $req->execute([$userId]);
+        $education = $req->fetch(PDO::FETCH_OBJ);
+        return //htmlspecialchars
+            $education;
+    }
+
+    public function getUserExperience($userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT * FROM professional_experience WHERE user_id = ? ");
+        $req->execute([$userId]);
+        $experience = $req->fetchAll(PDO::FETCH_OBJ);
+        return //htmlspecialchars
+            $experience;
+    }
+
+    public function addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId)
+    {
+        $db = $this->dbConnect();
+        $insertExperience = 'INSERT INTO professional_experience (job_title, company_name, years_experience, user_id) 
+        VALUES (:inJob_title, :inCompany_name, :inYears_experience, :inUser_id);';
+
+        $req = $db->prepare($insertExperience);
+        $req->bindParam('inCompany_name',  $companyName,  PDO::PARAM_STR);
+        $req->bindParam('inJob_title',  $jobTitle,  PDO::PARAM_STR);
+        $req->bindParam('inYears_experience',  $yearsExperience,  PDO::PARAM_INT);
+        $req->bindParam('inUser_id',  $userId,  PDO::PARAM_INT);
+        return $req->execute();
+    }
+
+    public function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id)
+    {
+
+        $db = $this->dbConnect();
+        $updateUserExp = "UPDATE professional_experience SET job_title = :inJobTitle, years_experience = :inYearsExperience, company_name = :inCompanyName WHERE user_id = :inUserID AND id = :inID";
+        $req = $db->prepare($updateUserExp);
+        $req->bindParam('inJobTitle', $jobTitle, PDO::PARAM_STR);
+        $req->bindParam('inYearsExperience', $yearsExperience, PDO::PARAM_INT);
+        $req->bindParam('inCompanyName', $companyName, PDO::PARAM_STR);
+        $req->bindParam('inUserID', $userId, PDO::PARAM_INT);
+        $req->bindParam('inID', $id, PDO::PARAM_INT);
+        $req->execute();
+        return $req->rowCount();
+    }
+
+    public function deleteUserExperience($id)
+    {
+        $db = $this->dbConnect();
+
+        $query = "DELETE FROM professional_experience WHERE id = :inID";
+        echo $query; // 1st step
+        $query = $db->prepare($query);
+        $query->bindParam('inID', $id, PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
     public function insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle)
     {
         $db = $this->dbConnect();
@@ -98,18 +181,10 @@ class UserManager extends Manager
         $req = $db->prepare("SELECT *, DATE(date_created) AS date_created FROM users WHERE id = ? ");
         $req->execute([$userId]);
         $user = $req->fetch(PDO::FETCH_OBJ);
-        return $user;
+        return //htmlspecialchars
+            $user;
     }
 
-    public function getUserExperience($userId)
-    {
-        $db = $this->dbConnect();
-        //TODO: get experience WHERE user id matches;
-        $req = $db->prepare("SELECT * FROM professional_experience WHERE user_id = ?");
-        $req->execute([$userId]);
-        $experience = $req->fetch(PDO::FETCH_OBJ);
-        return $experience;
-    }
     public function getUserSkills($userId)
     {
         $db = $this->dbConnect();
@@ -117,7 +192,7 @@ class UserManager extends Manager
         $userSkills = "SELECT user_id, skill_id FROM user_skill_map WHERE user_id =?";
         $req = $db->prepare($userSkills);
         $req->execute([$userId]);
-        $skill = $req->fetchALL(PDO::FETCH_OBJ);
+        $skill = $req->fetchAll(PDO::FETCH_OBJ);
         return $skill;
     }
 
@@ -144,16 +219,6 @@ class UserManager extends Manager
         $cities = $res->fetchAll(PDO::FETCH_ASSOC);
         return $cities;
     }
-
-    public function getUserEducation($userId)
-    {
-        $db = $this->dbConnect();
-        $req = $db->prepare("SELECT * FROM education WHERE user_id = ?");
-        $req->execute([$userId]);
-        $education = $req->fetch(PDO::FETCH_OBJ);
-        return $education;
-    }
-
 
     public function getCityName($cityId)
     {
@@ -228,18 +293,18 @@ class UserManager extends Manager
         return $req->rowCount();
     }
 
-    public function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
-    {
-        $db = $this->dbConnect();
-        $updateUserExp = "UPDATE professional_experience SET job_title = :inJobTitle, years_experience = :inYearsExperience, company_name = :inCompanyName WHERE user_id = :inUserID";
-        $req = $db->prepare($updateUserExp);
-        $req->bindParam('inJobTitle', $jobTitle, PDO::PARAM_STR);
-        $req->bindParam('inYearsExperience', $yearsExperience, PDO::PARAM_INT);
-        $req->bindParam('inCompanyName', $companyName, PDO::PARAM_STR);
-        $req->bindParam('inUserID', $userId, PDO::PARAM_INT);
-        $req->execute();
-        return $req->rowCount();
-    }
+    // public function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+    // {
+    //     $db = $this->dbConnect();
+    //     $updateUserExp = "UPDATE professional_experience SET job_title = :inJobTitle, years_experience = :inYearsExperience, company_name = :inCompanyName WHERE user_id = :inUserID";
+    //     $req = $db->prepare($updateUserExp);
+    //     $req->bindParam('inJobTitle', $jobTitle, PDO::PARAM_STR);
+    //     $req->bindParam('inYearsExperience', $yearsExperience, PDO::PARAM_INT);
+    //     $req->bindParam('inCompanyName', $companyName, PDO::PARAM_STR);
+    //     $req->bindParam('inUserID', $userId, PDO::PARAM_INT);
+    //     $req->execute();
+    //     return $req->rowCount();
+    // }
 
     public function updateUserSkills($skill_id, $userId)
     {
@@ -320,7 +385,6 @@ class UserManager extends Manager
             $req = $db->query("SELECT resume_file_url FROM users WHERE id = ?");
             $req->bindParam('id', $_SESSION['id'], PDO::PARAM_INT);
             $cvresume = $req->fetch(PDO::FETCH_ASSOC);
-            
         } else {
             return false;
         }

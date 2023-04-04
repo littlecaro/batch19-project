@@ -19,9 +19,9 @@ ob_start();
     </button>
     <div class="menus">
         <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
-  <!-- profile photo upload here -->
-  <!-- TODO: MOVE THE PROFILE PHOTO UPLOAD TO THE LANDING USER PROFILE VIEW PAGE -->
-    <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
+        <!-- profile photo upload here -->
+        <!-- TODO: MOVE THE PROFILE PHOTO UPLOAD TO THE LANDING USER PROFILE VIEW PAGE -->
+        <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data">
       <button id="photoUploadClick" type="button" onclick="profilePhoto.click()">
         <img id="imgPreview" src="./public/images/default.svg" alt="" width="100" height="100" />
       </button>
@@ -33,7 +33,7 @@ ob_start();
         <input id="submitUploadPhoto" type="submit" value="UPLOAD" />
       </p>
     </form> -->
-    <!-- <div class="profile-name">
+        <!-- <div class="profile-name">
             <h4>Elon Musk</h4>
             <p>Space</p>
         </div> -->
@@ -51,26 +51,22 @@ ob_start();
 <!-- main -->
 <div class="main">
     <section id="landing">
-
         <?php include('./view/userProfileLanding.php') ?>
-
     </section>
+
     <section id="personal" class="hidden">
         <?php include('./view/userProfilePersonal.php') ?>
     </section>
 
     <section id="education" class="hidden">
-        <p>Your education level</p>
         <?php include('./view/userProfileEducation.php') ?>
     </section>
 
     <section id="experience" class="hidden">
-        <p>Your experiences</p>
         <?php include('./view/userProfileExperience.php') ?>
     </section>
 
     <section id="skills" class="hidden">
-        <p>Your Skills</p>
         <?php include('./view/userProfileSkills.php') ?>
     </section>
 

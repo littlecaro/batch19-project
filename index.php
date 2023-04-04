@@ -69,7 +69,7 @@ try {
             // $city = !empty($_POST['city']) ? $_POST['city'] : null;
             // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-        
+
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
@@ -156,6 +156,19 @@ try {
             }
 
             break;
+            // case "getUserSkills":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserLanguages":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserCities":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "userProfileView":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -186,7 +199,6 @@ try {
             } else {
                 fetchJobPostings();
             }
-
             break;
         case "savedProfiles":
             $companyManager = new CompanyManager();
@@ -195,7 +207,6 @@ try {
             require("./view/savedProfilesView.php");
             break;
         case "updateUserPersonal":
-
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
@@ -218,12 +229,29 @@ try {
             $degreeLevel = $_POST['degreeLevel'] ?? null;
             updateUserEducation($userId, $degree, $degreeLevel);
             break;
-        case "updateUserExperience":
+
+        case "updateUserExperience": //DONE
+            // print_r($_POST);
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
-            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            $id = $_POST['jobID'];
+            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
+            break;
+
+        case "addNewUserExperience":
+            $userId = $_POST['userId'];
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $yearsExperience = $_POST['yearsExperience'] ?? null;
+            $companyName = $_POST['companyName'] ?? null;
+            addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+            break;
+
+        case "deleteUserExperience":
+            $id = $_POST['jobID'];
+            echo $id;
+            deleteUserExperience($id);
             break;
         case "userProfileSkillsSubmit":
             $userId = $_SESSION['id'] ?? null; //TODO: change this userID
@@ -319,7 +347,7 @@ try {
             } else {
                 deleteReservation($rID);
                 break;
-            } 
+            }
         case "cancelRoleMeetings":
             $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
             deleteRoleMeetings($rJob);

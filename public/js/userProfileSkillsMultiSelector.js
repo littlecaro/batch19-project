@@ -2,7 +2,7 @@
 // TODO: Add number remaining text
 
 function createMultiSelector(data, containerId, limit) {
-  console.log("limit:", limit);
+  // console.log("limit:", limit);
   // create references to all the required DOM elements
   const inputElement = document.querySelector(
     `#${containerId}Container > .input-container > input`
@@ -59,8 +59,8 @@ function createMultiSelector(data, containerId, limit) {
 
   function selectItem(e) {
     if (selectedList.size >= limit) return;
-    console.log("size:", selectedList.size);
-    console.log("limit:", limit);
+    // console.log("size:", selectedList.size);
+    // console.log("limit:", limit);
     // add an item to the selectedList Set, then destroy the results,
     // clear the container, re-focus the input, then create the
     // display for the selected items
