@@ -317,7 +317,7 @@ function showTalents($filter, $saveData)
             // print_r($talentLocation);
             if ($filter) {
                 // ob_start();
-                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0], $saveData);
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1 ?? null, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0] ?? null, $saveData);
 
                 include('./view/components/talentCard.php'); //TODO:Limit talent cards
                 $talentCard = ob_get_contents();
@@ -526,9 +526,11 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
         $ratings = array();
         foreach ($filteredHighestDegrees as $key => $value) {
             foreach ($highestDegree as $twoKey => $twoValue) {
-                $sim = similar_text($value, $twoValue->highestDegree, $perc);
-                if ($perc > 50) {
-                    array_push($ratings, $perc / 100);
+                if(!empty($twoValue->highestDegree)) {
+                    $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                    if ($perc > 50) {
+                        array_push($ratings, $perc / 100);
+                    }
                 }
             }
         }
