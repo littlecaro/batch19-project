@@ -11,8 +11,13 @@
     <!-- <script defer src="./public/js/scriptUserProfile.js"></script> -->
     <title><?= $title ?></title>
 
+
 <body>
     <?php require("./view/components/companyHeader.php"); ?>
     <?php require("./view/components/companySidebar.php"); ?>
     <?= $content; ?>
+    <?php include "./view/chatView.php"; ?>
 </body>
+<script>
+    const userId = <?= $_SESSION["id"] ?>
+</script>

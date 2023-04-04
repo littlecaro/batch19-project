@@ -10,12 +10,13 @@ class CalendarManager extends Manager
         $user_id = strip_tags($user_id);
 
         $req = $db->prepare(
-                            'SELECT ua.date, ua.time_start, ua.id
+            'SELECT ua.date, ua.time_start, ua.id
                             FROM user_availability ua
                             WHERE NOT EXISTS
                                 (SELECT user_availability_id FROM reservations r WHERE r.user_availability_id = ua.id )
                                 AND ua.user_id = :user_id
-                                ORDER BY ua.date, ua.time_start');
+                                ORDER BY ua.date, ua.time_start'
+        );
 
         $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
         $req->execute();
@@ -41,7 +42,8 @@ class CalendarManager extends Manager
                 INNER JOIN companies c
                 ON r.company_id = c.id
                 WHERE ua.user_id = :user_id
-                ORDER BY ua.date, ua.time_start');
+                ORDER BY ua.date, ua.time_start'
+        );
 
         $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
         $req->execute();
@@ -51,7 +53,7 @@ class CalendarManager extends Manager
         return $receives;
     }
 
-    public function insertCalendar($date, $time) 
+    public function insertCalendar($date, $time)
     {
         $db = $this->dbConnect();
 
@@ -68,10 +70,10 @@ class CalendarManager extends Manager
         return $query->execute();
     }
 
-    public function updateDeletion($date, $time) 
+    public function updateDeletion($date, $time)
     {
         $db = $this->dbConnect();
-        
+
         // $user_id = $_SESSION['user_id'] ?? 1;
 
         $query = '  DELETE FROM user_availability 
@@ -88,7 +90,8 @@ class CalendarManager extends Manager
         return $query->execute();
     }
 
-    public function insertMeeting($uaID, $compID, $jobID) {
+    public function insertMeeting($uaID, $compID, $jobID)
+    {
         $db = $this->dbConnect();
 
         $query = '  INSERT INTO reservations (user_availability_id, company_id, job_id) 
@@ -101,8 +104,35 @@ class CalendarManager extends Manager
 
         return $query->execute();
     }
+    public function getMeetingDetails($uaID)
+    {
+        $db = $this->dbConnect();
 
-    public function loadTalentInterviews($id) {
+        $sql = 'SELECT
+    user_availability.date as dateStart,
+    user_availability.time_start as timeStart,
+    companies.name as companyName,
+    jobs.title as jobTitle,
+    users1.first_name as firstName,
+    users1.last_name as lastName,
+    users1.id as userId,
+    users.id As companyUserId
+From
+    reservations Inner Join
+    companies On reservations.company_id = companies.id Inner Join
+    users On users.company_id = companies.id Inner Join
+    user_availability On reservations.user_availability_id = user_availability.id Inner Join
+    jobs On reservations.job_id = jobs.id Inner Join
+    users users1 On user_availability.user_id = users1.id WHERE user_availability.id = :uaId';
+
+        $query = $db->prepare($sql);
+        $query->bindParam('uaId', $uaID, PDO::PARAM_INT);
+        $query->execute();
+        $result =  $query->fetchAll(PDO::FETCH_OBJ);
+        return $result;
+    }
+    public function loadTalentInterviews($id)
+    {
         $compID = getCompanyID($_SESSION['id']);
 
         $db = $this->dbConnect();
@@ -110,7 +140,7 @@ class CalendarManager extends Manager
         $user_id = strip_tags($id);
 
         $req = $db->prepare(
-                            'SELECT j.title, c.name, ua.date, ua.time_start, r.id
+            'SELECT j.title, c.name, ua.date, ua.time_start, r.id
                             FROM reservations r
                                 INNER JOIN user_availability ua
                                 ON r.user_availability_id = ua.id
@@ -120,7 +150,8 @@ class CalendarManager extends Manager
                                 ON r.company_id = c.id
                                 WHERE c.id = :comp_id
                                 AND ua.user_id = :user_id
-                                ORDER BY ua.date, ua.time_start');
+                                ORDER BY ua.date, ua.time_start'
+        );
 
         $req->bindParam('user_id', $id, PDO::PARAM_INT);
         $req->bindParam('comp_id', $compID, PDO::PARAM_INT);

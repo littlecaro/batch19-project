@@ -392,4 +392,27 @@ class UserManager extends Manager
             return false;
         }
     }
+    public function countUnreadMessages($user_id)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT COUNT(*) as count FROM `messages` WHERE is_read = 0 and recipient_id = :user_id");
+        $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
+        $req->execute();
+        $count = $req->fetchAll(PDO::FETCH_OBJ);
+        return $count[0]->count;
+    }
+    public function partyMessageUnread($conversationId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT COUNT(*) as count FROM `messages` WHERE is_read = 0 and conversation_id = :conversationId");
+        $req->bindParam('conversationId', $conversationId, PDO::PARAM_INT);
+        $req->execute();
+        $count = $req->fetchAll(PDO::FETCH_OBJ);
+        $count = $count[0]->count;
+        if ($count == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

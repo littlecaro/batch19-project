@@ -14,14 +14,13 @@ function dbConnect()
     }
 }
 
-function loadChats()
+function loadChats($userId)
 {
-    $userId = 1;
     // $str = 'SELECT m.message,m.sender_id, m.recipient_id,u.profile_picture,u.first_name,u.last_name,m.conversation_id FROM messages m INNER JOIN users u on m.sender_id=:userId OR m.recipient_id=:userId';
-    $str = 'SELECT u.id AS contactId, u.first_name AS contactFirstName, u.last_name AS contactLastName, u.profile_picture AS contactProfilePicture, m.id, m.message, m.sender_id, m.recipient_id, m.conversation_id, day, month
+    $str = 'SELECT u.id AS contactId, u.first_name AS contactFirstName, u.last_name AS contactLastName, u.profile_picture AS contactProfilePicture, m.id, m.message,m.is_read, m.sender_id, m.recipient_id, m.conversation_id, day, month
 FROM users u
 INNER JOIN (
-SELECT m1.id, m1.message, m1.sender_id, m1.recipient_id, m1.conversation_id, DAY(m2.datetime) as day, MONTHNAME(m2.datetime) as month
+SELECT m1.id, m1.message, m1.sender_id, m1.recipient_id, m1.is_read, m1.conversation_id, DAY(m2.datetime) as day, MONTHNAME(m2.datetime) as month
     FROM messages m1
   JOIN (SELECT id, MAX(id) AS maxId, conversation_id, datetime FROM messages GROUP BY conversation_id) m2
     ON m1.id = m2.maxId
@@ -46,20 +45,24 @@ function getMessages($conversationId)
     $messages = $query->fetchAll(PDO::FETCH_OBJ);
     return $messages;
 }
-function submitMessage($conversationId, $senderId, $message)
+function submitMessage($conversationId = null, $senderId, $message, $recipientId = null)
 {
-    $userId = 1;
+    echo $senderId . ' ' . $message . " " . $conversationId . "<br>";
+
     if (is_null($conversationId)) {
         $conversationId = rand(1000, 9999);
+    } else {
+        $str = 'SELECT m.recipient_id, m.sender_id FROM messages m INNER JOIN users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId AND (m.recipient_id!=:userId OR m.sender_id!=:userId)';
+        $db = dbConnect();
+        $query = $db->prepare($str);
+        $query->bindParam(':ConversationId', $conversationId, PDO::PARAM_INT);
+        $query->bindParam(':userId', $senderId, PDO::PARAM_INT);
+        $query->execute();
+        $response = $query->fetch(PDO::FETCH_OBJ);
+        $recipientId = $response->recipient_id == $senderId ? $response->sender_id : $response->recipient_id;
+        // $recipientId = $response->recipient_id;
     }
-    $str = 'SELECT m.recipient_id FROM messages m INNER JOIN users u ON m.sender_id=u.id WHERE m.conversation_id = :ConversationId AND m.recipient_id!=:userId ';
-    $db = dbConnect();
-    $query = $db->prepare($str);
-    $query->bindParam(':ConversationId', $conversationId, PDO::PARAM_INT);
-    $query->bindParam(':userId', $userId, PDO::PARAM_STR);
-    $query->execute();
-    $response = $query->fetch(PDO::FETCH_OBJ);
-    $recipientId = $response->recipient_id;
+    // $recipientId = $response->recipient_id; //TODO: Base recipient id on input rather than convo id
     // print_r($response);
     $str = 'INSERT INTO messages (id,sender_id, recipient_id, message,conversation_id) VALUES (NULL, :InsenderId,:Inrecipient_id, :Inmessage, :InConversationId )';
     $db = dbConnect();
@@ -402,7 +405,8 @@ function updateTalentFilter($searchData, $user_id, $jobId)
     $query->execute();
 }
 
-function getCompanyID($userID) {
+function getCompanyID($userID)
+{
     $userCompanyQuery = "SELECT users.company_id, users.id
                             FROM users 
                             INNER JOIN companies 
@@ -416,7 +420,8 @@ function getCompanyID($userID) {
     return $rec->company_id;
 }
 
-function showSkills($id = null) {
+function showSkills($id = null)
+{
     if ($id == null) {
         $id = $_SESSION['id'];
     }
@@ -435,7 +440,8 @@ function showSkills($id = null) {
     return $userSkills;
 }
 
-function showLanguages($id = null) {
+function showLanguages($id = null)
+{
     if ($id == null) {
         $id = $_SESSION['id'];
     }
@@ -454,7 +460,8 @@ function showLanguages($id = null) {
     return $userLangs;
 }
 
-function showJobs($id = null) {
+function showJobs($id = null)
+{
     if ($id == null) {
         $id = $_SESSION['id'];
     }
@@ -469,4 +476,13 @@ function showJobs($id = null) {
     $query->execute();
     $userExp = $query->fetchAll(PDO::FETCH_OBJ);
     return $userExp;
+}
+function messageRead($conversationId)
+{
+    $expQuer = 'UPDATE messages SET is_read = 1 WHERE conversation_id = :conversationId';
+    $db = dbConnect();
+    echo $conversationId;
+    $query = $db->prepare($expQuer);
+    $query->bindParam(":conversationId", $conversationId, PDO::PARAM_INT);
+    $query->execute();
 }

@@ -11,10 +11,18 @@
     <!-- We need to choose better font-family: googlefonts?! -->
     <script src="./public/js/scriptUserProfile.js"></script>
     <title>WaygukIn</title>
+</head>
 
 <body>
     <?php require("./view/components/companyHeader.php"); ?>
     <?= $content; ?>
+
+    <script>
+        const userId = <?= $_SESSION["id"] ?>
+    </script>
+    <?php
+    include "./view/chatView.php"; // TODO: move this to logged in view
+    ?>
 </body>
 
 </html>
