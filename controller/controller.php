@@ -82,11 +82,13 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
         //if data good, insert into database w model function
         $userManager = new UserManager();
         $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+
         if ($user) {
             //create a session for when the user is logged in
             $_SESSION['id'] = $user->user_id;
             $_SESSION['first_name'] = $user->first_name;
             $_SESSION['last_name'] = $user->last_name;
+            header("Location: index.php?action=userProfileView");
             print_r($_SESSION);
         } else {
             echo "Something went wrong.";
@@ -110,8 +112,8 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
 
 function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle)
 {
-    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
-    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $firstNameValid = preg_match("/^[a-zA-Z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-zA-Z]+$/i", $lastName);
     $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
 
@@ -139,6 +141,7 @@ function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName,
             $_SESSION['last_name'] = $user->last_name;
             $_SESSION['company_id'] = $user->company_id;
             print_r($_SESSION);
+            header("Location: index.php?action=companyDashboard");
         } else {
             echo "Something went wrong.";
         }
@@ -158,25 +161,29 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        $_SESSION['email'] = $email;
+        // session_start();
+        $_SESSION['email'] = $user->email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['company_id'] = $user->company_id;
-        $companyManager = new CompanyManager();
-        $companyInfo = $companyManager->fetchCompanyInfo();
-        echo $user->company_id;
-        $_SESSION['company_id'] = $companyInfo->id;
-        $_SESSION["profile_pic"] = $companyInfo->logo_img;
-        $_SESSION["company_name"] = $companyInfo->name;
-        $_SESSION["company_title"] = $user->user_bio;
-        $_SESSION["date_created"] = $companyInfo->date_created;
-        if ($_SESSION["company_id"] != null) {
+
+        
+        if ($user->company_id != null){
+            $companyManager = new CompanyManager();
+            $companyInfo = $companyManager->fetchCompanyInfo();
+    
+            $_SESSION['company_id'] = $companyInfo->id;
+            $_SESSION["profile_pic"] = $companyInfo->logo_img;
+            $_SESSION["company_name"] = $companyInfo->name;
+            $_SESSION["company_title"] = $user->user_bio;
+            $_SESSION["date_created"] = $companyInfo->date_created;
             header("Location: index.php?action=companyDashboard");
-        } else {
+        } else{
+
             header("Location: index.php?action=userProfileView");
+            exit;
         }
-        exit;
     } else {
         throw new Exception("Invalid Information");
     }
@@ -184,10 +191,9 @@ function userSignIn($email, $pwd)
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
-        throw new Exception("Invalid Information");
+        throw new Exception("Invalid Info");
     } else {
         //if data good, allow sign in
-
         header("index.php"); //TODO: change header location
         exit;
     }
@@ -567,6 +573,7 @@ function showUserProfileView()
     $experience = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
+    $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
     // $educationLevel = $userManager->getEducationLevel($education->degree_level);
     $allSkills = $userManager->getSkillsList();
@@ -580,10 +587,15 @@ function showUserProfileView()
 }
 
 
-function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
     $userManager = new UserManager();
-    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    if ($profilePic) {
+        $profilePic = uploadImage($profilePic);
+    } else {
+        $profilePic = $oldImage;
+    }
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
         echo "Successfully Updated";
@@ -774,29 +786,28 @@ function updateJobStatus($id, $status)
     setJobStatus($id, $status);
 }
 
-function uploadUserProfileImage($file)
-{
-    // md5 is considered insecure so generally we don't use it except for files
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2);
+// function uploadUserProfileImage($file)
+// {
+//     // md5 is considered insecure so generally we don't use it except for files
+//     $hash = hash_file("md5", $file["tmp_name"]);
+//     echo $hash;
+//     $first = substr($hash, 0, 2);
+//     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+//     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+//     // allow read & write permissions for everyone
+//     chmod("./public/images/uploaded/$first", 0777);
+//     chmod("./public/images/uploaded/$first/$second", 0777);
 
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
+//     $type = explode(".", $file['name'])[1];
+//     $filename = substr($hash, 4) . "." . $type;
+//     $newPath = "./public/images/uploaded/$first/$second/$filename";
+//     move_uploaded_file($file["tmp_name"], $newPath);
+//     chmod($newPath, 0777);
 
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
+//     return $newPath;
+// }
 function uploadResume($resume)
 {
     $hash = hash_file("md5", $resume["tmp_name"]);
@@ -804,20 +815,67 @@ function uploadResume($resume)
     $first = substr($hash, 0, 2);
     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/resume/$first/$second", 0777, true);
-    chmod("./public/images/resume/$first", 0777);
-    chmod("./public/images/resume/$first/$second", 0777);
+    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+    // chmod("./public/images/uploaded/$first", 0777);
+    chmod("./public/images/uploaded/$first/$second", 0777);
 
     $type = explode(".", $resume['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newResumeLivingPlace = "./public/images/uploaded/$first/$second/$filename";
+    $newResumeLivingPlace = "http://localhost/sites/batch19-project/public/images/uploaded/$first/$second/$filename";
     move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
     chmod($newResumeLivingPlace, 0777);
 
-    $userManager = new UserManager();
-    $newResumeLivingPlace = $userManager->uploadUserResume($resume);
-    header("Location:index.php?action=userProfile");
-}
+    $UserManager = New UserManager();
+    $result = $UserManager->uploadUserResume($newResumeLivingPlace);
+
+
+
+    // if(isset($_GET['path']))
+    // {
+    // //Read the url
+    // $resume = $_GET['path'];
+    
+    // //Clear the cache
+    // clearstatcache();
+    
+    // //Check the file path exists or not
+    // if(file_exists($resume)) {
+    
+    // //Define header information
+    // header('Content-Description: File Transfer');
+    // header('Content-Type: application/octet-stream');
+    // header('Content-Disposition: attachment; filename="'.basename($resume).'"');
+    // header('Content-Length: ' . filesize($resume));
+    // header('Pragma: public');
+    
+    // //Clear system output buffer
+    // flush();
+    
+    // //Read the size of the file
+    // readfile($resume,true);
+    
+    // //Terminate from the script
+    // die();
+    // }
+    // else{
+    // echo "File path does not exist.";
+    // }
+    // }
+    // echo "File path is not defined.";
+     
+    // return $newResumeLivingPlace;
+
+    // $userManager = new UserManager();
+    // $newResumeLivingPlace = $userManager->uploadUserResume($resume);
+    // header("Location:index.php?action=userProfile");
+
+        // $files = scandir("./public/images/uploaded");
+
+        // header("location: index.php?action=userProfileView");
+    }
+
+
+// }
 function savedSearchExists($jobId)
 {
 

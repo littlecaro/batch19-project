@@ -21,8 +21,7 @@ ob_start();
       <input type="text" name="email" placeholder="Email" /><br><br>
       <input type="text" name="pwd" placeholder="Password" /><br />
       <p>
-        <span style="color: red; font-weight: bold" id="wrong"><?= (isset($_GET['xlogin']) ? 'X Wrong username<br>' : "") ?></span>
-        <span style="color: red; font-weight: bold" id="wrong"><?= (isset($_GET['xpass']) ? 'X Wrong password<br>' : "") ?></span>
+
       </p><br />
       <input id="submit" type="submit" value="SIGN IN" class="button">
       <br /><br />

@@ -15,12 +15,12 @@ try {
         case "userPhotoUpload":
             echo "<pre>";
             print_r($_FILES);
-            $file = $_FILES['profilePhoto'];
-            uploadUserProfileImage($file);
+            $file = $_FILES['imageUpload'];
+            uploadImage($file);
             break;
         case "userResumeUpload":
-            echo "<pre>";
-            print_r($_FILES);
+            // echo "<pre>";
+            // print_r($_FILES);
             $resume = $_FILES['resume'];
             uploadResume($resume);
             break;
@@ -37,18 +37,6 @@ try {
             break;
         case "userSignInView":
             showUserSignIn();
-            break;
-        case "userSignUp":
-            //make sure data exists
-            $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
-            $lastName = !empty($_POST['lName']) ? $_POST['lName'] : null;
-            $email = !empty($_POST['email']) ? $_POST['email'] : null;
-            $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
-            $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
-            if ($firstName and $lastName and $email and $pwd and $pwd2) {
-                //call a controller function
-                userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
-            }
             break;
         case "companySignUp":
             $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
@@ -73,7 +61,7 @@ try {
             $pwd = $_POST['pwd'] ?? null;
             if ($email and $pwd) {
                 //call a controller function
-                userSignIn($email, $pwd);
+                userSignIn($_POST['email'], $_POST['pwd']);
             }
             break;
         case "userProfile":
@@ -213,7 +201,14 @@ try {
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
-            updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            $oldImage = $_POST['oldImage'] ?? null;
+            $profilePic = !empty($_FILES['imageUpload']['name']) ? $_FILES['imageUpload'] : null;
+            $file = $_FILES['imageUpload'];
+            // print_r($_FILES['imageUpload']);
+            // uploadUserProfileImage($file);
+
+            updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
+
             // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;

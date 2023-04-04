@@ -3,9 +3,10 @@
   width: 100%;
 }
 
-/* .cal-container {
-  margin-left: 220px;
-} */
+.cal-container {
+  padding: 25px;
+  width: 98%;
+}
 
 .cal-container table {
   border-collapse: collapse;
@@ -59,6 +60,11 @@
 table:hover {
   cursor: grab;
 }
+/* 
+div {
+  display: flex;
+  justify-content: center;
+} */
 
 .selected {
   background-color: orange;

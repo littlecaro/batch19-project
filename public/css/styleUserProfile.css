@@ -24,13 +24,20 @@ html {
   flex-direction: column;
   align-items: center;
   /* justify-content: space-between; */
+  z-index: 20;
   padding: 2rem;
   background: var(--text-color-primary);
-  background: linear-gradient(29deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
   color: var(--whiteColor);
   position: fixed;
   left: 0;
+  top: 80px;
 }
+
 .sidebar .logo a {
   display: flex;
   align-items: center;
@@ -50,12 +57,17 @@ html {
   border: none;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin: 5vh 0 5vh 0;
+  margin: 0 0 5vh 0;
   text-align: center;
   width: 175px;
   height: 200px;
 }
 
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
 #profilePhoto {
   display: none;
 }
@@ -115,15 +127,19 @@ h4 {
 }
 
 .main {
-  height: auto;
+  width: calc(100% - 300px);
   min-width: 65%;
-  padding: 40px 20px;
+  /* padding: 40px 20px; */
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
+  left: -1.5rem;
   text-align: center;
-  margin-bottom: 70px;
+  position: relative;
   margin-left: 300px;
+  margin-bottom: 70px;
+  flex-direction: column;
+  align-items: center;
 }
 .main #personal {
   height: 80vh;
@@ -159,7 +175,11 @@ body {
 
 .biz {
   background: var(--text-color-primary);
-  background: linear-gradient(330deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    330deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
 }
 
 .header {
@@ -172,7 +192,12 @@ body {
   width: 100%;
   height: 80px;
   background: var(--header-color-primary);
-  background: linear-gradient(29deg, var(--header-color-primary), rgba(40, 34, 93, 1) 27%, rgba(101, 90, 223, 1) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--header-color-primary),
+    rgba(40, 34, 93, 1) 27%,
+    rgba(101, 90, 223, 1) 100%
+  );
   z-index: 2;
 }
 
@@ -250,6 +275,13 @@ input {
   border: gray solid 1px;
 }
 
+input[type="radio"] {
+  height: initial;
+  width: initial;
+  /* margin-right: px; */
+  border: none;
+}
+
 textarea {
   border-radius: 10px;
   padding: 10px;
@@ -267,6 +299,7 @@ button {
 
 button:hover {
   background-color: var(--secondaryColor); /* Green */
+  cursor: pointer;
 }
 
 .button {
@@ -274,6 +307,7 @@ button:hover {
   border: 0;
   height: 30px;
   color: white;
+  font-weight: bold;
 }
 
 #boxbiz {
@@ -348,7 +382,8 @@ button:hover {
 }
 
 h1 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 36px;
   font-weight: medium;
   color: #ffffff;
@@ -357,7 +392,8 @@ h1 {
 }
 
 h2 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 30px;
   font-weight: medium;
   color: var(--header-color-primary);
@@ -380,20 +416,22 @@ h4 {
   font-size: 16px;
 }
 
-#table {
-  width: 500px;
+#userTable {
+  width: 600px;
   margin: auto;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-#table th {
+#userTable th {
   text-align: end;
   width: 30%;
   vertical-align: middle;
   padding: 8px;
+  cursor: auto;
 }
 
-#table td {
+#userTable td {
   padding: 8px;
   vertical-align: middle;
   height: 30px;
@@ -414,7 +452,8 @@ h4 {
 }
 
 .footer p {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
@@ -487,7 +526,7 @@ input[type="checkbox"] {
   justify-content: center;
 }
 
-#table #jobdescription {
+#jobdescription {
   vertical-align: top;
 }
 
@@ -497,6 +536,10 @@ input[type="checkbox"] {
 
 #salary {
   height: 90px;
+}
+
+.salaryslider {
+  width: 304px;
 }
 
 .noUi-tooltip {
@@ -580,7 +623,8 @@ input[type="checkbox"] {
   color: var(--header-color-primary);
   font-weight: 100;
   font-size: 1.5em;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
   text-shadow: none;
   width: max-content;
@@ -630,6 +674,15 @@ input[type="checkbox"] {
   margin: 0;
 }
 
+.usertable td {
+  border: none;
+  color: black;
+  cursor: auto;
+}
+
+.usertable .selected {
+  background-color: none;
+}
 .landingSkills > div {
   display: flex;
   gap: 1em;
