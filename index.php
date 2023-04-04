@@ -10,6 +10,7 @@ try {
 
     switch ($action) {
         case "userProfileView":
+
             showUserProfileView();
             break;
         case "userPhotoUpload":
@@ -81,29 +82,29 @@ try {
             // $city = !empty($_POST['city']) ? $_POST['city'] : null;
             // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
             // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-        
+
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
                 showMessages($conversationId);
             }
             break;
-        case "submitMessage":
+            // case "submitMessage":
 
-            $conversationId = $_POST['conversationId'] ?? null;
-            $senderId = $_POST['senderId'];
-            $message = $_POST['message'];
-            // echo $message, $senderId, $conversationId;
-            if (!empty($senderId)  and !empty($message)) {
-                // echo "<br>";
-                // echo "getting controller";
-                addMessage($conversationId, $senderId, $message);
-            }
-            break;
-        case "messenger":
-            showChats();
+            //     $conversationId = $_POST['conversationId'] ?? null;
+            //     $senderId = $_POST['senderId'];
+            //     $message = $_POST['message'];
+            //     // echo $message, $senderId, $conversationId;
+            //     if (!empty($senderId)  and !empty($message)) {
+            //         // echo "<br>";
+            //         // echo "getting controller";
+            //         addMessage($conversationId, $senderId, $message);
+            //     }
+            //     break;
+            // case "messenger":
+            //     showChats();
 
-            break;
+            //     break;
         case "search":
             // print_r($_GET);
             $term = $_GET['term'] ?? null;
@@ -119,14 +120,23 @@ try {
         case "submitMessage":
 
             $conversationId = $_POST['conversationId'] ?? null;
-            $senderId = $_POST['senderId'];
+
+            $senderId = $_SESSION["id"] ?? null;
+            // echo $_SESSION["id"];
             $message = $_POST['message'];
             // echo $message, $senderId, $conversationId;
             if (!empty($senderId)  and !empty($message)) {
                 // echo "<br>";
                 // echo "getting controller";
-                addMessage($conversationId, $senderId, $message);
+                addMessage($conversationId, $senderId, $message, null);
             }
+            break;
+        case "countUnreadMessages":
+            $messageNum = countUnreadMessages();
+            break;
+        case "partyMessageUnread":
+            $conversationId = $_POST['conversationId'] ?? null;
+            $isUnread = partyMessageUnread($conversationId);
             break;
         case "messenger":
             showChats();
@@ -184,6 +194,12 @@ try {
         case "companyDashboard":
             getCompanyInfo();
             break;
+        case "readMessage":
+            if (!empty($_POST['conversationId'])) {
+                (int)$conversationId = $_POST['conversationId'];
+                readMessage($conversationId);
+            }
+            break;
         case "createJobForm":
             createJobForm();
             break;
@@ -191,7 +207,7 @@ try {
             getEmployeeInfo();
             break;
         case "jobListings":
-            $user_id = $_SESSION['user_id'] ?? NULL;
+            $user_id = $_SESSION['id'] ?? NULL;
             if (!empty($_REQUEST['ListingId'])) {
                 $jobId = $_REQUEST['ListingId'] ?? null;
                 $jobCard = showJobCard($jobId);
@@ -203,6 +219,15 @@ try {
         case "savedProfiles":
             $companyManager = new CompanyManager();
             $companyInfo = $companyManager->fetchCompanyInfo();
+            $userManager = new UserManager();
+            if (isset($_SESSION['id'])) {
+                $user = $userManager->getUserProfile($_SESSION['id']);
+                $userId = $_SESSION['id'];
+                $chats = loadChats($userId); // TODO: move this to signed in view
+            }
+            if (isset($user->profile_picture)) {
+                $profileImg = $user->profile_picture;
+            }
 
             require("./view/savedProfilesView.php");
             break;
@@ -324,7 +349,7 @@ try {
             } else {
                 deleteReservation($rID);
                 break;
-            } 
+            }
         case "cancelRoleMeetings":
             $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
             deleteRoleMeetings($rJob);

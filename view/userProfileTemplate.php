@@ -17,3 +17,9 @@
 </body>
 
 </html>
+<script>
+    const userId = <?= $_SESSION["id"] ?>
+</script>
+<?php
+include "./view/chatView.php"; // TODO: move this to logged in view
+?>

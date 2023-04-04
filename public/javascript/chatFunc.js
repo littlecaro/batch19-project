@@ -17,7 +17,17 @@ function chatBoxExpand(toExpand) {
   // Toggle the 'expand' class to show/hide the chatbox content
   toExpand.classList.toggle("expand");
   //Checks if the chevron exists
-  if (toExpand.previousElementSibling.lastElementChild.lastElementChild) {
+  try {
+    let innerElem = toExpand.querySelector(".expandableWrapper ");
+    innerElem.classList.toggle("expand");
+  } catch (error) {
+    innerElem = null;
+  }
+  console.log(toExpand);
+  if (
+    typeof innerElem !== "undefined" &&
+    !toExpand.classList.contains("newChatBox")
+  ) {
     chevronSwitch(toExpand);
   }
 }
@@ -26,6 +36,7 @@ function chevronSwitch(toExpand) {
   // Toggle the chevron icon to point up/down depending on the chatbox state
   const chevron =
     toExpand.previousElementSibling.lastElementChild.lastElementChild;
+  console.log(chevron);
   if (chevron.classList[1] == "fa-chevron-up") {
     chevron.classList.remove("fa-chevron-up");
     chevron.classList.add("fa-chevron-down");
@@ -148,19 +159,14 @@ function createChatboxInput(thread, messageContainer) {
 function submitMessage(e, inputmessage, thread, messageContainer) {
   let xhr = new XMLHttpRequest();
   var form = new FormData();
-  console.log(inputmessage);
   form.append("message", inputmessage.value);
   //the current conversation id is added as a conversation thread attribue to the html element
   form.append("conversationId", thread.parent.getAttribute("data-thread"));
-  form.append("senderId", userId);
 
-  var data = {
-    conversationId: thread.parent.getAttribute("data-thread"),
-    userId: userId,
-  };
   xhr.onload = () => {
     response = loadMessages(thread);
     messageContainer.innerHTML = response;
+    console.log(xhr.response);
   };
   xhr.open(
     "POST",
@@ -180,6 +186,7 @@ function createChatboxContainer(thread) {
 
 //Refreshes messages inside a given chatbox
 function refreshMessages(messageContainer, thread) {
+  let prevResponse = "";
   setInterval(() => {
     let shouldScroll =
       Math.abs(
@@ -187,8 +194,21 @@ function refreshMessages(messageContainer, thread) {
           messageContainer.scrollTop -
           messageContainer.clientHeight
       ) < 1;
-
     let response = loadMessages(thread);
+    if (response != prevResponse && prevResponse != "") {
+      const newLocal = ".chatPreviewDate i";
+      console.log(thread.child.querySelector(".expandableWrapper").classList);
+      if (
+        !thread.child
+          .querySelector(".expandableWrapper")
+          .classList.contains("expand")
+      ) {
+        chatBoxExpand(thread.child);
+        scrollDown(thread.child);
+        readMessage(thread);
+      }
+    }
+    prevResponse = response;
     messageContainer.innerHTML = "";
     messageContainer.innerHTML = response;
     if (shouldScroll) scrollDown(messageContainer);
@@ -227,4 +247,59 @@ function scrollDown(msgsContainer) {
     top: msgsContainer.scrollHeight,
     behavior: "smooth",
   });
+}
+function readMessage(thread) {
+  var form = new FormData();
+
+  form.append("conversationId", thread.parent.getAttribute("data-thread"));
+  console.log(form.getAll("conversationId"));
+  xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    countUnreadMessages();
+  };
+  xhr.open(
+    "POST",
+    "http://localhost/sites/batch19-project/index.php?action=readMessage"
+  );
+  xhr.send(form);
+}
+function countUnreadMessages(card) {
+  // console.log(card);
+  let form = new FormData();
+  if (typeof card != "undefined") {
+    let conversationId = card.getAttribute("data-thread");
+    form.append("conversationId", conversationId);
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    if (typeof card !== "") {
+      console.log(xhr.response);
+      if (xhr.response !== "") {
+        card.querySelector(".chatPreviewDate i").style.display = "block";
+      } else if (xhr.response === "") {
+        card.querySelector(".chatPreviewDate i").style.display = "none";
+      }
+    }
+  };
+  xhr.open(
+    "POST",
+    "http://localhost/sites/batch19-project/index.php?action=partyMessageUnread"
+  );
+  xhr.send(form);
+}
+function loadUnreadMessageNum() {
+  xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    if (xhr.response > 0) {
+      unreadMessageCount.style.display = "block";
+      unreadMessageCount.textContent = xhr.response;
+    } else {
+      unreadMessageCount.style.display = "none";
+    }
+  };
+  xhr.open(
+    "POST",
+    "http://localhost/sites/batch19-project/index.php?action=countUnreadMessages"
+  );
+  xhr.send();
 }

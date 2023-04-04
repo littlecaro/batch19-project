@@ -184,10 +184,8 @@ ob_start();
         </p> -->
     </div>
 </div>
-    
-    <?php
-include "./view/chatView.php"; // TODO: move this to logged in view
-?>
+
+
 
 <?php
 $content = ob_get_clean();

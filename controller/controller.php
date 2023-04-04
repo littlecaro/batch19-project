@@ -17,7 +17,6 @@ require_once "./model/model.php";
 
 function showIndex()
 {
-    $chats = loadChats(); // TODO: move this to signed in view
     require("./view/indexView.php");
 }
 
@@ -218,7 +217,8 @@ function showUserSignIn()
 
 function showChats()
 {
-    $chats = loadChats();
+    $user_id = $_SESSION["id"];
+    $chats = loadChats($user_id);
     require("./view/messageView.php");
 }
 
@@ -240,7 +240,8 @@ function showMessages($conversationId)
 function addMessage($conversationId, $senderId, $message)
 {
     // echo "controller start";
-    submitMessage($conversationId, $senderId, $message);
+
+    submitMessage($conversationId, $senderId, $message, null);
 }
 
 function searchMessages($term)
@@ -294,6 +295,16 @@ function deleteCalendarEntry($entry)
 function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
     // echo $filter;
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     ob_start();
     if (!$filter) {
     }
@@ -562,6 +573,7 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
 
 function showUserProfileView()
 {
+
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experience = $userManager->getUserExperience($_SESSION['id']);
@@ -575,6 +587,13 @@ function showUserProfileView()
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
+    if (isset($_SESSION['id'])) {
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
@@ -668,8 +687,19 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
 
 function getCompanyInfo()
 {
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     $companyManager = new CompanyManager();
     $companyInfo = $companyManager->fetchCompanyInfo();
+
     // print_r($companyInfo);
 
     require("./view/companyDashboard.php");
@@ -723,6 +753,15 @@ function getEmployeeInfo()
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $employeeInfo = $companyManager->fetchEmployeeInfo();
     // print_r($companyInfo);
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
 
     require("./view/employeeInfoView.php");
 }
@@ -745,11 +784,30 @@ function fetchJobPostings()
     $companyManager = new CompanyManager();
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $listings = getJobPostings($_SESSION["id"]);
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
 
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
@@ -831,7 +889,8 @@ function savedSearchExists($jobId)
     }
 }
 
-function showTalentProfileView($id, $jobID = null) {
+function showTalentProfileView($id, $jobID = null)
+{
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
@@ -843,32 +902,59 @@ function showTalentProfileView($id, $jobID = null) {
     require("./view/talentProfileView.php");
 }
 
-function bookInterview($uaID, $id, $jobID) {
+function bookInterview($uaID, $id, $jobID)
+{
     $compID = getCompanyID($id);
     $CalendarManager = new CalendarManager();
     $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    $meetingDetails = $CalendarManager->getMeetingDetails($uaID);
+    print_r($meetingDetails);
+    echo $meetingDetails[0]->userId;
+    $userId = $meetingDetails[0]->userId;
+    $companyName = $meetingDetails[0]->companyName;
+    $startTime = $meetingDetails[0]->timeStart;
+    $startDate = $meetingDetails[0]->dateStart;
+    $jobTitle = $meetingDetails[0]->jobTitle;
+    $firstName = $meetingDetails[0]->firstName;
+    $lastName = $meetingDetails[0]->lastName;
+    $companyUserId = $meetingDetails[0]->companyUserId;
+    $message = "Interview scheduled for <strong>" . $startDate . "</strong> at <strong>" . $startTime . "</strong> for the position of <strong>" . $jobTitle . "</strong> with " .  $companyName . " for <strong>" . $firstName . " " . $lastName . "</strong>. The meeting link will be sent in a follow up message.";
+    submitMessage(null, $companyUserId, $message, $userId);
+
     if (!$result) {
         throw new Exception("Unable to schedule interview");
     }
     header("location: index.php?action=bookedMeetings");
 }
 
-function showBookedMeetings() {
+function showBookedMeetings()
+{
     $companyManager = new CompanyManager();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
     // if (!$bookedMeetings) {
     //     throw new Exception("Unable to fetch booked meetings");
     // } else {
-        require("./view/bookedMeetingsView.php");
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
+    require("./view/bookedMeetingsView.php");
     // }
 }
 
-function deleteReservation($rID) {
+function deleteReservation($rID)
+{
     if (is_array($rID)) {
         $rIDs = $rID;
         for ($i = 0; $i < count($rIDs); $i++) {
             $rID = strip_tags($rIDs[$i]['rID']);
-    
+
             $companyManager = new CompanyManager();
             $result = $companyManager->cancelMeeting($rID);
         }
@@ -881,14 +967,15 @@ function deleteReservation($rID) {
         $companyManager = new CompanyManager();
         $result = $companyManager->cancelMeeting($rID);
         if (!$result) {
-        throw new Exception("Unable to delete entry");
+            throw new Exception("Unable to delete entry");
         } else {
-        header("location: index.php?action=bookedMeetings");
+            header("location: index.php?action=bookedMeetings");
         }
     }
 }
 
-function deleteRoleMeetings($rJob) {
+function deleteRoleMeetings($rJob)
+{
     $compID = getCompanyID($_SESSION["id"]);
     $companyManager = new CompanyManager();
     $result = $companyManager->cancelRoleMeetings($rJob, $compID);
@@ -899,7 +986,26 @@ function deleteRoleMeetings($rJob) {
     }
 }
 
-function calDateToStr($str) {
+function calDateToStr($str)
+{
     $d = strtotime($str);
     return date("l, M jS", $d);
+}
+function readMessage($conversationId)
+{
+    messageRead($conversationId);
+}
+function countUnreadMessages()
+{
+    $user_id = $_SESSION['id'];
+    $userManager = new UserManager();
+    $count = $userManager->countUnreadMessages($user_id);
+    echo $count;
+}
+
+function partyMessageUnread($conversationId)
+{
+    $userManager = new UserManager();
+    $count = $userManager->partyMessageUnread($conversationId);
+    echo $count;
 }
