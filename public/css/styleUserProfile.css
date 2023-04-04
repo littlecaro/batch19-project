@@ -724,3 +724,8 @@ input[type="checkbox"] {
 .landingContainer > .landingBtn > div {
   margin: 1em 0;
 }
+
+.landingContainer p:empty {
+  height: 0;
+  display: none;
+}
