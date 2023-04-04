@@ -14,7 +14,7 @@
         <p><b>Uploaded resume: <?php 
                                     if (!empty($user->resume_file_url)) {
                                         ?>
-                                            <a href="<?=$user->resume_file_url?>">Click link to open in new window.</a> 
+                                            <a onclick="event.stopPropagation()" href="<?=$user->resume_file_url?>" target="_blank" rel="noopener noreferrer">Click link to open resume.</a> 
                                         <?php } ?></b></p>
         <p><b>Expected salary (KRW):</b> <?= $user->desired_salary; ?></p>
         <p><b>Need visa sponsorship:</b> <?php 

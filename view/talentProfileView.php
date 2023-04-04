@@ -9,9 +9,9 @@ ob_start();
         <div id="talentHead">
         <h3>Talent Profile</h3><br>
         <?php 
-                if (!empty($user->resume_file_url)) {
+                if (!empty($talent->resume_file_url)) {
                     ?>
-                        <a href="<?=$user->resume_file_url?>">Click here to open <?=$user->first_name?>'s resume</a> 
+                        <a href="<?=$talent->resume_file_url?>" target="_blank" rel="noopener noreferrer">Click here to open <?=$talent->first_name?>'s resume</a> 
                     <?php } ?>
         <div class="talentBack">
         <?php if ($jobID != null) {
@@ -29,7 +29,7 @@ ob_start();
         </div>
         <h1><i class="fa-solid fa-house"></i>Personal info</h1>
         <div class="landingPersonal">
-            <?php include("./view/components/landingPersonalCard.php") ?>
+            <?php include("./view/components/landingTalentCard.php") ?>
         </div>
 
         <h1><i class="fa-solid fa-graduation-cap"></i>Highest Education</h1>
@@ -90,7 +90,7 @@ ob_start();
             if (!empty($interviews)) {
                 ?>
                 <h1><i class="fa-solid fa-handshake-simple"></i>
-                You already have an interview scheduled with <?= $user->first_name ?? 'user'?></h1>
+                You already have an interview scheduled with <?= $talent->first_name ?? 'user'?></h1>
                 <div class="landingAvail">
                 <?php
                 for ($i = 0; $i < count($interviews); $i++) {
