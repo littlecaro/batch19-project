@@ -11,6 +11,11 @@
         <p><b>Current location:</b> <?php if(!empty($user->city)) {
                                             echo "{$userManager->getCityName($user->city_id)[0]->name}";
                                             }  ?></p>
+        <p><b>Uploaded resume: <?php 
+                                    if (!empty($user->resume_file_url)) {
+                                        ?>
+                                            <a href="<?=$user->resume_file_url?>">Click to view</a> 
+                                        <?php } ?></b></p>
         <p><b>Expected salary (KRW):</b> <?= $user->desired_salary; ?></p>
         <p><b>Need visa sponsorship:</b> <?php 
                                         if ($user->visa_sponsorship == 1) 
