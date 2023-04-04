@@ -81,7 +81,18 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     if ($firstNameValid and $lastNameValid and $emailValid and $pwdValid and $pwd2Valid) {
         //if data good, insert into database w model function
         $userManager = new UserManager();
-        $users = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+        $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+
+        if ($user) {
+            //create a session for when the user is logged in
+            $_SESSION['id'] = $user->user_id;
+            $_SESSION['first_name'] = $user->first_name;
+            $_SESSION['last_name'] = $user->last_name;
+            header("Location: index.php?action=userProfileView");
+            print_r($_SESSION);
+        } else {
+            echo "Something went wrong.";
+        }
         require "./view/signUpView.php";
     } else {
         $msg = "Please fill in all inputs.";
@@ -101,8 +112,8 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
 
 function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle)
 {
-    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
-    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $firstNameValid = preg_match("/^[a-zA-Z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-zA-Z]+$/i", $lastName);
     $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
 
@@ -130,6 +141,7 @@ function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName,
             $_SESSION['last_name'] = $user->last_name;
             $_SESSION['company_id'] = $user->company_id;
             print_r($_SESSION);
+            header("Location: index.php?action=companyDashboard");
         } else {
             echo "Something went wrong.";
         }
@@ -149,12 +161,29 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        $_SESSION['email'] = $email;
+        // session_start();
+        $_SESSION['email'] = $user->email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
-        header("Location: index.php?action=userProfile");
-        exit;
+        $_SESSION['company_id'] = $user->company_id;
+
+
+        if ($user->company_id != null) {
+            $companyManager = new CompanyManager();
+            $companyInfo = $companyManager->fetchCompanyInfo();
+
+            $_SESSION['company_id'] = $companyInfo->id;
+            $_SESSION["profile_pic"] = $companyInfo->logo_img;
+            $_SESSION["company_name"] = $companyInfo->name;
+            $_SESSION["company_title"] = $user->user_bio;
+            $_SESSION["date_created"] = $companyInfo->date_created;
+            header("Location: index.php?action=companyDashboard");
+        } else {
+
+            header("Location: index.php?action=userProfileView");
+            exit;
+        }
     } else {
         throw new Exception("Invalid Information");
     }
@@ -162,10 +191,9 @@ function userSignIn($email, $pwd)
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
-        throw new Exception("Invalid Information");
+        throw new Exception("Invalid Info");
     } else {
         //if data good, allow sign in
-
         header("index.php"); //TODO: change header location
         exit;
     }
@@ -256,8 +284,9 @@ function deleteCalendarEntry($entry)
     }
 }
 
-function showTalents($filter = false)
+function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
+    // echo $filter;
     ob_start();
     if (!$filter) {
     }
@@ -271,9 +300,11 @@ function showTalents($filter = false)
             $desiredPositions = getTalentDesiredPosition($key->id);
             $highestDegree = getTalentHighestDegree($key->id);
             $talentLanguages = getTalentLanguages($key->id);
+            $talentLocation = getTalentLocation($key->id);
+            // print_r($talentLocation);
             if ($filter) {
                 // ob_start();
-                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages);
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0], $saveData);
 
                 include('./view/components/talentCard.php'); //TODO:Limit talent cards
                 $talentCard = ob_get_contents();
@@ -292,7 +323,7 @@ function showTalents($filter = false)
         $talentCards = ob_get_clean();
         require('./view/filterView.php');
     } else {
-        ob_end_clean();
+        // ob_end_clean();
         // print_r($scale);
         arsort($scale);
         // print_r($scale);
@@ -301,48 +332,103 @@ function showTalents($filter = false)
             // echo $key;
             echo $CandidateRatingData[$key];
         }
+        // print_r($saveData);
+        $talentCards = ob_get_clean();
+        $saveData =  json_encode($saveData);
+        require('./view/filterView.php');
 
-        // ob_end_clean();
+
         // echo "test";
-        parseTalentFilter();
+        if (empty($saveData)) {
+            // parseTalentFilter();
+        }
     }
 }
+
 function loadTalentCards()
 {
     require("./view/filterView.php");
 }
 function parseTalentFilter()
 {
-    $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
-    // echo $filteredYearsMin . "bteeee";
-    $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
-    $filteredSkills = explode(",", $_GET["skills"]) ?? null;
-    $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
-    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
-    $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    if (!empty($savedData)) {
+    } else {
+
+        $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+        // echo $filteredYearsMin . "bteeee";
+        $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+        $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+        $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+        $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
+        $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+        $filteredTalentlocation = $_GET["locations"] ?? null;
+        $jobId = $_GET["jobId"] ?? null;
+    }
     $arr = array(
         'filteredYearsMin' => $filteredYearsMin,
         'filteredYearsMax' => $filteredYearsMax,
         'filteredSkills' => $filteredSkills,
         'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredLocation' => $filteredTalentlocation,
         'filteredHighestDegrees' => $filteredHighestDegrees,
         'filteredLanguages' => $filteredLanguages,
 
     );
     $arr = json_encode($arr);
-    saveTalentFilter($arr);
+    saveTalentFilter($arr, $jobId);
 }
-function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language)
-{   //TODO:Case for any tags
-    //TODO:add filter for city]
-    $score  = 1;
+function updateSavedTalentSearch($data, $jobId)
+{
+    $user_id = 1;
     $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
     // echo $filteredYearsMin . "bteeee";
     $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
     $filteredSkills = explode(",", $_GET["skills"]) ?? null;
     $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
-    $filteredHighestDegrees = explode(",", $_GET["degrees"]) ?? null;
+    $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
     $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    $filteredTalentlocation = $_GET["locations"] ?? null;
+
+
+    $arr = array(
+        'filteredYearsMin' => $filteredYearsMin,
+        'filteredYearsMax' => $filteredYearsMax,
+        'filteredSkills' => $filteredSkills,
+        'filteredDesiredPositions' => $filteredDesiredPositions,
+        'filteredLocation' => $filteredTalentlocation,
+        'filteredHighestDegrees' => $filteredHighestDegrees,
+        'filteredLanguages' => $filteredLanguages,
+
+    );
+    print_r($arr);
+    echo "<br>";
+    echo "array";
+    $arr = json_encode($arr);
+    updateTalentFilter($arr, $user_id, $jobId);
+}
+function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highestDegree, $language, $location, $saveData)
+{   //TODO:Case for any tags
+    //TODO:add filter for city
+    $score  = 1;
+    if (empty($saveData)) {
+        $filteredYearsMin = (int)$_GET["yearsMin"] ?? null;
+        // echo $filteredYearsMin . "bteeee";
+        $filteredYearsMax = (int)$_GET["yearsMax"] ?? null;
+        $filteredSkills = explode(",", $_GET["skills"]) ?? null;
+        $filteredTalentlocation = $_GET["talentlocation"] ?? null;
+        $filteredDesiredPositions = explode(",", $_GET["desiredp"]) ?? null;
+        $filteredHighestDegrees = explode(",", $_GET["highestDegree"]) ?? null;
+        $filteredLanguages = explode(",", $_GET["languages"]) ?? null;
+    } else {
+        // print_r($saveData);
+        $filteredYearsMin = $saveData->filteredYearsMin;
+        $filteredTalentlocation = $saveData->filteredLocation;
+        $filteredYearsMax = $saveData->filteredYearsMax;
+        $filteredSkills = $saveData->filteredSkills;
+        $filteredDesiredPositions = $saveData->filteredDesiredPositions;
+        $filteredHighestDegrees = $saveData->filteredHighestDegrees;
+        $filteredLanguages = $saveData->filteredLanguages;
+    }
     // echo $filteredYearsMax;
     if (is_numeric($filteredYearsMax) and is_numeric($filteredYearsMin)) {
         // echo "starting";
@@ -380,7 +466,27 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
             $tmp = array_product($ratings);
             $score = $score * $tmp + 0.2;
         }
-    }
+    } //TODO: Location cannot be easily implemented without checking country
+    // if (!empty($filteredTalentlocation)) {
+    //     $ratings = array();
+    //     $sim = similar_text($filteredTalentlocation, $location->location, $perc);
+    //     // echo $twoValue->skills_fixed;
+    //     // echo $perc;
+    //     if ($perc > 50) {
+    //         array_push($ratings, $perc / 100);
+    //     }
+
+
+    //     $tmp = array_filter($ratings);
+    //     // print_r($tmp);
+    //     // echo $tmp;
+    //     if (empty($tmp)) {
+    //         $score = $score - 0.2;
+    //     } else {
+    //         $tmp = array_product($ratings);
+    //         $score = $score * $tmp + 0.2;
+    //     }
+    // }
     if (!empty($filteredDesiredPositions)) {
         $ratings = array();
         foreach ($filteredDesiredPositions as $key => $value) {
@@ -441,7 +547,9 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
         }
     }
 
-
+    if ($score < 0) {
+        $score = 0;
+    }
     return $score;
 }
 
@@ -466,10 +574,15 @@ function showUserProfileView()
 }
 
 
-function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
     $userManager = new UserManager();
-    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    if ($profilePic) {
+        $profilePic = uploadImage($profilePic);
+    } else {
+        $profilePic = $oldImage;
+    }
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
         echo "Successfully Updated";
@@ -528,6 +641,27 @@ function deleteUserExperience($id)
     }
 }
 
+function updateUserSkills($skillsString, $userId)
+{
+    $userManager = new UserManager();
+    $skillsArray = explode('&', $skillsString);
+    // echo $skillsArray;
+    foreach ($skillsArray as $skill_item) {
+        $skill_id = explode('|', $skill_item)[1];
+        $wasSkillsUpdated = $userManager->updateUserSkills($skill_id, $userId);
+    }
+    echo $wasSkillsUpdated;
+}
+function updateUserLanguages($languagesString, $userId)
+{
+    $userManager = new UserManager();
+    $languagesArray = explode('&', $languagesString);
+    foreach ($languagesArray as $language_item) {
+        $language_id = explode('|', $language_item)[1];
+        $wasLanguagesUpdated = $userManager->updateUserLanguages($language_id, $userId);
+    }
+    echo $wasLanguagesUpdated;
+}
 function createJobForm()
 {
     $userManager = new UserManager();
@@ -550,9 +684,9 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
         // TODO: finish this bish!
-        echo "Success! New job created. Get your tax money";
+        header("Location: ./index.php?action=jobListings");
     } else {
-        echo "FAIL!!! U DUN MESSED UP";
+        echo "Adding job failed, please contact the administrator";
     }
 }
 
@@ -588,15 +722,18 @@ function uploadImage($file)
     return $newPath;
 }
 
-function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
+function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyInfo();
     if ($logo) {
         $logo = uploadImage($logo);
+    } else {
+        $logo = $oldLogo;
     }
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
-    if ($result) {
+    if ($result[0] and $result[1]) {
 
         header("location:index.php?action=companyDashboard");
     } else {
@@ -617,6 +754,7 @@ function getEmployeeInfo()
 function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 {
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->changeEmployeeInfo($firstName, $lastName, $jobTitle);
     if ($result) {
         header("location:index.php?action=employeeInfo");
@@ -627,28 +765,218 @@ function updateEmployeeInfo($firstName, $lastName, $jobTitle)
 
 function fetchJobPostings()
 {
-    $listings = getJobPostings();
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+    $listings = getJobPostings($_SESSION["id"]);
+
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
-    $jobCard = getJobCard($jobId);
+    $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
 }
 function updateJobListing($description, $minSalary, $maxSalary, $deadline, $id)
 {
+
     updateJobPost($description, $minSalary, $maxSalary, $deadline, $id);
-    $listings = getJobPostings();
+    $listings = getJobPostings($_SESSION["id"]);
     if (!empty($listings) && empty($jobId)) {
         foreach ($listings as $listing) {
             require "./view/components/jobPostingCard.php";
         }
     }
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
 }
 
 function updateJobStatus($id, $status)
 {
 
     setJobStatus($id, $status);
+}
+
+// function uploadUserProfileImage($file)
+// {
+//     // md5 is considered insecure so generally we don't use it except for files
+//     $hash = hash_file("md5", $file["tmp_name"]);
+//     echo $hash;
+//     $first = substr($hash, 0, 2);
+//     $second = substr($hash, 2, 2);
+
+//     mkdir("./public/images/uploaded/$first/$second", 0777, true);
+
+//     // allow read & write permissions for everyone
+//     chmod("./public/images/uploaded/$first", 0777);
+//     chmod("./public/images/uploaded/$first/$second", 0777);
+
+//     $type = explode(".", $file['name'])[1];
+//     $filename = substr($hash, 4) . "." . $type;
+//     $newPath = "./public/images/uploaded/$first/$second/$filename";
+//     move_uploaded_file($file["tmp_name"], $newPath);
+//     chmod($newPath, 0777);
+
+//     return $newPath;
+// }
+function uploadResume($resume)
+{
+    $hash = hash_file("md5", $resume["tmp_name"]);
+    echo $hash;
+    $first = substr($hash, 0, 2);
+    $second = substr($hash, 2, 2);
+
+    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+    // chmod("./public/images/uploaded/$first", 0777);
+    chmod("./public/images/uploaded/$first/$second", 0777);
+
+    $type = explode(".", $resume['name'])[1];
+    $filename = substr($hash, 4) . "." . $type;
+    $newResumeLivingPlace = "http://localhost/sites/batch19-project/public/images/uploaded/$first/$second/$filename";
+    move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
+    chmod($newResumeLivingPlace, 0777);
+
+    $UserManager = new UserManager();
+    $result = $UserManager->uploadUserResume($newResumeLivingPlace);
+
+
+
+    // if(isset($_GET['path']))
+    // {
+    // //Read the url
+    // $resume = $_GET['path'];
+
+    // //Clear the cache
+    // clearstatcache();
+
+    // //Check the file path exists or not
+    // if(file_exists($resume)) {
+
+    // //Define header information
+    // header('Content-Description: File Transfer');
+    // header('Content-Type: application/octet-stream');
+    // header('Content-Disposition: attachment; filename="'.basename($resume).'"');
+    // header('Content-Length: ' . filesize($resume));
+    // header('Pragma: public');
+
+    // //Clear system output buffer
+    // flush();
+
+    // //Read the size of the file
+    // readfile($resume,true);
+
+    // //Terminate from the script
+    // die();
+    // }
+    // else{
+    // echo "File path does not exist.";
+    // }
+    // }
+    // echo "File path is not defined.";
+
+    // return $newResumeLivingPlace;
+
+    // $userManager = new UserManager();
+    // $newResumeLivingPlace = $userManager->uploadUserResume($resume);
+    // header("Location:index.php?action=userProfile");
+
+    // $files = scandir("./public/images/uploaded");
+
+    // header("location: index.php?action=userProfileView");
+}
+
+
+// }
+function savedSearchExists($jobId)
+{
+
+    $savedSearchExists = talentFilterExists($jobId);
+    // print_r($savedSearchExists);
+    if (!empty($savedSearchExists)) {
+        $searchdata = json_decode($savedSearchExists[0]->search_data);
+        return $searchdata;
+    } else {
+        return false;
+    }
+}
+
+function showTalentProfileView($id, $jobID = null)
+{
+    $userManager = new UserManager();
+    $user = $userManager->getUserProfile($id);
+    $education = $userManager->getUserEducation($id);
+    $profExps = showJobs($id);
+    $skills = showSkills($id);
+    $languages = showLanguages($id);
+    $calendarManager = new CalendarManager();
+    $entries = $calendarManager->loadCalendar($id);
+    $interviews = $calendarManager->loadTalentInterviews($id);
+    require("./view/talentProfileView.php");
+}
+
+function bookInterview($uaID, $id, $jobID)
+{
+    $compID = getCompanyID($id);
+    $CalendarManager = new CalendarManager();
+    $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    if (!$result) {
+        throw new Exception("Unable to schedule interview");
+    }
+    header("location: index.php?action=bookedMeetings");
+}
+
+function showBookedMeetings()
+{
+    $companyManager = new CompanyManager();
+    $bookedMeetings = $companyManager->fetchBookedMeetings();
+    // if (!$bookedMeetings) {
+    //     throw new Exception("Unable to fetch booked meetings");
+    // } else {
+    require("./view/bookedMeetingsView.php");
+    // }
+}
+
+function deleteReservation($rID)
+{
+    if (is_array($rID)) {
+        $rIDs = $rID;
+        for ($i = 0; $i < count($rIDs); $i++) {
+            $rID = strip_tags($rIDs[$i]['rID']);
+
+            $companyManager = new CompanyManager();
+            $result = $companyManager->cancelMeeting($rID);
+        }
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        } else {
+            // header("location: index.php?action=bookedMeetings");
+        }
+    } else {
+        $companyManager = new CompanyManager();
+        $result = $companyManager->cancelMeeting($rID);
+        if (!$result) {
+            throw new Exception("Unable to delete entry");
+        } else {
+            header("location: index.php?action=bookedMeetings");
+        }
+    }
+}
+
+function deleteRoleMeetings($rJob)
+{
+    $compID = getCompanyID($_SESSION["id"]);
+    $companyManager = new CompanyManager();
+    $result = $companyManager->cancelRoleMeetings($rJob, $compID);
+    if (!$result) {
+        throw new Exception("Unable to delete meetings");
+    } else {
+        header("location: index.php?action=bookedMeetings");
+    }
+}
+
+function calDateToStr($str)
+{
+    $d = strtotime($str);
+    return date("l, M jS", $d);
 }

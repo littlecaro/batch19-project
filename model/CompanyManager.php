@@ -40,6 +40,7 @@ class CompanyManager extends Manager
 
     {
         $COMPANY_ID = 1;  // TODO: REMOVE THIS!!
+        $USER_ID = 2; // TODO: REMOVE THIS!!
         $db = $this->dbConnect();
         $query = "UPDATE companies SET name = :bizName, company_address = :bizAddress, email = :email, phone_number = :phone, website_address = :webSite, logo_img = :logo WHERE ID = :companyId";
         $req = $db->prepare($query);
@@ -52,7 +53,19 @@ class CompanyManager extends Manager
         $req->bindParam("logo", $logo, PDO::PARAM_STR);
 
         $result = $req->execute();
-        return $result;
+        $req->closeCursor();
+
+        // Create an SQL query to update the users table
+        // Set profile_photo to your $logo variable
+        // WHERE the user_id matches the logged in user's id ($_SESSION['id'])
+
+        $query = "UPDATE users SET profile_picture = :logo WHERE ID = :userID";
+        $req = $db->prepare($query);
+        $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
+        $req->bindParam("logo", $logo, PDO::PARAM_STR);
+
+        $result2 = $req->execute();
+        return [$result, $result2];
     }
 
     public function fetchEmployeeInfo()
@@ -94,5 +107,50 @@ class CompanyManager extends Manager
         $req->execute();
         $companyInfo = $req->fetch(PDO::FETCH_OBJ);
         return $companyInfo;
+    }
+
+    public function fetchBookedMeetings()
+    {
+        $compID = getCompanyID($_SESSION['id']);
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT u.first_name, u.last_name, j.title, ua.date, ua.time_start, r.id, u.id AS userID, j.id AS jobID
+                            FROM reservations r
+                                INNER JOIN user_availability ua
+                                ON r.user_availability_id = ua.id
+                                INNER JOIN jobs j
+                                ON r.job_id = j.id
+                                INNER JOIN users u
+                                ON u.id = ua.user_id
+                                WHERE r.company_id = :compID
+                                ORDER BY ua.date, ua.time_start');
+        $req->bindParam("compID", $compID, PDO::PARAM_INT); // TODO: get companyId from $_SESSION
+
+        $req->execute();
+        $bookedMeetings = $req->fetchAll(PDO::FETCH_OBJ);
+        return $bookedMeetings;
+    }
+
+    public function cancelMeeting($rID)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM reservations 
+                                WHERE id = :rID');
+        $req->bindParam("rID", $rID, PDO::PARAM_INT);
+
+        return $req->execute();
+    }
+
+    public function cancelRoleMeetings($rJob, $compID) {
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE r 
+                                FROM reservations r
+                                INNER JOIN jobs j
+                                ON j.title = :rJob
+                                WHERE r.company_id = :compID
+                                AND  r.job_id = j.id');
+        $req->bindParam("rJob", $rJob, PDO::PARAM_STR);
+        $req->bindParam("compID", $compID, PDO::PARAM_INT);
+
+        return $req->execute();
     }
 }

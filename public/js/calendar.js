@@ -1,20 +1,28 @@
 function loadCalendar() {
   let offset = 0;
-  console.log(entries);
-  console.log(receives);
 
   const calendar = document.querySelector(".calendar");
 
   const prevWeek = document.querySelector(".prev");
   prevWeek.addEventListener("click", () => {
-    offset += 7;
-    displayCal(offset);
+    let selectionExists = document.querySelector(".selection");
+    if (selectionExists) {
+      favDialog.showModal();
+    } else {
+      offset += 7;
+      displayCal(offset);
+    }
   });
 
   const nextWeek = document.querySelector(".next");
   nextWeek.addEventListener("click", () => {
-    offset -= 7;
-    displayCal(offset);
+    let selectionExists = document.querySelector(".selection");
+    if (selectionExists) {
+      favDialog.showModal();
+    } else {
+      offset -= 7;
+      displayCal(offset);
+    }
   });
 
   function displayCal(x = 0) {
@@ -141,34 +149,46 @@ function loadCalendar() {
         timeDiv.appendChild(time);
         sortDiv.appendChild(timeDiv);
 
-        let deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Cancel";
-        deleteBtn.classList.add("cancel");
-        deleteBtn.setAttribute("data-cancelId", `${receives[i].id}`);
-        deleteBtn.addEventListener("click", deleteReservation);
-        time.appendChild(deleteBtn);
+        let cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.classList.add("cancel");
+        cancelBtn.setAttribute("data-cancelId", `${receives[i].id}`);
+        cancelBtn.addEventListener("click", deleteReservation);
+        time.appendChild(cancelBtn);
         confirmed.appendChild(sortDiv);
       } else {
         const sortDiv = document.querySelector(`[data-id=${CSS.escape(new Date(receives[i].date).getTime())}]`);
+
         let timeDiv = document.createElement("div");
         timeDiv.setAttribute("class", "timeDiv");
+        timeDiv.classList.add("timeMid");
+
+        let job = document.createElement("p");
+        job.textContent = `${receives[i].title}, `;
+        timeDiv.appendChild(job);
+
+        let company = document.createElement("p");
+        company.textContent = `${receives[i].name}, `;
+        timeDiv.appendChild(company);
+
         let time = document.createElement("p");
         time.textContent = `${receives[i].time_start.slice(0, 5)}`;
         timeDiv.appendChild(time);
 
-        let deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Cancel";
-        deleteBtn.classList.add("cancel");
-        deleteBtn.setAttribute("data-cancelId", `${receives[i].id}`);
-        deleteBtn.addEventListener("click", deleteReservation);
-        timeDiv.appendChild(deleteBtn);
+        let cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.classList.add("cancel");
+        cancelBtn.setAttribute("data-cancelId", `${receives[i].id}`);
+        cancelBtn.addEventListener("click", deleteReservation);
+        time.appendChild(cancelBtn);
         sortDiv.appendChild(timeDiv);
+        confirmed.appendChild(sortDiv);
       }
     }
-    let deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Cancel all interviews";
-    deleteBtn.addEventListener("click", deleteReservation);
-    confirmed.appendChild(deleteBtn);
+    let cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel all interviews";
+    cancelBtn.addEventListener("click", deleteReservation);
+    confirmed.appendChild(cancelBtn);
   }
 
   displayCal();
@@ -185,8 +205,8 @@ function loadCalendar() {
 
   let isMouseUp = true;
   function highlight() {
-    let table = document.querySelector("table");
-    let tds = document.querySelectorAll("td");
+    let table = document.querySelector(".calendar");
+    let tds = document.querySelectorAll(".calendar td");
     // is user leaves the table with
     table.addEventListener("mousedown", function (e) {
       isMouseUp = false;
@@ -395,7 +415,7 @@ function loadCalendar() {
       if (newDate) {
         const sortDiv = document.createElement("div");
         sortDiv.setAttribute("class", "confirmedAvail");
-        sortDiv.setAttribute("data-id", `${new Date(entries[i].date).getTime()}`);
+        sortDiv.setAttribute("data-idA", `${new Date(entries[i].date).getTime()}`);
         let titleDiv = document.createElement("div");
         titleDiv.setAttribute("class", "titleDate");
         let titleDateNow = new Date(entries[i].date);
@@ -434,7 +454,7 @@ function loadCalendar() {
         timeDiv.appendChild(deleteBtn);
         confirmed.appendChild(sortDiv);
       } else {
-        const sortDiv = document.querySelector(`[data-id=${CSS.escape(new Date(entries[i].date).getTime())}]`);
+        const sortDiv = document.querySelector(`[data-idA=${CSS.escape(new Date(entries[i].date).getTime())}]`);
         let timeDiv = document.createElement("div");
         timeDiv.setAttribute("class", "timeDiv");
         let time = document.createElement("p");
@@ -485,11 +505,12 @@ function loadCalendar() {
   }
 
   function dayToTh(day) {
-    if (day == 1) {
+    let th = day % 10;
+    if (th == 1) {
       return `${day}st`;
-    } else if (day == 2) {
+    } else if (th == 2) {
       return `${day}nd`;
-    } else if (day == 3) {
+    } else if (th == 3) {
       return `${day}rd`;
     } else {
       return `${day}th`;
@@ -517,17 +538,26 @@ function loadCalendar() {
   }
 
   function deleteReservation(e) {
-    const entry = e.target.dataset.cancelid;
-    console.log(entry);
+    let reserveID = e.target.dataset.cancelid;
+    if (reserveID == undefined) {
+      const cancels = document.querySelectorAll(".cancel");
+      reserveID = [];
+      for (let cancel of cancels) {
+        reserveID.push({
+          rID: `${cancel.dataset.cancelid}`,
+        });
+      }
+      reserveID = JSON.stringify(reserveID);
+    }
 
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("GET", `./index.php?action=deleteReservation&entry=${entry}`);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", `./index.php?action=cancelMeeting&reserveID=${reserveID}`);
 
-    // xhr.addEventListener("load", function () {
-    //   location.reload();
-    //   // console.log(xhr.responseText);
-    // });
+    xhr.addEventListener("load", function () {
+      location.reload();
+      // console.log(xhr.responseText);
+    });
 
-    // xhr.send(null);
+    xhr.send(null);
   }
 }

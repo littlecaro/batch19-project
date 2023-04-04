@@ -1,13 +1,17 @@
+@font-face {
+  font-family: "niramit";
+  src: url(./Niramit/Niramit-SemiBold.ttf);
+}
+/* font 2: Lucinda */
+/* font 3: Franklin Gothic Medium */
+
 :root {
-  --button-color-primary: #d66238;
-  --button-color-secondary: hwb(302 51% 21%);
-  --text-color-primary: #86cfd0;
-  --text-color-hover: #13c2c5;
-  --header-color-primary: #28225d;
-  --business-color-primary: hsl(280, 37%, 52%);
-  --background-color-secondary: rgba(101, 90, 223, 0.5);
-  --business-color-secondary: rgba(147, 86, 178, 0.5);
-  --background-color-footer: #e2e2e2;
+  --button-color-primary: #6ca0d8;
+  --button-color-secondary: #ff9dff;
+  --text-color-primary: #13c2c5;
+  --text-color-hover: #c5fcee;
+  --header-color-primary: #4c67b4;
+  --background-color-footer: #afd5fe;
 }
 
 body {
@@ -18,7 +22,7 @@ body {
     rgba(101, 90, 223, 0.5) 100%
   );
   background-size: cover;
-  margin: 70px 0 0 0;
+  margin: 80px 0 0 0;
 }
 /* TODO:I think the body containing everything creates problems in other pages. We should
 contain the landing page in a wrapper... HTML and body should have width and heights of 100vw/vh */
@@ -49,10 +53,9 @@ contain the landing page in a wrapper... HTML and body should have width and hei
 }
 
 .logo p {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "niramit";
   color: var(--text-color-primary);
   font-size: 29px;
-  font-weight: bold;
   line-height: 80%;
 }
 
@@ -71,37 +74,21 @@ contain the landing page in a wrapper... HTML and body should have width and hei
   color: var(--text-color-hover);
 }
 
-.menu {
+#menu-main {
   display: inline-block;
   position: relative;
   height: 80px;
   padding: 25px 5% 0 0;
 }
 
-.menu a {
-  color: white;
-  text-decoration: none;
-}
-
-.menu a:visited {
-  color: white;
-  text-decoration: none;
-}
-
-.menu a:hover {
-  color: #28225d;
-  text-decoration: none;
-}
-
-input {
+#user-email {
   height: 30px;
   border-radius: 20px;
   border: 0;
   padding: 0 10px;
-  /* width: 120px; */
 }
 
-.menu button {
+#menu-main button {
   background-color: transparent;
   color: white;
   border: 2px solid white;
@@ -112,12 +99,22 @@ input {
   cursor: pointer;
 }
 
+.menu button {
+  background-color: transparent;
+  border: 2px solid white;
+  height: 30px;
+}
+
+.menu {
+  padding: 25px 5% 0 0;
+}
+
 .topbutton:hover {
   background-color: white;
   color: #1d1954;
 }
 
-.main {
+.main-index-div {
   padding: 0 7% 7% 5%;
   display: flex;
   justify-content: center;
@@ -126,7 +123,6 @@ input {
   background-size: cover;
   margin-left: 0;
 }
-
 .main_box {
   display: flex;
   justify-content: flex-end;
@@ -172,9 +168,11 @@ h3 {
 
 p,
 h4 {
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode";
   line-height: 1.6em;
   font-size: 16px;
+  color: #1f2944;
 }
 
 .main_left {
@@ -276,7 +274,8 @@ button {
 
 .job_table table {
   width: 100%;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   border-collapse: collapse;
   text-align: center;
   color: white;
@@ -344,7 +343,7 @@ td {
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,800);
 figure.snip1139 {
-  font-family: "Raleway", Arial, sans-serif;
+  font-family: "niramit";
   position: relative;
   overflow: hidden;
   margin: 10px;

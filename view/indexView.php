@@ -3,16 +3,8 @@ $title = "TODO:change";
 ob_start();
 
 ?>
-<div class="header">
-    <div class="logo">
-        <p><a href="index.php">waygukwin</a></p>
-    </div>
-    <div class="menu">
-        <a href="index.php?action=userSignUpView"><button class="topbutton" id="signup">SIGN UP</button></a>&nbsp;
-        <a href="index.php?action=userSignInView"><button class="topbutton">SIGN IN</button></a>
-    </div>
-</div>
-<div class="main">
+<!-- <div id="all-of-main"> -->
+<div class="main-index-div">
     <div class="main_box">
         <div class="main_left"></div>
         <div class="main_right">
@@ -21,7 +13,7 @@ ob_start();
             <h1>Find the job you want from the company you trust</h1>
             <h4>
                 The perfect job you're looking for is just around the corner with
-                our powerful AI algorithms to guide you through the search process
+                our powerful AI algorithms to guide you through the search process.
             </h4>
             <button class="button">LEARN MORE</button>
         </div>
@@ -45,7 +37,7 @@ ob_start();
     <div class="job_table">
         <h1>
             <span style="color: white">Need Help Attracting</span><br />
-            <span style="color: darkcyan">Top Global Talent?</span>
+            <span style="color: #13c2c5">Top Global Talent?</span>
         </h1>
         <h1>
             <span style="font-size: 20px; color: white">Waygookin can help you</span>
@@ -125,66 +117,7 @@ ob_start();
         </div>
     </div>
 </div>
-<div class="footer">
-    <div class="links">
-        <div class="one">
-            <h4>Waygookin</h4>
-            <p>
-                <img src="./public/images/footer/placeholder.png" width="15px" />
-                1101-ho | IS Biz Tower 2, Room 1101, 23, Seonyu-ro 49-gil,
-                Yeongdeungpo-gu, Seoul, South Korea<br />
-            </p>
-            <p>
-                <img src="./public/images/footer/telephone.png" width="15px" />
-                02-501-6064
-            </p>
-            <p>
-                <img src="./public/images/footer/contract.png" width="15px" />
-                <a href="mailto:waygookin@wcoding.com">waygookin@wcoding.com</a>
-            </p>
-        </div>
-        <div class="two">
-            <h4>About Us</h4>
-            <p>
-                Waygookin is a job networking platform for businesses and
-                individuals located in Korea.
-            </p>
-            <br><br>
-            <p>
-                <a href="#">Terms of service</a> | <a href="#">Legal notice</a> |
-                <a href="#">Privacy policy</a>
-            </p>
-        </div>
-        <div class="three">
-            <h4>Follow Us</h4>
-            <a href="#"><img src="./public/images/footer/facebook.png" width="35" /></a>&nbsp;&nbsp;
-            <a href="#"><img src="./public/images/footer/instagram.png" width="35" /></a>&nbsp;&nbsp;
-            <a href="#"><img src="./public/images/footer/linkedin.png" width="35" /></a>&nbsp;&nbsp;
-            <a href="#"><img src="./public/images/footer/twitter.png" width="35" /></a>
-            <h4>Sign up to our newsletter</h4>
-            <input placeholder="your email" />&nbsp;&nbsp;<button class="button">GO</button>
-        </div>
-    </div>
-    <!-- <p>
-        <a
-          href="https://www.flaticon.com/free-icons/instagram"
-          title="instagram icons"
-          >Instagram icons created by Pixel perfect - Flaticon</a
-        >
-        <a
-          href="https://www.flaticon.com/free-icons/facebook"
-          title="facebook icons"
-          >Facebook icons created by Freepik - Flaticon</a
-        >
-        <a href="https://www.flaticon.com/free-icons/pin" title="pin icons"
-          >Pin icons created by Freepik - Flaticon</a
-        >
-      </p> -->
 </div>
-
-<?php
-include "./view/chatView.php"; // TODO: move this to logged in view
-?>
 
 <?php
 $content = ob_get_clean();

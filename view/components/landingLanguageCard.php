@@ -1,0 +1,1 @@
+<p><?= $language->language?></p>

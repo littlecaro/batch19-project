@@ -13,7 +13,7 @@
 }
 html,
 body {
-  height: 100vh;
+  height: 100%;
 }
 html {
   scroll-behavior: smooth;
@@ -64,7 +64,9 @@ html {
 }
 
 .profile-img {
-  max-width: 150px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
 
 .profile-name p,
@@ -108,17 +110,15 @@ h4 {
 
 .bizProfile {
   margin-left: 300px;
-  width: calc(100vw - 300px);
-  height: 100%;
+  width: calc(98% - 300px);
 }
 
 .main {
   /* height: auto;
   min-width: 500px;
   padding: 40px 20px; current changes */
-  height: 86%;
   /* min-width: 65%; */
-  /* padding: 40px 20px; */
+  padding: 40px 20px;
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
@@ -127,8 +127,8 @@ h4 {
   /* margin-bottom: 30px; current changes */
   position: relative;
   /* padding-left: 300px; */
-  margin-bottom: 70px;
-  display: flex;
+  padding-bottom: 40px;
+  /* display: flex; */
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -162,8 +162,9 @@ h4 {
 body {
   background-color: white;
   background-size: cover;
+  margin: 0;
   margin-top: 80px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .biz {
@@ -192,6 +193,16 @@ body {
     rgba(101, 90, 223, 1) 100%
   );
   z-index: 2;
+}
+
+#photoUploadClick {
+  border-radius: 50%;
+  padding: 0;
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  outline: none;
+  overflow: hidden;
 }
 
 .logo {
@@ -410,7 +421,6 @@ h4 {
 }
 
 #table {
-  width: 500px;
   margin: auto;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
@@ -421,6 +431,7 @@ h4 {
   width: 30%;
   vertical-align: middle;
   padding: 8px;
+  font-size: 14px;
 }
 
 #table td {
@@ -533,8 +544,8 @@ input[type="checkbox"] {
 .noUi-tooltip {
   font-size: 10px;
 }
-.addaJobBtn {
-}
+/* .addaJobBtn {
+} */
 /* Styles for job listing cards*/
 .jobListingWrapper {
   display: flex;
@@ -627,10 +638,10 @@ input[type="checkbox"] {
 .jobPostingCardFull {
   text-align: left;
 }
-.aboutTheCompany {
-  /* display: flex; */
-  /* flex-direction: column; */
-}
+/* .aboutTheCompany { */
+/* display: flex; */
+/* flex-direction: column; */
+/* } */
 .aboutTheCompany img {
   height: 50px;
 }
@@ -669,4 +680,300 @@ input[type="checkbox"] {
 }
 #closePositionBtn {
   opacity: 1;
+}
+
+#logoUpload {
+  padding-top: 10px;
+}
+.talentSearchMain form,
+.talentSearchMain button {
+  all: unset;
+  cursor: pointer;
+}
+
+#landing {
+  width: 90vh;
+}
+
+.landingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  word-break: break-word;
+  text-align: left;
+  width: 90vh;
+}
+
+.landingContainer p {
+  font-weight: 100;
+}
+
+.landingContainer > button:hover {
+  background-color: rgba(210, 210, 210, 1);
+  cursor: pointer;
+}
+
+.landingContainer > div {
+  background-color: rgba(210, 210, 210, 0.6);
+  border-radius: 5px;
+  padding: 1em;
+}
+
+.landingBtn {
+  color: black;
+  width: min-content;
+  border: none;
+  margin-bottom: 1.5vh;
+}
+
+.landingPersonalCard {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+.landingPersonalCard .left {
+  align-self: flex-start;
+}
+
+.landingCard {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+}
+
+.landingCard > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.landingCard p {
+  margin: 0.5em 0;
+}
+
+.landingContainer h1 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+}
+.landingContainer h2 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  text-shadow: none;
+  width: 100%;
+  margin: 0;
+  line-height: 1em;
+}
+.landingContainer h3 {
+  color: var(--header-color-primary);
+  font-weight: 100;
+  font-size: 1.5em;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  letter-spacing: normal;
+  text-shadow: none;
+  width: max-content;
+  margin: 0;
+  text-transform: none;
+  text-align: left;
+}
+
+.landingContainer h4 {
+  width: 100%;
+  text-align: right;
+  margin: 0;
+}
+
+.landingEducation,
+.landingExperience {
+  width: 100%;
+}
+
+.landingContainer .landingSameLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landingContainer i {
+  margin-right: 1vh;
+}
+
+.landingAvail {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.landingCalDate {
+  margin-top: 0.5vh;
+  padding: 0.5vh;
+  text-decoration: underline;
+}
+
+.landingAvail,
+.landingAvail div,
+.landingAvail div p {
+  margin: 0;
+}
+
+.landingSkills > div {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.landingSkills > div p:not(p:first-of-type) {
+  background-color: #13c2c5;
+  padding: 1vh;
+  border-radius: 5px;
+}
+
+.languageSkills p:not(p:first-of-type) {
+  background-color: yellow !important;
+}
+
+.landingCalDate {
+  background-color: rgba(255, 0, 0, 0.426);
+}
+.landingCalTime {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.landingCalCard {
+  width: 18vh;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
+}
+
+.landingCalCard > .timeMid {
+  border-top: none;
+}
+
+.landingExperience {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.landingContainer > .landingBtn > div {
+  margin: 1em 0;
+}
+
+.landingCalTime > form button {
+  all: unset;
+  width: 100%;
+}
+
+.landingCalTime > form button:hover {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+.bookedMeetingCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.bookedMeetingCard {
+  margin-top: 2.5vh;
+}
+
+.bookedDate {
+  text-decoration: underline;
+  background-color: rgba(255, 0, 0, 0.426);
+  border-radius: 5px;
+  width: fit-content;
+  padding: 0 0.5vh;
+}
+
+.meetingSubCard {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-top: 0.25em;
+}
+
+.bookedMeetings button {
+  all: unset;
+}
+
+.meetingSubCard > form:nth-of-type(1) > button,
+.meetingSubCard > form:nth-of-type(2) > button {
+  background-color: rgba(210, 210, 210, 0.6);
+  padding: 0 1vh;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.meetingSubCard > form:last-of-type button {
+  width: fit-content;
+  background-color: red;
+  padding: 0 0.2em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.bookedMeetingCard p {
+  margin: 1vh 0;
+}
+
+.bookedMeetings input {
+  scale: 0.5;
+}
+
+.cancelContainer {
+  margin-top: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.cancelSelection {
+  margin-top: 1em;
+}
+
+.cancelContainer > button,
+#cancelRolesBtn {
+  width: fit-content;
+  background-color: red;
+  padding: 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#talentHead {
+  all: unset;
+  display: flex;
+  gap: 1em;
+  margin-top: 1vh;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#talentHead a {
+  all: unset;
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1vh;
+  cursor: pointer;
+  color: white;
 }

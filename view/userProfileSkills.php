@@ -4,7 +4,7 @@ ob_start();
 ?>
 
 <!-- autocomplete="off" -->
-<form action="index.php?action=userProfileSkillsSubmit.php" method="POST">
+<form action="index.php?action=userProfileSkillsSubmit" method="POST">
 
   <h2> Skills:</h2>
   <?php
@@ -16,14 +16,12 @@ ob_start();
   $containerId = "languages";
   require("./view/userProfileSkillsMultiSelector.php");
   ?>
-
   <input type="submit" value="Save">
 </form>
 
 <script src="./public/js/userProfileSkillsMultiSelector.js"></script>
 <script>
   // Pass the data from PHP to JavaScript
-
   const skills = <?= json_encode($allSkills); ?>;
   const languages = <?= json_encode($allLanguages); ?>;
 

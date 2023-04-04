@@ -3,7 +3,9 @@
         <div class="jobPostingCardCompanyLogo">
             <img src="<?= $jobCard->logo_img ?>" alt="">
             <div class="jobPostingCardActions">
-                <button id="addCandidatesBtn">Candidate search</button>
+                <a class="" href="./index.php?action=talentSearch&jobId=<?= $jobCard->jobId ?>">
+                    <button id="addCandidatesBtn">Candidate search</button>
+                </a>
                 <button id="closePositionBtn">Close position</button>
             </div>
         </div>

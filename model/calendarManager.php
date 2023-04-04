@@ -10,7 +10,7 @@ class CalendarManager extends Manager
         $user_id = strip_tags($user_id);
 
         $req = $db->prepare(
-                            'SELECT ua.date, ua.time_start 
+                            'SELECT ua.date, ua.time_start, ua.id
                             FROM user_availability ua
                             WHERE NOT EXISTS
                                 (SELECT user_availability_id FROM reservations r WHERE r.user_availability_id = ua.id )
@@ -86,5 +86,48 @@ class CalendarManager extends Manager
         $query->bindParam('time_php', strip_tags($time), PDO::PARAM_STR);
 
         return $query->execute();
+    }
+
+    public function insertMeeting($uaID, $compID, $jobID) {
+        $db = $this->dbConnect();
+
+        $query = '  INSERT INTO reservations (user_availability_id, company_id, job_id) 
+                    VALUES (:uaID, :compID, :jobID)';
+
+        $query = $db->prepare($query);
+        $query->bindParam('uaID', $uaID, PDO::PARAM_INT);
+        $query->bindParam('compID', $compID, PDO::PARAM_INT);
+        $query->bindParam('jobID', $jobID, PDO::PARAM_INT);
+
+        return $query->execute();
+    }
+
+    public function loadTalentInterviews($id) {
+        $compID = getCompanyID($_SESSION['id']);
+
+        $db = $this->dbConnect();
+
+        $user_id = strip_tags($id);
+
+        $req = $db->prepare(
+                            'SELECT j.title, c.name, ua.date, ua.time_start, r.id
+                            FROM reservations r
+                                INNER JOIN user_availability ua
+                                ON r.user_availability_id = ua.id
+                                INNER JOIN jobs j
+                                ON r.job_id = j.id
+                                INNER JOIN companies c
+                                ON r.company_id = c.id
+                                WHERE c.id = :comp_id
+                                AND ua.user_id = :user_id
+                                ORDER BY ua.date, ua.time_start');
+
+        $req->bindParam('user_id', $id, PDO::PARAM_INT);
+        $req->bindParam('comp_id', $compID, PDO::PARAM_INT);
+        $req->execute();
+
+        $interviews = $req->fetchAll(PDO::FETCH_OBJ);
+
+        return $interviews;
     }
 }

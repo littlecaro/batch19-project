@@ -6,6 +6,8 @@ use JetBrains\PhpStorm\Deprecated;
 function dbConnect()
 {
     try {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
         return new PDO('mysql:host=localhost;dbname=batch19_project;charset=utf8', 'root', '');
     } catch (Exception $e) {
         die('Error : ' . $e->getMessage());
@@ -85,9 +87,8 @@ function searchMessagesGet($term)
     // print_r($chats);
     return $chats;
 }
-function getJobPostings()
+function getJobPostings($user_id)
 {
-    $userId = 4;
 
     $userCompanyQuery = "SELECT
     users.company_id,
@@ -97,7 +98,7 @@ FROM
     companies ON users.company_id = companies.id WHERE users.id = :userId";
     $db = dbConnect();
     $query = $db->prepare($userCompanyQuery);
-    $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $query->bindParam(':userId', $user_id, PDO::PARAM_INT);
     $query->execute();
     $rec = $query->fetchAll(PDO::FETCH_OBJ);
     $companyId = $rec[0]->company_id;
@@ -129,9 +130,9 @@ FROM
     return $listings;
 }
 
-function getJobCard($jobId)
+function getJobCard($jobId, $userId)
 {
-    $userId = 4;
+    // $userId = 4;
     $userCompanyQuery = "SELECT
     users.company_id,
     users.id
@@ -201,8 +202,8 @@ FROM
 
 function setJobStatus($id, $status)
 {
-    echo $id . "is Id";
-    echo $status . "is status";
+    // echo $id . "is Id";
+    // echo $status . "is status";
     $user_id = 4;
     $userCompanyQuery = "SELECT
     users.company_id,
@@ -226,6 +227,7 @@ FROM
 
 function getAllTalents()
 {
+    // echo "allTalents";
     $userId = 1;
     $str = 'SELECT DISTINCT
     users.id
@@ -236,7 +238,7 @@ FROM
     $query->bindParam(':userId', $userId, PDO::PARAM_INT);
     $query->execute();
     $allTalents = $query->fetchAll(PDO::FETCH_OBJ);
-    // print_r($query);
+    // print_r($allTalents);
     return $allTalents;
 }
 
@@ -289,6 +291,21 @@ FROM
     $query->execute();
     $desiredPosition = $query->fetchAll(PDO::FETCH_OBJ);
     return $desiredPosition;
+}
+function getTalentLocation($userId)
+{
+    $str = 'SELECT
+    cities.name as location
+From
+    cities INNER JOIN
+    users ON users.city_id = cities.id
+    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+    $talentlocation = $query->fetchAll(PDO::FETCH_OBJ);
+    return $talentlocation;
 }
 function getTalentYearsExperience($userId)
 {
@@ -343,14 +360,113 @@ FROM
     $talentLanguages = $query->fetchAll(PDO::FETCH_OBJ);
     return $talentLanguages;
 }
-
-function saveTalentFilter($searchData)
+function talentFilterExists($jobId)
 {
     $userId = 1;
-    $str = 'INSERT INTO saved_searches (id,user_id,search_data) VALUES (NULL,:userId, :searchData)';
+    // echo $jobId;
+    $db = dbConnect();
+    $str = 'SELECT * FROM saved_searches WHERE job_id = :jobId AND user_id = :userId';
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
+    $query->execute();
+    $savedSearches = $query->fetchAll(PDO::FETCH_OBJ);
+    // print_r($savedSearches);
+    return $savedSearches;
+}
+function saveTalentFilter($searchData, $jobId)
+{
+    $userId = 1;
+    $str = 'INSERT INTO saved_searches (id,user_id,search_data, job_id) VALUES (NULL,:userId, :searchData,:jobId)';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(":userId", $userId, PDO::PARAM_INT);
     $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
     $query->execute();
+}
+function updateTalentFilter($searchData, $user_id, $jobId)
+{
+    $userId = 1;
+    echo "<br>";
+    echo $searchData;
+    echo "<br>";
+    echo 'jobId:' . $jobId;
+    $str = "UPDATE saved_searches SET search_data = :searchData where (job_id = :jobId AND user_id = :userId)";
+
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":searchData", $searchData, PDO::PARAM_STR);
+    $query->bindParam(":jobId", $jobId, PDO::PARAM_INT);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->execute();
+}
+
+function getCompanyID($userID) {
+    $userCompanyQuery = "SELECT users.company_id, users.id
+                            FROM users 
+                            INNER JOIN companies 
+                            ON users.company_id = companies.id 
+                            WHERE users.id = :userId";
+    $db = dbConnect();
+    $query = $db->prepare($userCompanyQuery);
+    $query->bindParam(':userId', $userID, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetch(PDO::FETCH_OBJ);
+    return $rec->company_id;
+}
+
+function showSkills($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $skillQuer = 'SELECT user_skill_map.skill_id, skills.skills_fixed
+                FROM users 
+                    INNER JOIN user_skill_map 
+                    ON user_skill_map.user_id = users.id 
+                    INNER JOIN skills 
+                    ON user_skill_map.skill_id = skills.id
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($skillQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userSkills = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userSkills;
+}
+
+function showLanguages($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $langQuer = 'SELECT user_language_map.language_id, languages.language
+                FROM users 
+                    INNER JOIN user_language_map 
+                    ON user_language_map.user_id = users.id 
+                    INNER JOIN languages 
+                    ON user_language_map.language_id = languages.id
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($langQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userLangs = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userLangs;
+}
+
+function showJobs($id = null) {
+    if ($id == null) {
+        $id = $_SESSION['id'];
+    }
+    $expQuer = 'SELECT pe.job_title, pe.company_name, pe.years_experience, pe.job_description, pe.city_id
+                FROM users 
+                    INNER JOIN professional_experience pe 
+                    ON pe.user_id = users.id 
+                    WHERE users.id = :userId';
+    $db = dbConnect();
+    $query = $db->prepare($expQuer);
+    $query->bindParam(":userId", $id, PDO::PARAM_INT);
+    $query->execute();
+    $userExp = $query->fetchAll(PDO::FETCH_OBJ);
+    return $userExp;
 }
