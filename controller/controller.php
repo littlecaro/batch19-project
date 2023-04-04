@@ -168,18 +168,18 @@ function userSignIn($email, $pwd)
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['company_id'] = $user->company_id;
 
-        
-        if ($user->company_id != null){
+
+        if ($user->company_id != null) {
             $companyManager = new CompanyManager();
             $companyInfo = $companyManager->fetchCompanyInfo();
-    
+
             $_SESSION['company_id'] = $companyInfo->id;
             $_SESSION["profile_pic"] = $companyInfo->logo_img;
             $_SESSION["company_name"] = $companyInfo->name;
             $_SESSION["company_title"] = $user->user_bio;
             $_SESSION["date_created"] = $companyInfo->date_created;
             header("Location: index.php?action=companyDashboard");
-        } else{
+        } else {
 
             header("Location: index.php?action=userProfileView");
             exit;
@@ -208,19 +208,6 @@ function showUserSignIn()
 {
     require "./view/signInView.php";
 }
-
-
-// function userProfile()
-// {
-//     require "./view/userProfileView.php";
-// }
-
-// function userProfilePage1()
-// {
-//     $userProfileManager = new UserProfileManager();
-//     $user = $userProfileManager->showUserProfileView();
-//     require "./view/userProfilePage1.php";
-// }
 
 function showChats()
 {
@@ -572,7 +559,7 @@ function showUserProfileView()
 {
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
-    $experience = $userManager->getUserExperience($_SESSION['id']);
+    $experiences = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
@@ -583,6 +570,7 @@ function showUserProfileView()
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
+
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
@@ -618,18 +606,43 @@ function updateUserEducation($userId, $degree, $degreeLevel)
     }
 }
 
-function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+function addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId)
 {
-
     $userManager = new UserManager();
-    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
-    echo $wasExperienceUpdated;
-    // if ($wasExperienceUpdated === 1) {
-    //     echo "Successfully Updated";
-    // } else {
-    //     echo "Something went wrong.";
-    // }
+    $newExperienceUpdated = $userManager->addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+    echo $newExperienceUpdated;
+    if ($newExperienceUpdated == 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
 }
+
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id)
+{
+    $userManager = new UserManager();
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
+    echo $wasExperienceUpdated;
+    if ($wasExperienceUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function deleteUserExperience($id)
+{
+    $userManager = new UserManager();
+    $wasExperienceDeleted = $userManager->deleteUserExperience($id);
+    echo $wasExperienceDeleted;
+    if ($wasExperienceDeleted == 1) {
+        // echo $wasExperienceDeleted;
+        echo "Successfully Deleted";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
 function updateUserSkills($skillsString, $userId)
 {
     $userManager = new UserManager();
@@ -846,7 +859,8 @@ function savedSearchExists($jobId)
     }
 }
 
-function showTalentProfileView($id, $jobID = null) {
+function showTalentProfileView($id, $jobID = null)
+{
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
@@ -859,7 +873,8 @@ function showTalentProfileView($id, $jobID = null) {
     require("./view/talentProfileView.php");
 }
 
-function bookInterview($uaID, $id, $jobID) {
+function bookInterview($uaID, $id, $jobID)
+{
     $compID = getCompanyID($id);
     $CalendarManager = new CalendarManager();
     $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
@@ -869,22 +884,24 @@ function bookInterview($uaID, $id, $jobID) {
     header("location: index.php?action=bookedMeetings");
 }
 
-function showBookedMeetings() {
+function showBookedMeetings()
+{
     $companyManager = new CompanyManager();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
     // if (!$bookedMeetings) {
     //     throw new Exception("Unable to fetch booked meetings");
     // } else {
-        require("./view/bookedMeetingsView.php");
+    require("./view/bookedMeetingsView.php");
     // }
 }
 
-function deleteReservation($rID) {
+function deleteReservation($rID)
+{
     if (is_array($rID)) {
         $rIDs = $rID;
         for ($i = 0; $i < count($rIDs); $i++) {
             $rID = strip_tags($rIDs[$i]['rID']);
-    
+
             $companyManager = new CompanyManager();
             $result = $companyManager->cancelMeeting($rID);
         }
@@ -897,14 +914,15 @@ function deleteReservation($rID) {
         $companyManager = new CompanyManager();
         $result = $companyManager->cancelMeeting($rID);
         if (!$result) {
-        throw new Exception("Unable to delete entry");
+            throw new Exception("Unable to delete entry");
         } else {
-        header("location: index.php?action=bookedMeetings");
+            header("location: index.php?action=bookedMeetings");
         }
     }
 }
 
-function deleteRoleMeetings($rJob) {
+function deleteRoleMeetings($rJob)
+{
     $compID = getCompanyID($_SESSION["id"]);
     $companyManager = new CompanyManager();
     $result = $companyManager->cancelRoleMeetings($rJob, $compID);
@@ -915,7 +933,8 @@ function deleteRoleMeetings($rJob) {
     }
 }
 
-function calDateToStr($str) {
+function calDateToStr($str)
+{
     $d = strtotime($str);
     return date("l, M jS", $d);
 }
