@@ -16,12 +16,12 @@ try {
         case "userPhotoUpload":
             echo "<pre>";
             print_r($_FILES);
-            $file = $_FILES['profilePhoto'];
-            uploadUserProfileImage($file);
+            $file = $_FILES['imageUpload'];
+            uploadImage($file);
             break;
         case "userResumeUpload":
-            echo "<pre>";
-            print_r($_FILES);
+            // echo "<pre>";
+            // print_r($_FILES);
             $resume = $_FILES['resume'];
             uploadResume($resume);
             break;
@@ -38,18 +38,6 @@ try {
             break;
         case "userSignInView":
             showUserSignIn();
-            break;
-        case "userSignUp":
-            //make sure data exists
-            $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
-            $lastName = !empty($_POST['lName']) ? $_POST['lName'] : null;
-            $email = !empty($_POST['email']) ? $_POST['email'] : null;
-            $pwd = !empty($_POST['pwd']) ? $_POST['pwd'] : null;
-            $pwd2 = !empty($_POST['pwdconf']) ? $_POST['pwdconf'] : null;
-            if ($firstName and $lastName and $email and $pwd and $pwd2) {
-                //call a controller function
-                userSignUp($firstName, $lastName, $email, $pwd, $pwd2);
-            }
             break;
         case "companySignUp":
             $firstName = !empty($_POST['fName']) ? $_POST['fName'] : null;
@@ -74,7 +62,7 @@ try {
             $pwd = $_POST['pwd'] ?? null;
             if ($email and $pwd) {
                 //call a controller function
-                userSignIn($email, $pwd);
+                userSignIn($_POST['email'], $_POST['pwd']);
             }
             break;
         case "userProfile":
@@ -178,6 +166,19 @@ try {
             }
 
             break;
+        // case "getUserSkills":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserLanguages":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserCities":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -214,7 +215,6 @@ try {
             } else {
                 fetchJobPostings();
             }
-
             break;
         case "savedProfiles":
             $companyManager = new CompanyManager();
@@ -232,13 +232,19 @@ try {
             require("./view/savedProfilesView.php");
             break;
         case "updateUserPersonal":
-
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
-            updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+            $oldImage = $_POST['oldImage'] ?? null;
+            $profilePic = !empty($_FILES['imageUpload']['name']) ? $_FILES['imageUpload'] : null;
+            $file = $_FILES['imageUpload'];
+            // print_r($_FILES['imageUpload']);
+            // uploadUserProfileImage($file);
+
+            updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
+
             // echo $id, $phoneNb, $city, $salary, $visa;
             // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
@@ -248,12 +254,29 @@ try {
             $degreeLevel = $_POST['degreeLevel'] ?? null;
             updateUserEducation($userId, $degree, $degreeLevel);
             break;
-        case "updateUserExperience":
+
+        case "updateUserExperience": //DONE
+            // print_r($_POST);
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;
             $yearsExperience = $_POST['yearsExperience'] ?? null;
             $companyName = $_POST['companyName'] ?? null;
-            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
+            $id = $_POST['jobID'];
+            updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
+            break;
+
+        case "addNewUserExperience":
+            $userId = $_POST['userId'];
+            $jobTitle = $_POST['jobTitle'] ?? null;
+            $yearsExperience = $_POST['yearsExperience'] ?? null;
+            $companyName = $_POST['companyName'] ?? null;
+            addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+            break;
+
+        case "deleteUserExperience":
+            $id = $_POST['jobID'];
+            echo $id;
+            deleteUserExperience($id);
             break;
         case "userProfileSkillsSubmit":
             $userId = $_SESSION['id'] ?? null; //TODO: change this userID

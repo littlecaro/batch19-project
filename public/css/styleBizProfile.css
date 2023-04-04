@@ -13,7 +13,7 @@
 }
 html,
 body {
-  height: 100vh;
+  height: 100%;
 }
 html {
   scroll-behavior: smooth;
@@ -30,7 +30,11 @@ html {
   z-index: 20;
   padding: 2rem;
   background: var(--text-color-primary);
-  background: linear-gradient(29deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
   color: var(--whiteColor);
   position: fixed;
   left: 0;
@@ -60,7 +64,9 @@ html {
 }
 
 .profile-img {
-  max-width: 150px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
 
 .profile-name p,
@@ -104,32 +110,29 @@ h4 {
 
 .bizProfile {
   margin-left: 300px;
-  width: calc(100vw - 268px);
-  height: 100%;
+  width: calc(98% - 300px);
 }
 
-.userProfile .main {
+.main {
   /* height: auto;
   min-width: 500px;
   padding: 40px 20px; current changes */
-  height: 86%;
   /* min-width: 65%; */
-  /* padding: 40px 20px; */
+  padding: 40px 20px;
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
+  left: -1.5rem;
   text-align: center;
   /* margin-bottom: 30px; current changes */
   position: relative;
   /* padding-left: 300px; */
-  margin-bottom: 70px;
-  display: flex;
-  width: calc(100vw - 286px);
+  padding-bottom: 40px;
+  /* display: flex; */
+  width: 100%;
   flex-direction: column;
   align-items: center;
-  margin-left: 278px;
 }
-
 .main #personal {
   height: 80vh;
 }
@@ -159,12 +162,19 @@ h4 {
 body {
   background-color: white;
   background-size: cover;
+  margin: 0;
   margin-top: 80px;
+  overflow-x: hidden;
+  /* overflow: hidden; */
 }
 
 .biz {
   background: var(--text-color-primary);
-  background: linear-gradient(330deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    330deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
 }
 
 .header {
@@ -177,8 +187,23 @@ body {
   width: 100%;
   height: 80px;
   background: var(--header-color-primary);
-  background: linear-gradient(29deg, var(--header-color-primary), rgba(40, 34, 93, 1) 27%, rgba(101, 90, 223, 1) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--header-color-primary),
+    rgba(40, 34, 93, 1) 27%,
+    rgba(101, 90, 223, 1) 100%
+  );
   z-index: 2;
+}
+
+#photoUploadClick {
+  border-radius: 50%;
+  padding: 0;
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  outline: none;
+  overflow: hidden;
 }
 
 .logo {
@@ -362,7 +387,8 @@ button:hover {
 }
 
 h1 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 36px;
   font-weight: medium;
   color: #ffffff;
@@ -371,7 +397,8 @@ h1 {
 }
 
 h2 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 30px;
   font-weight: medium;
   color: var(--header-color-primary);
@@ -395,9 +422,9 @@ h4 {
 }
 
 #table {
-  width: 500px;
   margin: auto;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 #table th {
@@ -405,6 +432,7 @@ h4 {
   width: 30%;
   vertical-align: middle;
   padding: 8px;
+  font-size: 14px;
 }
 
 #table td {
@@ -428,7 +456,8 @@ h4 {
 }
 
 .footer p {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
@@ -516,8 +545,8 @@ input[type="checkbox"] {
 .noUi-tooltip {
   font-size: 10px;
 }
-.addaJobBtn {
-}
+/* .addaJobBtn {
+} */
 /* Styles for job listing cards*/
 .jobListingWrapper {
   display: flex;
@@ -593,7 +622,8 @@ input[type="checkbox"] {
   margin: auto;
 }
 .jobPostingTitle {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 2rem;
   font-weight: medium;
   color: black;
@@ -609,10 +639,10 @@ input[type="checkbox"] {
 .jobPostingCardFull {
   text-align: left;
 }
-.aboutTheCompany {
-  /* display: flex; */
-  /* flex-direction: column; */
-}
+/* .aboutTheCompany { */
+/* display: flex; */
+/* flex-direction: column; */
+/* } */
 .aboutTheCompany img {
   height: 50px;
 }
@@ -653,10 +683,14 @@ input[type="checkbox"] {
   opacity: 1;
 }
 
+#logoUpload {
+  padding-top: 10px;
+}
 .talentSearchMain form,
 .talentSearchMain button {
   all: unset;
   cursor: pointer;
+  width: 40vw;
 }
 
 #landing {
@@ -738,7 +772,8 @@ input[type="checkbox"] {
   color: var(--header-color-primary);
   font-weight: 100;
   font-size: 1.5em;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
   text-shadow: none;
   width: max-content;
@@ -817,6 +852,14 @@ input[type="checkbox"] {
   border-radius: 5px;
   overflow: hidden;
   text-align: center;
+}
+
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
 }
 
 .landingCalCard > .timeMid {
@@ -914,4 +957,25 @@ input[type="checkbox"] {
   padding: 0.5em;
   border-radius: 5px;
   cursor: pointer;
+}
+
+#talentHead {
+  all: unset;
+  display: flex;
+  gap: 1em;
+  margin-top: 1vh;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#talentHead a {
+  all: unset;
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1vh;
+  cursor: pointer;
+  color: white;
 }

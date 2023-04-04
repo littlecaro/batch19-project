@@ -99,7 +99,7 @@ ob_start();
 <div class="footer">
   <div class="links">
     <div class="one">
-      <h4>Waygookin</h4>
+      <h4>Waygukwin</h4>
       <p>
         <img src="./public/images/footer/placeholder.png" width="15px" />
         1101-ho | IS Biz Tower 2, Room 1101, 23, Seonyu-ro 49-gil,
@@ -111,13 +111,13 @@ ob_start();
       </p>
       <p>
         <img src="./public/images/footer/contract.png" width="15px" />
-        <a href="mailto:waygookin@wcoding.com">waygookin@wcoding.com</a>
+        <a href="mailto:waygukwin@wcoding.com">waygukwin@wcoding.com</a>
       </p>
     </div>
     <div class="two">
       <h4>About Us</h4>
       <p>
-        Waygookin is a job networking platform for businesses and
+        Waygukwin is a job networking platform for businesses and
         individuals located in Korea.
       </p>
       <br><br>

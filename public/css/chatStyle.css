@@ -26,7 +26,7 @@ html[data-theme="dark   "] {
   background-color: transparent;
   height: 47px;
   bottom: 0;
-  position: sticky;
+  position: fixed;
   align-items: flex-end;
   display: flex;
   justify-content: flex-end;

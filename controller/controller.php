@@ -81,11 +81,13 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
         //if data good, insert into database w model function
         $userManager = new UserManager();
         $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
+
         if ($user) {
             //create a session for when the user is logged in
             $_SESSION['id'] = $user->user_id;
             $_SESSION['first_name'] = $user->first_name;
             $_SESSION['last_name'] = $user->last_name;
+            header("Location: index.php?action=userProfileView");
             print_r($_SESSION);
         } else {
             echo "Something went wrong.";
@@ -109,8 +111,8 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
 
 function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName, $companyTitle)
 {
-    $firstNameValid = preg_match("/^[a-z]+$/i", $firstName);
-    $lastNameValid = preg_match("/^[a-z]+$/i", $lastName);
+    $firstNameValid = preg_match("/^[a-zA-Z]+$/i", $firstName);
+    $lastNameValid = preg_match("/^[a-zA-Z]+$/i", $lastName);
     $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
 
@@ -138,6 +140,7 @@ function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName,
             $_SESSION['last_name'] = $user->last_name;
             $_SESSION['company_id'] = $user->company_id;
             print_r($_SESSION);
+            header("Location: index.php?action=companyDashboard");
         } else {
             echo "Something went wrong.";
         }
@@ -157,25 +160,29 @@ function userSignIn($email, $pwd)
 
     //verify the password and then start a session
     if ($user and password_verify($pwd, $user->password)) {
-        $_SESSION['email'] = $email;
+        // session_start();
+        $_SESSION['email'] = $user->email;
         $_SESSION['id'] = $user->id;
         $_SESSION['first_name'] = $user->first_name;
         $_SESSION['last_name'] = $user->last_name;
         $_SESSION['company_id'] = $user->company_id;
-        $companyManager = new CompanyManager();
-        $companyInfo = $companyManager->fetchCompanyInfo();
-        echo $user->company_id;
-        $_SESSION['company_id'] = $companyInfo->id;
-        $_SESSION["profile_pic"] = $companyInfo->logo_img;
-        $_SESSION["company_name"] = $companyInfo->name;
-        $_SESSION["company_title"] = $user->user_bio;
-        $_SESSION["date_created"] = $companyInfo->date_created;
-        if ($_SESSION["company_id"] != null) {
+
+
+        if ($user->company_id != null) {
+            $companyManager = new CompanyManager();
+            $companyInfo = $companyManager->fetchCompanyInfo();
+
+            $_SESSION['company_id'] = $companyInfo->id;
+            $_SESSION["profile_pic"] = $companyInfo->logo_img;
+            $_SESSION["company_name"] = $companyInfo->name;
+            $_SESSION["company_title"] = $user->user_bio;
+            $_SESSION["date_created"] = $companyInfo->date_created;
             header("Location: index.php?action=companyDashboard");
         } else {
+
             header("Location: index.php?action=userProfileView");
+            exit;
         }
-        exit;
     } else {
         throw new Exception("Invalid Information");
     }
@@ -183,10 +190,9 @@ function userSignIn($email, $pwd)
     $user = $userManager->signInUser($email, $pwd);
 
     if (!$user) {
-        throw new Exception("Invalid Information");
+        throw new Exception("Invalid Info");
     } else {
         //if data good, allow sign in
-
         header("index.php"); //TODO: change header location
         exit;
     }
@@ -201,19 +207,6 @@ function showUserSignIn()
 {
     require "./view/signInView.php";
 }
-
-
-// function userProfile()
-// {
-//     require "./view/userProfileView.php";
-// }
-
-// function userProfilePage1()
-// {
-//     $userProfileManager = new UserProfileManager();
-//     $user = $userProfileManager->showUserProfileView();
-//     require "./view/userProfilePage1.php";
-// }
 
 function showChats()
 {
@@ -322,7 +315,7 @@ function showTalents($filter, $saveData)
             // print_r($talentLocation);
             if ($filter) {
                 // ob_start();
-                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0], $saveData);
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1 ?? null, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0] ?? null, $saveData);
 
                 include('./view/components/talentCard.php'); //TODO:Limit talent cards
                 $talentCard = ob_get_contents();
@@ -531,9 +524,11 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
         $ratings = array();
         foreach ($filteredHighestDegrees as $key => $value) {
             foreach ($highestDegree as $twoKey => $twoValue) {
-                $sim = similar_text($value, $twoValue->highestDegree, $perc);
-                if ($perc > 50) {
-                    array_push($ratings, $perc / 100);
+                if (!empty($twoValue->highestDegree)) {
+                    $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                    if ($perc > 50) {
+                        array_push($ratings, $perc / 100);
+                    }
                 }
             }
         }
@@ -576,7 +571,7 @@ function showUserProfileView()
 
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
-    $experience = $userManager->getUserExperience($_SESSION['id']);
+    $experiences = $userManager->getUserExperience($_SESSION['id']);
     $education = $userManager->getUserEducation($_SESSION['id']);
     $skills = $userManager->getUserSkills($_SESSION['id']);
     $cityName = $userManager->getCityName($user->city_id);
@@ -594,15 +589,21 @@ function showUserProfileView()
     if (isset($user->profile_picture)) {
         $profileImg = $user->profile_picture;
     }
+
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
 }
 
 
-function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)
+function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
     $userManager = new UserManager();
-    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa);
+    if ($profilePic) {
+        $profilePic = uploadImage($profilePic);
+    } else {
+        $profilePic = $oldImage;
+    }
+    $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
         echo "Successfully Updated";
@@ -624,18 +625,43 @@ function updateUserEducation($userId, $degree, $degreeLevel)
     }
 }
 
-function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId)
+function addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId)
 {
-
     $userManager = new UserManager();
-    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId);
-    echo $wasExperienceUpdated;
-    // if ($wasExperienceUpdated === 1) {
-    //     echo "Successfully Updated";
-    // } else {
-    //     echo "Something went wrong.";
-    // }
+    $newExperienceUpdated = $userManager->addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
+    echo $newExperienceUpdated;
+    if ($newExperienceUpdated == 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
 }
+
+function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id)
+{
+    $userManager = new UserManager();
+    $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
+    echo $wasExperienceUpdated;
+    if ($wasExperienceUpdated === 1) {
+        echo "Successfully Updated";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
+function deleteUserExperience($id)
+{
+    $userManager = new UserManager();
+    $wasExperienceDeleted = $userManager->deleteUserExperience($id);
+    echo $wasExperienceDeleted;
+    if ($wasExperienceDeleted == 1) {
+        // echo $wasExperienceDeleted;
+        echo "Successfully Deleted";
+    } else {
+        echo "Something went wrong.";
+    }
+}
+
 function updateUserSkills($skillsString, $userId)
 {
     $userManager = new UserManager();
@@ -832,29 +858,28 @@ function updateJobStatus($id, $status)
     setJobStatus($id, $status);
 }
 
-function uploadUserProfileImage($file)
-{
-    // md5 is considered insecure so generally we don't use it except for files
-    $hash = hash_file("md5", $file["tmp_name"]);
-    echo $hash;
-    $first = substr($hash, 0, 2);
-    $second = substr($hash, 2, 2);
+// function uploadUserProfileImage($file)
+// {
+//     // md5 is considered insecure so generally we don't use it except for files
+//     $hash = hash_file("md5", $file["tmp_name"]);
+//     echo $hash;
+//     $first = substr($hash, 0, 2);
+//     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
+//     mkdir("./public/images/uploaded/$first/$second", 0777, true);
 
-    // allow read & write permissions for everyone
-    chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+//     // allow read & write permissions for everyone
+//     chmod("./public/images/uploaded/$first", 0777);
+//     chmod("./public/images/uploaded/$first/$second", 0777);
 
-    $type = explode(".", $file['name'])[1];
-    $filename = substr($hash, 4) . "." . $type;
-    $newPath = "./public/images/uploaded/$first/$second/$filename";
-    move_uploaded_file($file["tmp_name"], $newPath);
+//     $type = explode(".", $file['name'])[1];
+//     $filename = substr($hash, 4) . "." . $type;
+//     $newPath = "./public/images/uploaded/$first/$second/$filename";
+//     move_uploaded_file($file["tmp_name"], $newPath);
+//     chmod($newPath, 0777);
 
-    chmod($newPath, 0777);
-
-    return $newPath;
-}
+//     return $newPath;
+// }
 function uploadResume($resume)
 {
     $hash = hash_file("md5", $resume["tmp_name"]);
@@ -868,14 +893,17 @@ function uploadResume($resume)
 
     $type = explode(".", $resume['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newResumeLivingPlace = "./public/images/uploaded/$first/$second/$filename";
+    $newResumeLivingPlace = "./public/images/resume/$first/$second/$filename";
     move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
     chmod($newResumeLivingPlace, 0777);
 
     $userManager = new UserManager();
-    $newResumeLivingPlace = $userManager->uploadUserResume($resume);
-    header("Location:index.php?action=userProfile");
+    $newResumeLivingPlace = $userManager->uploadUserResume($newResumeLivingPlace);
+    header("Location:index.php?action=userProfileView");
 }
+
+
+// }
 function savedSearchExists($jobId)
 {
 
@@ -899,6 +927,17 @@ function showTalentProfileView($id, $jobID = null)
     $languages = showLanguages($id);
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($id);
+    $interviews = $calendarManager->loadTalentInterviews($id);
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
+
     require("./view/talentProfileView.php");
 }
 

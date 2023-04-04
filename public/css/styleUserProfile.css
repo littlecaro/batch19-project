@@ -26,6 +26,7 @@ html {
   flex-direction: column;
   align-items: center;
   /* justify-content: space-between; */
+  z-index: 20;
   padding: 2rem;
   background: var(--text-color-primary);
   background: linear-gradient(
@@ -36,7 +37,9 @@ html {
   color: var(--whiteColor);
   position: fixed;
   left: 0;
+  top: 80px;
 }
+
 .sidebar .logo a {
   display: flex;
   align-items: center;
@@ -49,19 +52,27 @@ html {
 }
 
 .profile {
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 1rem;
   background-color: var(--whiteColor);
   color: var(--fontColor);
   border: none;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin: 5vh 0 5vh 0;
+  margin: 0 0 5vh 0;
   text-align: center;
   width: 175px;
   height: 200px;
 }
 
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
 #profilePhoto {
   display: none;
 }
@@ -79,12 +90,16 @@ html {
   height: 30px;
 }
 .profile-name p,
-h4 {
-  line-height: 0.3em;
+.profile-name h4 {
+  /* line-height: 0.3em; */
+  padding: 0;
+  margin: 0;
 }
 
 .profile-name {
   font-size: 15px;
+  padding: 0;
+  margin: 0;
 }
 
 .menus {
@@ -121,15 +136,19 @@ h4 {
 }
 
 .main {
-  height: auto;
+  width: calc(100% - 300px);
   min-width: 65%;
-  padding: 40px 20px;
+  /* padding: 40px 20px; */
   background-color: var(--whiteColor);
   z-index: inherit;
   border-radius: 5px;
+  left: -1.5rem;
   text-align: center;
-  margin-bottom: 70px;
+  position: relative;
   margin-left: 300px;
+  margin-bottom: 70px;
+  flex-direction: column;
+  align-items: center;
 }
 .main #personal {
   height: 80vh;
@@ -265,6 +284,13 @@ input {
   border: gray solid 1px;
 }
 
+input[type="radio"] {
+  height: initial;
+  width: initial;
+  /* margin-right: px; */
+  border: none;
+}
+
 textarea {
   border-radius: 10px;
   padding: 10px;
@@ -282,6 +308,7 @@ button {
 
 button:hover {
   background-color: var(--secondaryColor); /* Green */
+  cursor: pointer;
 }
 
 .button {
@@ -289,6 +316,7 @@ button:hover {
   border: 0;
   height: 30px;
   color: white;
+  font-weight: bold;
 }
 
 #boxbiz {
@@ -397,21 +425,22 @@ h4 {
   font-size: 16px;
 }
 
-#table {
-  width: 500px;
+#userTable {
+  width: 600px;
   margin: auto;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-#table th {
+#userTable th {
   text-align: end;
   width: 30%;
   vertical-align: middle;
   padding: 8px;
+  cursor: auto;
 }
 
-#table td {
+#userTable td {
   padding: 8px;
   vertical-align: middle;
   height: 30px;
@@ -506,7 +535,7 @@ input[type="checkbox"] {
   justify-content: center;
 }
 
-#table #jobdescription {
+#jobdescription {
   vertical-align: top;
 }
 
@@ -516,6 +545,10 @@ input[type="checkbox"] {
 
 #salary {
   height: 90px;
+}
+
+.salaryslider {
+  width: 304px;
 }
 
 .noUi-tooltip {
@@ -650,6 +683,15 @@ input[type="checkbox"] {
   margin: 0;
 }
 
+.usertable td {
+  border: none;
+  color: black;
+  cursor: auto;
+}
+
+.usertable .selected {
+  background-color: none;
+}
 .landingSkills > div {
   display: flex;
   gap: 1em;
@@ -675,10 +717,18 @@ input[type="checkbox"] {
 }
 
 .landingCalCard {
-  width: 18vh;
+  width: 20vh;
   border-radius: 5px;
   overflow: hidden;
   text-align: center;
+}
+
+.landingInt {
+  width: fit-content;
+}
+
+.landingInt > .landingCalTime {
+  padding: 1vh;
 }
 
 .landingCalCard > .timeMid {

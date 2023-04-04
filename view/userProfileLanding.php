@@ -13,7 +13,7 @@
             <?php if(!empty($education)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Please click to fill in your first entry.";
                     } ?>
         </div>
     </button>
@@ -23,11 +23,11 @@
         <div class="landingExperience">
             <?php 
                     $profExps = showJobs();
-                    if(!empty($experience)){
+                    if(!empty($profExps)){
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "Please click to fill in your first entry";
+                        echo "Please click to fill in your first entry.";
                     } ?>
         </div>
     </button>
@@ -47,7 +47,7 @@
                             </div>
                             <?php
                         } else {
-                            echo "Please click to fill in your first entry";
+                            echo "No technical skills uploaded.<br>";
                         }
                             
                         $languages = showLanguages();
@@ -62,7 +62,7 @@
                             </div>
                             <?php
                         } else {
-                            echo "Please click to fill in your first entry";
+                            echo "<br>No languages uploaded.";
                         }
                         ?>
         </div>
@@ -79,7 +79,24 @@
                     include("./view/components/landingCalendarCard.php");
                 } 
             } else {
-                echo "Please click to fill in your first entry";
+                echo "Please click to fill in your first entry.";
+            }
+            ?>
+        </div>
+    </button>
+
+    <h1><i class="fa-solid fa-handshake-simple"></i>Interviews</h1>
+    <button class="landingBtn" onclick="showCalendarPage()">
+        <div class="landingAvail">
+            <?php
+            $receives = $calendarManager->loadInterviews($_SESSION['id']);
+
+            if (!empty($receives)) {
+                for ($i = 0; $i < count($receives); $i++) {
+                    include("./view/components/landingInterviewCard.php");
+                } 
+            } else {
+                echo "No interviews scheduled.";
             }
             ?>
         </div>

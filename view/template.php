@@ -16,7 +16,9 @@ $_SESSION["userId"] = 1; ?>
 </head>
 
 <body>
+    <?php require("./view/components/header.php"); ?>
     <?= $content; ?>
+    <?php require("./view/components/footer.php"); ?>
 </body>
 
 </html>
