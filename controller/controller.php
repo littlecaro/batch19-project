@@ -816,64 +816,20 @@ function uploadResume($resume)
     $first = substr($hash, 0, 2);
     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
-    // chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+    mkdir("./public/images/resume/$first/$second", 0777, true);
+    chmod("./public/images/resume/$first", 0777);
+    chmod("./public/images/resume/$first/$second", 0777);
 
     $type = explode(".", $resume['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newResumeLivingPlace = "http://localhost/sites/batch19-project/public/images/uploaded/$first/$second/$filename";
+    $newResumeLivingPlace = "./public/images/resume/$first/$second/$filename";
     move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
     chmod($newResumeLivingPlace, 0777);
 
-    $UserManager = New UserManager();
-    $result = $UserManager->uploadUserResume($newResumeLivingPlace);
-
-
-
-    // if(isset($_GET['path']))
-    // {
-    // //Read the url
-    // $resume = $_GET['path'];
-    
-    // //Clear the cache
-    // clearstatcache();
-    
-    // //Check the file path exists or not
-    // if(file_exists($resume)) {
-    
-    // //Define header information
-    // header('Content-Description: File Transfer');
-    // header('Content-Type: application/octet-stream');
-    // header('Content-Disposition: attachment; filename="'.basename($resume).'"');
-    // header('Content-Length: ' . filesize($resume));
-    // header('Pragma: public');
-    
-    // //Clear system output buffer
-    // flush();
-    
-    // //Read the size of the file
-    // readfile($resume,true);
-    
-    // //Terminate from the script
-    // die();
-    // }
-    // else{
-    // echo "File path does not exist.";
-    // }
-    // }
-    // echo "File path is not defined.";
-     
-    // return $newResumeLivingPlace;
-
-    // $userManager = new UserManager();
-    // $newResumeLivingPlace = $userManager->uploadUserResume($resume);
-    // header("Location:index.php?action=userProfile");
-
-        // $files = scandir("./public/images/uploaded");
-
-        // header("location: index.php?action=userProfileView");
-    }
+    $userManager = new UserManager();
+    $newResumeLivingPlace = $userManager->uploadUserResume($newResumeLivingPlace);
+    header("Location:index.php?action=userProfileView");
+}
 
 
 // }

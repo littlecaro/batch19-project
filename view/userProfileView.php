@@ -37,6 +37,8 @@ ob_start();
             <h4>Elon Musk</h4>
             <p>Space</p>
         </div> -->
+        <button onclick="myFunction('resume')"><i class="fa-solid fa-magnifying-glass"></i>Resume/CV</button>
+
         <button onclick="myFunction('education')"><i class="fa-solid fa-chart-simple"></i>Education</button>
 
         <button onclick="myFunction('experience')"><i class="fa-solid fa-chart-simple"></i>Experience</button>
@@ -57,6 +59,20 @@ ob_start();
     </section>
     <section id="personal" class="hidden">
         <?php include('./view/userProfilePersonal.php') ?>
+    </section>
+
+    <section id="resume" class="hidden">
+        <div id="resume">
+            <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
+                <p>
+                <h2>Resume/CV</h2>
+                <input type="file" name="resume" id="resume" accept=".pdf" />
+                </p>
+                <p>
+                    <input id="submitResume" type="submit" value="Save" />
+                </p>
+            </form>
+        </div>
     </section>
 
     <section id="education" class="hidden">
