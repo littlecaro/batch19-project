@@ -227,10 +227,9 @@ FROM
     $query->execute();
 }
 
-function getAllTalents()
+function getAllTalents($userId)
 {
     // echo "allTalents";
-    $userId = 1;
     $str = 'SELECT DISTINCT
     users.id
 FROM
@@ -484,4 +483,16 @@ function messageRead($conversationId)
     $query = $db->prepare($expQuer);
     $query->bindParam(":conversationId", $conversationId, PDO::PARAM_INT);
     $query->execute();
+}
+
+function fetchConversationId($companyId, $userId)
+{
+    $str = 'SELECT DISTINCT conversation_id FROM messages WHERE (sender_id = :companyId AND recipient_id = :userId) OR (recipient_id = :companyId AND sender_id= :userId);';
+    $db = dbConnect();
+    $query = $db->prepare($str);
+    $query->bindParam(":userId", $userId, PDO::PARAM_INT);
+    $query->bindParam(":companyId", $companyId, PDO::PARAM_INT);
+    $query->execute();
+    $rec = $query->fetch(PDO::FETCH_OBJ);
+    return $rec->conversation_id;
 }

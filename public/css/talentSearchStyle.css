@@ -291,3 +291,6 @@ label[for="slider"] {
 .userProfile {
   height: 100%;
 }
+progress {
+  accent-color: darkgreen;
+}
