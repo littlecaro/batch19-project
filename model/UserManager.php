@@ -37,17 +37,20 @@ class UserManager extends Manager
         $db = $this->dbConnect();
         //hash pw
 
+        $defaultProfilePic = "./public/images/uploaded/tom.jpg";
+
         $pwdHash = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
 
         //insert into db
-        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type)
-        VALUES (:firstName, :lastName, :pwdHash, :email, 0)";
+        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, profile_picture, login_type)
+        VALUES (:firstName, :lastName, :pwdHash, :email, :inProfile_picture, 0)";
         // 0 is for email login
         $req = $db->prepare($preparedinsertSql);
         $req->bindParam('firstName', $firstName, PDO::PARAM_STR);
         $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
         $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
         $req->bindParam('email', $email, PDO::PARAM_STR);
+        $req->bindParam('inProfile_picture', $defaultProfilePic, PDO::PARAM_STR);
         $wasAdded = $req->execute();
         $req->closeCursor();
         //if a user was added, we'll fetch this info and run one more query

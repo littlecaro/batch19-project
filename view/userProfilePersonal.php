@@ -184,7 +184,7 @@
     </script>
     <script defer src="./public/js/updateUserPersonal.js"></script>
     <input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
-    <input type="submit" value="Save" class="button">
+    <input onclick="location.reload()" type="submit" value="Save" class="button">
 
 </form>
 <br>

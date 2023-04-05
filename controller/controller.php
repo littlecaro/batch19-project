@@ -927,7 +927,7 @@ function savedSearchExists($jobId)
 function showTalentProfileView($id, $jobID = null)
 {
     $userManager = new UserManager();
-    $user = $userManager->getUserProfile($id);
+    $talent = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
     $profExps = showJobs($id);
     $skills = showSkills($id);

@@ -8,14 +8,17 @@
                     }; ?></h1>
         <p><b>Email:</b> <?= "$user->email"; ?></p>
         <p><b>Phone number:</b> <?= "$user->phone_number"; ?></p>
-        <p><b>Current location:</b> <?php if(!empty($user->city)) {
+        <p><b>Current location:</b> <?php if(!empty($user->city_id)) {
                                             echo "{$userManager->getCityName($user->city_id)[0]->name}";
                                             }  ?></p>
-        <p><b>Uploaded resume: <?php 
+        <p class="resume"><b>Uploaded resume:</b> <?php 
                                     if (!empty($user->resume_file_url)) {
                                         ?>
-                                            <a href="<?=$user->resume_file_url?>">Click link to open in new window.</a> 
-                                        <?php } ?></b></p>
+                                            <a class="resume resumeU resumeV" onclick="event.stopPropagation()" href="<?=$user->resume_file_url?>" target="_blank" rel="noopener noreferrer">View your resume</a> 
+                                        <?php } ?> <span class="resumeU" id="resumeUpload">Upload new resume</span></p>
+
+
+                                        
         <p><b>Expected salary (KRW):</b> <?= $user->desired_salary; ?></p>
         <p><b>Need visa sponsorship:</b> <?php 
                                         if ($user->visa_sponsorship == 1) 
@@ -29,3 +32,11 @@
                                         ?></p>
     </div>      
 </div>
+
+<script>
+    const resumeUpload = document.querySelector("#resumeUpload");
+    resumeUpload.addEventListener("click", (e) => {
+        event.stopPropagation();
+        myFunction('resume');
+    });
+</script>
