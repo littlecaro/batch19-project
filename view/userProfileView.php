@@ -1,11 +1,15 @@
 <?php
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
 $title = "userProfile";
 ob_start();
 ?>
 
 <div class="sidebar">
     <button class="profile" onclick="myFunction('landing')">
-        <img class="profile-img" src="<?= htmlspecialchars($user->profile_picture) ?? "./public/images/default.svg" ?>" alt="Elon Musk's photo looking head to left"><br>
+        <img class="profile-img" src="<?= !empty($user->profile_picture) ? htmlspecialchars($user->profile_picture) : './public/images/uploaded/tom.jpg'; ?>" alt="User profile picture"><br>
         <div class="profile-name">
             <h4><?= $user->first_name . " " . htmlspecialchars($user->last_name)  ?? "Your name" ?></h4>
             <p>Member since <?= $user->date_created ?? "YYYY-MM-DD" ?></p>

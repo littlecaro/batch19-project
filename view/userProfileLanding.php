@@ -1,3 +1,11 @@
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <div class="landingContainer">
     <h1><i class="fa-solid fa-house"></i>Personal info</h1>
     <button class="landingBtn" onclick="myFunction('personal')">
