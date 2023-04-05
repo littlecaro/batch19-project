@@ -21,6 +21,8 @@
   /* padding-left: 20rem; */
   /* padding-right: 20rem; */
   background-color: var(--greyColor);
+  margin-left: 300px;
+  width: calc(98% - 300px);
 }
 .talentCenter {
   display: flex;
@@ -38,7 +40,7 @@
 .talentCard {
   background-color: white;
   height: fit-content;
-  width: 90%;
+  /* width: 90%; */
   margin: 2rem;
   padding: 2rem;
   border-radius: 6px;
@@ -290,4 +292,12 @@ label[for="slider"] {
 }
 .userProfile {
   height: 100%;
+}
+progress {
+  accent-color: darkgreen;
+}
+.talentSearchBtns,
+.searchTags,
+.talentSearchTitle {
+  margin-left: 300px;
 }

@@ -23,7 +23,7 @@ exit;
         <option value="5" <?= $education->degree_level === 5 ? "selected" : "" ?>>PhD</option>
     </select><br /><br />
     <label for="major">Subject of study</label>
-    <input type="text" name="major" id="major" value="<?= $education->degree; ?>"><br /><br />
+    <input type="text" name="major" id="major" value="<?= htmlspecialchars($education->degree ?? ""); ?>"><br /><br />
 
     <input id="userIdEducation" type="hidden" name="userId" value="<?= $_SESSION['id']; ?>">
     <input type="submit" value="Save">

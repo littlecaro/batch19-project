@@ -8,6 +8,12 @@ exit;
 ?>
 <h2>Experience</h2>
 <style>
+    /* #experience {
+        display: flex;
+    }
+
+    .experienceContainer {} */
+
     dialog {
         padding: 0;
     }
@@ -20,7 +26,6 @@ exit;
     #experienceForm {
         padding: 30px;
     }
-
 
     .userExperienceInfo {
         display: flex;
@@ -95,10 +100,34 @@ value="<?= $experience->job_title; ?>"><br /><br />
 value="<?= $experience->years_experience; ?>"><br /><br />
 value="<?= $_SESSION['id']; ?>"> -->
 
+<script defer src="./public/js/addNewUserExperience.js"></script>
+<!-- <script defer src="./public/js/deleteUserExperience.js"></script> -->
+<script>
+    const modalAdd = document.querySelector("#addExperience")
+
+    document.querySelector("#newExpBtn").addEventListener("click", () => {
+        modalAdd.showModal();
+    });
+
+    const closeBtns = document.getElementsByClassName("closeNewExpBtn");
+
+    for (btn of closeBtns) {
+        btn.addEventListener("click", () => {
+            modalAdd.close();
+        })
+    }
+
+    modalAdd.addEventListener("click", function(e) {
+        if (event.target === modalAdd) {
+            modalAdd.close();
+        }
+    })
+</script>
+
 <script defer src="./public/js/updateUserExperience.js"></script>
 <script>
     // const modalEdit = document.querySelector("dialog");
-    const editBtns = document.querySelectorAll(".editUserExperience"); //button for edit for opening the dialog(modal)
+    const editBtns = document.querySelectorAll(".editUserExperience"); // edit button on the  for opening the dialog(modal)
 
     for (editBtn of editBtns) {
         editBtn.addEventListener("click", (e) => {
@@ -152,28 +181,4 @@ value="<?= $_SESSION['id']; ?>"> -->
             xhr.send(formData);
         })
     }
-</script>
-
-<script defer src="./public/js/addNewUserExperience.js"></script>
-<!-- <script defer src="./public/js/deleteUserExperience.js"></script> -->
-<script>
-    const modalAdd = document.querySelector("#addExperience")
-
-    document.querySelector("#newExpBtn").addEventListener("click", () => {
-        modalAdd.showModal();
-    });
-
-    const closeBtns = document.getElementsByClassName("closeNewExpBtn");
-
-    for (btn of closeBtns) {
-        btn.addEventListener("click", () => {
-            modalAdd.close();
-        })
-    }
-
-    modalAdd.addEventListener("click", function(e) {
-        if (event.target === modalAdd) {
-            modalAdd.close();
-        }
-    })
 </script>
