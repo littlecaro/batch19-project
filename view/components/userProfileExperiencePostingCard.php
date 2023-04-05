@@ -1,7 +1,7 @@
 <div class="userExperienceInfo">
     <p class="userExperienceCard">Company: <?= $experience->company_name ?></p><br>
-    <p>Job Title: <?= $experience->job_title ?></p><br>
-    <p>Years of experience: <?= $experience->years_experience ?> year(s)</p><br>
+    <p>Job Title: <?= htmlspecialchars($experience->job_title ?? "") ?></p><br>
+    <p>Years of experience: <?= htmlspecialchars($experience->years_experience ?? "") ?> year(s)</p><br>
     <button class="editUserExperience" id="editExpButton<?= $experience->id ?>">Edit</button>
 </div>
 
@@ -14,21 +14,21 @@
 
             <label for="company">Company Name</label>
             <input type="text" name="companyName" class="companyName" value="<?php if (isset($experience->company_name)) {
-                                                                                    echo $experience->company_name;
+                                                                                    echo htmlspecialchars($experience->company_name);
                                                                                 } else {
                                                                                 }
                                                                                 ?>" /><br /><br />
 
             <label for="jobTitle">Job Title</label>
             <input type="text" name="jobTitleUpdate" class="jobTitle" value="<?php if (isset($experience->job_title)) {
-                                                                                    echo $experience->job_title;
+                                                                                    echo htmlspecialchars($experience->job_title ?? "");
                                                                                 } else {
                                                                                 }
                                                                                 ?>"><br /><br />
 
             <label for="yearsExperience">Years Experience</label>
             <input type="number" name="yearsExperience" class="yearsExperience" min="1" max="40" value="<?php if (isset($experience->years_experience)) {
-                                                                                                            echo $experience->years_experience;
+                                                                                                            echo htmlspecialchars($experience->years_experience ?? "");
                                                                                                         } else {
                                                                                                         }
                                                                                                         ?>"><br /><br />
