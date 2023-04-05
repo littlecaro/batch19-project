@@ -420,4 +420,37 @@ class UserManager extends Manager
             return true;
         }
     }
+    public function getMessengerCounterPartInfo($conversationId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT DISTINCT sender_id, recipient_id FROM messages WHERE conversation_id=:conversationId");
+        $req->bindParam('conversationId', $conversationId, PDO::PARAM_INT);
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_OBJ);
+        $recipientId = $res[0]->recipient_id;
+        $senderId = $res[0]->sender_id;
+        $req = $db->prepare("SELECT
+    users.first_name,
+    users.last_name,
+    users.user_bio,
+    users.email,
+    users.phone_number,
+    users.profile_picture,
+    companies.name,
+    companies.company_address,
+    companies.email As email1,
+    companies.logo_img,
+    companies.website_address,
+    companies.phone_number As phone_number1
+From
+    users Inner Join
+    companies On users.company_id = companies.id WHERE users.id!=:userId AND (users.id=:recipientId OR users.id=:senderId)");
+        $req->bindParam('userId', $userId, PDO::PARAM_INT);
+        $req->bindParam('recipientId', $recipientId, PDO::PARAM_INT);
+        $req->bindParam('senderId', $senderId, PDO::PARAM_INT);
+        $req->execute();
+        $counterpart = $req->fetchAll(PDO::FETCH_OBJ);
+
+        return $counterpart;
+    }
 }

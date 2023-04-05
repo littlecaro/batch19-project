@@ -40,12 +40,14 @@
             ?>
         </div>
         <div class="messengerRight">
+
         </div>
     </div>
 
     <script src="./public/javascript/chatFunc.js"></script>
     <script src="./public/javascript/messenger.js"></script>
     <script src="./public/javascript/messageSearch.js"></script>
+    <script src="./public/javascript/messengerCounterPartInfo.js"></script>
     <link rel="stylesheet" href="./public/css/chatStyle.css">
     <link rel="stylesheet" href="./public/css/messenger.css">
     <script>

@@ -11,6 +11,7 @@ function newChatMessenger(messageCards) {
         let newChat = document.createElement("div");
         newChat.className = "newChatBox";
         thread.child = newChat;
+        getCounterpartInfo(thread);
 
         // Messaging profile icon
         messagingProfileIco = createChatIcons(card);
@@ -46,8 +47,10 @@ function newChatMessenger(messageCards) {
         // refreshMessages(messengerCenter, thread);
         refreshMessages(messageContainer, thread);
         // Toggle chatbox expand
+        console.log(messageContainer, "test");
         chatBoxExpand(chatboxElementWrapper);
         scrollDown(messageContainer);
+        readMessage(newChat);
       });
     });
   }

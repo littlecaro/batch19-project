@@ -217,6 +217,7 @@ function showChats()
 
 function showMessages($conversationId)
 {
+
     $messages = getMessages($conversationId);
     if ($messages) {
         foreach ($messages as $message) {
@@ -1061,4 +1062,12 @@ function partyMessageUnread($conversationId)
     $userManager = new UserManager();
     $count = $userManager->partyMessageUnread($conversationId);
     echo $count;
+}
+function getCounterpartInfo($conversationId)
+{
+    $user_id = $_SESSION["id"];
+    $userManager = new UserManager();
+    $counterpart = $userManager->getMessengerCounterPartInfo($conversationId, $user_id);
+
+    include("./view/components/counterPartMessengerCard.php");
 }
