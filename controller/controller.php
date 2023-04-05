@@ -90,7 +90,7 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
             header("Location: index.php?action=userProfileView");
             print_r($_SESSION);
         } else {
-            echo "Something went wrong.";
+            echo "Your account has been created! Please click on the 'SIGN IN' button to login :) ";
         }
         require "./view/signUpView.php";
     } else {
@@ -288,6 +288,10 @@ function deleteCalendarEntry($entry)
 function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
     // echo $filter;
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
@@ -301,7 +305,7 @@ function showTalents($filter, $saveData)
     ob_start();
     if (!$filter) {
     }
-    $allTalents = getAllTalents();
+    $allTalents = getAllTalents($userId);
     // print_r($allTalents);
     if (!empty($allTalents)) {
         foreach ($allTalents as $talentID => $key) {
@@ -606,9 +610,9 @@ function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $
     $wasPersonalUpdated = $userManager->updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic);
     // echo $wasEducationUpdated;
     if ($wasPersonalUpdated) {
-        echo "Successfully Updated";
+        // echo "Successfully Updated";
     } else {
-        echo "Something went wrong.";
+        // echo "Something went wrong.";
     }
 }
 
@@ -619,9 +623,9 @@ function updateUserEducation($userId, $degree, $degreeLevel)
     $wasEducationUpdated = $userManager->updateUserEducation($userId, $degree, $degreeLevel);
     // echo $wasEducationUpdated;
     if ($wasEducationUpdated === 1) {
-        echo "Successfully Updated";
+        // echo "Successfully Updated";
     } else {
-        echo "Something went wrong.";
+        // echo "Something went wrong.";
     }
 }
 
@@ -631,9 +635,9 @@ function addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId
     $newExperienceUpdated = $userManager->addNewUserExperience($companyName, $jobTitle, $yearsExperience, $userId);
     echo $newExperienceUpdated;
     if ($newExperienceUpdated == 1) {
-        echo "Successfully Updated";
+        // echo "Successfully Updated";
     } else {
-        echo "Something went wrong.";
+        // echo "Something went wrong.";
     }
 }
 
@@ -643,9 +647,9 @@ function updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId
     $wasExperienceUpdated = $userManager->updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
     echo $wasExperienceUpdated;
     if ($wasExperienceUpdated === 1) {
-        echo "Successfully Updated";
+        // echo "Successfully Updated";
     } else {
-        echo "Something went wrong.";
+        // echo "Something went wrong.";
     }
 }
 
@@ -656,9 +660,9 @@ function deleteUserExperience($id)
     echo $wasExperienceDeleted;
     if ($wasExperienceDeleted == 1) {
         // echo $wasExperienceDeleted;
-        echo "Successfully Deleted";
+        // echo "Successfully Deleted";
     } else {
-        echo "Something went wrong.";
+        // echo "Something went wrong.";
     }
 }
 
@@ -824,6 +828,9 @@ function fetchJobPostings()
 }
 function showJobCard($jobId)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
@@ -919,6 +926,9 @@ function savedSearchExists($jobId)
 
 function showTalentProfileView($id, $jobID = null)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     $talent = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
@@ -957,8 +967,9 @@ function bookInterview($uaID, $id, $jobID)
     $firstName = $meetingDetails[0]->firstName;
     $lastName = $meetingDetails[0]->lastName;
     $companyUserId = $meetingDetails[0]->companyUserId;
+    $conversationId = fetchConversationId($companyUserId, $userId);
     $message = "Interview scheduled for <strong>" . $startDate . "</strong> at <strong>" . $startTime . "</strong> for the position of <strong>" . $jobTitle . "</strong> with " .  $companyName . " for <strong>" . $firstName . " " . $lastName . "</strong>. The meeting link will be sent in a follow up message.";
-    submitMessage(null, $companyUserId, $message, $userId);
+    submitMessage($conversationId, $companyUserId, $message, $userId);
 
     if (!$result) {
         throw new Exception("Unable to schedule interview");
@@ -968,7 +979,10 @@ function bookInterview($uaID, $id, $jobID)
 
 function showBookedMeetings()
 {
+
+
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
     // if (!$bookedMeetings) {
     //     throw new Exception("Unable to fetch booked meetings");
