@@ -6,9 +6,9 @@
             <div class="talentCardHead">
                 <div class="talentCardHeadLeft">
                     <div class="messageProfileImg">
-                        <img src="<?= $talentInfo[0]->profile_picture ?>" alt="">
+                        <img src="<?= htmlspecialchars($talentInfo[0]->profile_picture) ?>" alt="">
                     </div>
-                    <p><?= $talentInfo[0]->first_name . " " . $talentInfo[0]->last_name; ?></p>
+                    <p><?= htmlspecialchars($talentInfo[0]->first_name) . " " . htmlspecialchars($talentInfo[0]->last_name); ?></p>
                 </div>
                 <div class="talentMatch"><?php
                                             if (isset($rating)) {
@@ -23,7 +23,7 @@
                 <div class="talentBasicInfo">
                     <h4>Basic information</h4>
                     <ul>
-                        <li>Years of Experience: <?= $yearsExperience[0]->years_experience1 ?></li>
+                        <li>Years of Experience: <?= htmlspecialchars($yearsExperience[0]->years_experience1) ?></li>
                         <li>Highest Degree: <?php
                                             $degreeEquivalents = (object) array(
                                                 0 => "Mandatory Education",
@@ -39,7 +39,7 @@
                                             } else {
                                                 echo "none";
                                             } ?></li>
-                        <li>Location: <?= $talentLocation[0]->location ?? "None" ?></li>
+                        <li>Location: <?= htmlspecialchars($talentLocation[0]->location) ?? "None" ?></li>
                     </ul>
                 </div>
                 <div class="talentDesiredPosition">
@@ -48,7 +48,7 @@
                         <?php if (!empty($desiredPositions)) {
                             foreach ($desiredPositions as $desiredPosition) {
                         ?>
-                                <li><?= $desiredPosition->desired_position ?></li>
+                                <li><?= htmlspecialchars($desiredPosition->desired_position) ?></li>
                         <?php
                             }
                         }

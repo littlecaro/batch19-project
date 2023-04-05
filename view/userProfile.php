@@ -1,3 +1,11 @@
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +44,7 @@
         <form action="index.php?action=userProfilePersonal" method="POST">
             <h2>Personal</h2>
             <label for="phonenb">Phone Number:</label>
-            <input type="text" name="phoneNb" value="<?= $user->phone_number; ?>" />
+            <input type="text" name="phoneNb" value="<?= htmlspecialchars($user->phone_number ?? ""); ?>" />
             <br />
             <p>
                 <span class="tooltip">Please select a city: </span>
@@ -103,7 +111,7 @@
                 </select>
             </p>
             <label for="salary">Expected salary (KRW):</label>
-            <input type="text" name="salary" value="<?= $user->desired_salary; ?>" /><br />
+            <input type="text" name="salary" value="<?= htmlspecialchars($user->desired_salary ?? ""); ?>" /><br />
             <p>
                 Do you need visa sponsorhip?
                 <label for="yes">Yes</label>

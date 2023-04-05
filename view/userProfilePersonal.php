@@ -1,4 +1,12 @@
 <!-- <form action="index.php?action=userProfileView" method="POST"> -->
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <style>
     #slider-square {
         border-radius: 0;
@@ -38,7 +46,7 @@
         <tr>
             <th><label for="phonenb">Phone Number</label></th>
             <td>
-                <input type="text" name="phoneNb" id="phoneNb" value="<?= $user->phone_number; ?>" />
+                <input type="text" name="phoneNb" id="phoneNb" value="<?= htmlspecialchars($user->phone_number ?? ""); ?>" />
             </td>
         </tr>
         <tr>
@@ -113,7 +121,7 @@
                 <br><br>
                 <div class="salaryslider" style=" display:flex; justify-content:center">
                     <div class="slider-styled" id="slider-square" style="width:300px;"></div>
-                    <input type="hidden" name="salary" id="salary" value="<?= $user->desired_salary; ?>" />
+                    <input type="hidden" name="salary" id="salary" value="<?= htmlspecialchars($user->desired_salary ?? ""); ?>" />
                 </div>
             </td>
         </tr>
@@ -134,12 +142,12 @@
             <th id="jobdescription">Profile picture<br><br><br></th>
             <td>
                 <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data"> -->
-                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?? "./public/images/default.svg" ?>" width="100px" height="100px">
+                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>" width="100px" height="100px">
                 </button><br>
                 <input type="file" style="padding-top: 10px" name="imageUpload" id="imageUpload" accept="image/*">
             </td>
         </tr>
-        <input type="hidden" name="oldImage" value="<?= $user->profile_picture ?? "./public/images/default.svg" ?>">
+        <input type="hidden" name="oldImage" value="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>">
     </table>
 
     <p id="personalUpdateStatus"></p>

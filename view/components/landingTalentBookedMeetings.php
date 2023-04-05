@@ -9,8 +9,8 @@
                 <p><?= calDateToStr($interviews[$i]->date) ?></p>
             </div>
             <div class="landingCalTime">
-                <p><?= $interviews[$i]->title ?>,</p>
-                <p><?= $interviews[$i]->name ?>,</p>
+                <p><?= htmlspecialchars($interviews[$i]->title) ?>,</p>
+                <p><?= htmlspecialchars($interviews[$i]->name) ?>,</p>
                 <p><?= substr($interviews[$i]->time_start, 0, 5) ?></p>
             </div>
             <?php
@@ -18,8 +18,8 @@
         } else {
             ?>
             <div class="landingCalTime timeMid">
-                <p><?= $interviews[$i]->title ?>,</p>
-                <p><?= $interviews[$i]->name ?>,</p>
+                <p><?= htmlspecialchars($interviews[$i]->title) ?>,</p>
+                <p><?= htmlspecialchars($interviews[$i]->title) ?>,</p>
                 <p><?= substr($interviews[$i]->time_start, 0, 5) ?></p>
             </div>
             <?php

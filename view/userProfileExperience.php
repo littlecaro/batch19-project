@@ -1,3 +1,11 @@
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <h2>Experience</h2>
 <style>
     /* #experience {

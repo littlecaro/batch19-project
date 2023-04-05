@@ -1,25 +1,25 @@
 <div class="landingPersonalCard" class="landingCard">
     <div class="left">
-        <img src="<?= "$user->profile_picture"; ?>" alt="" width="100" height="100">
+        <img class="profile-img" src="<?= !empty($user->profile_picture) ? htmlspecialchars($user->profile_picture) : './public/images/uploaded/tom.jpg'; ?>" alt="User profile picture" width="100" height="100">
     </div>
     <div class="right">
         <h1><?php if (!empty($user->first_name)) {
-                    echo "$user->first_name $user->last_name";
+                    echo htmlspecialchars($user->first_name) . " " . htmlspecialchars($user->last_name);
                     }; ?></h1>
-        <p><b>Email:</b> <?= "$user->email"; ?></p>
-        <p><b>Phone number:</b> <?= "$user->phone_number"; ?></p>
+        <p><b>Email:</b> <?= htmlspecialchars($user->email); ?></p>
+        <p><b>Phone number:</b> <?= htmlspecialchars($user->phone_number ?? ""); ?></p>
         <p><b>Current location:</b> <?php if(!empty($user->city_id)) {
                                             echo "{$userManager->getCityName($user->city_id)[0]->name}";
                                             }  ?></p>
         <p class="resume"><b>Uploaded resume:</b> <?php 
                                     if (!empty($user->resume_file_url)) {
                                         ?>
-                                            <a class="resume resumeU resumeV" onclick="event.stopPropagation()" href="<?=$user->resume_file_url?>" target="_blank" rel="noopener noreferrer">View your resume</a> 
+                                            <a class="resume resumeU resumeV" onclick="event.stopPropagation()" href="<?=htmlspecialchars($user->resume_file_url)?>" target="_blank" rel="noopener noreferrer">View your resume</a> 
                                         <?php } ?> <span class="resumeU" id="resumeUpload">Upload new resume</span></p>
 
 
                                         
-        <p><b>Expected salary (KRW):</b> <?= $user->desired_salary; ?></p>
+        <p><b>Expected salary (KRW):</b> <?= htmlspecialchars($user->desired_salary ?? ""); ?></p>
         <p><b>Need visa sponsorship:</b> <?php 
                                         if ($user->visa_sponsorship == 1) 
                                         { 

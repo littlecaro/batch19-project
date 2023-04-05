@@ -1,4 +1,8 @@
 <?php
+if (empty($_SESSION['id'] AND getCompanyID($_SESSION['id']))) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
 $title = "company dashboard";
 ob_start();
 ?>
@@ -26,7 +30,7 @@ ob_start();
                 <tr>
                     <th>Job Title</th>
                     <td>
-                        <input type="text" name="jobTitle" id="jobTitle" placeholder="Enter your job title" value="<?= $employeeInfo->user_bio ?>">
+                        <input type="text" name="jobTitle" id="jobTitle" placeholder="Enter your job title" value="<?= htmlspecialchars($employeeInfo->user_bio) ?>">
                         <span class="required" id="demo4"></span>
                     </td>
                 </tr>

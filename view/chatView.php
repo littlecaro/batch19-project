@@ -1,8 +1,16 @@
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+    exit;
+}
+
+?>
 <div class="chatboxFooter">
 
     <div class="chatboxContainer">
         <div class="chatboxHead">
-            <div class="messagingProfileIco"><img src="<?= $profileImg ?>" alt=""></div>
+            <div class="messagingProfileIco"><img src="<?= htmlspecialchars($profileImg ?? "") ?>" alt=""></div>
             <span class="chatboxTitle">Messages</span>
             <div class="chatboxActions">
                 <i class="unreadNum"></i>

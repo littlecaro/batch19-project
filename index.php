@@ -10,7 +10,6 @@ try {
 
     switch ($action) {
         case "userProfileView":
-
             showUserProfileView();
             break;
         case "userPhotoUpload":
@@ -65,34 +64,12 @@ try {
                 userSignIn($_POST['email'], $_POST['pwd']);
             }
             break;
-        case "userProfile":
-            // $phone_number = !empty($_POST['phone_number']) ? $_POST['phone_number'] : null;
-            // $city = !empty($_POST['city']) ? $_POST['city'] : null;
-            // $desired_salary = !empty($_POST['desired_salary']) ? $_POST['desired_salary'] : null;
-            // $visa_sponsorship = !empty($_POST['visa_sponsorship']) ? $_POST['visa_sponsorship'] : null;
-
         case "getChatMessages":
             $conversationId = $_POST['conversationId'] ?? null;
             if (!empty($conversationId)) {
                 showMessages($conversationId);
             }
             break;
-            // case "submitMessage":
-
-            //     $conversationId = $_POST['conversationId'] ?? null;
-            //     $senderId = $_POST['senderId'];
-            //     $message = $_POST['message'];
-            //     // echo $message, $senderId, $conversationId;
-            //     if (!empty($senderId)  and !empty($message)) {
-            //         // echo "<br>";
-            //         // echo "getting controller";
-            //         addMessage($conversationId, $senderId, $message);
-            //     }
-            //     break;
-            // case "messenger":
-            //     showChats();
-
-            //     break;
         case "search":
             // print_r($_GET);
             $term = $_GET['term'] ?? null;
@@ -167,19 +144,19 @@ try {
             }
 
             break;
-            // case "getUserSkills":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserLanguages":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "getUserCities":
-            //     require("./view/userProfileSkills.php");
-            //     break;
-            // case "userProfileView":
-            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-            //     showCalendar($user_id);
-            //     break;
+        // case "getUserSkills":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserLanguages":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "getUserCities":
+        //     require("./view/userProfileSkills.php");
+        //     break;
+        // case "userProfileView":
+        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+        //     showCalendar($user_id);
+        //     break;
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
