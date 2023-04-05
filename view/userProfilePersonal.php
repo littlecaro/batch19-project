@@ -129,7 +129,7 @@
                                                                         echo "checked";
                                                                     } ?> />
             </td>
-            
+
         <tr>
             <th id="jobdescription">Profile picture<br><br><br></th>
             <td>
@@ -186,27 +186,18 @@
 </form>
 <br>
 <div id="resume">
-        <form
-        action="index.php?action=userResumeUpload"
-        method="post"
-        enctype="multipart/form-data"
-        >
+    <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
         <p>
-              <h2>Resume/CV</h2>
-              <input
-                type="file"
-                name="resume"
-                id="resume"
-                accept=".pdf"
-              />
-            </p>
-            <p>
-              <input id="submitResume" type="submit" value="Save" />
-            </p>
-          </form>
-        </div>
-    <input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
-    <input type="submit" value="Save" class="button">
+        <h2>Resume/CV</h2>
+        <input type="file" name="resume" id="resume" accept=".pdf" />
+        </p>
+        <p>
+            <input id="submitResume" type="submit" value="Save" />
+        </p>
+    </form>
+</div>
+<input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
+<input type="submit" value="Save" class="button">
 </form>
 
 <script>

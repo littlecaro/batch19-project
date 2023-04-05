@@ -27,72 +27,72 @@ ob_start();
     <h4>Don't want to create an account?<br>Register with Google</h4>
     <?php include("./view/components/googleSignIn.php"); ?>
     <br><br>
-<div id="createAccount">
+    <div id="createAccount">
 
-  <h3>CREATE AN ACCOUNT</h3>
-  <!-- why doesn't user sign up work? -->
-  <form action="index.php?action=companySignUp" method="POST">
-    <table id="table">
-      <tr>
-        <th>First name</th>
-        <td>
-          <input type="text" name="fName" id="fName" placeholder="First name">
-        </td>
-      </tr>
-      <tr>
-        <th>Last name</th>
-        <td>
-          <input type="text" name="lName" id="lName" placeholder="Last name">
-        </td>
-      </tr>
-      <tr>
-        <th>E-mail</th>
-        <td>
-            <input type="text" name="email" id="email" placeholder="E-mail" />
-          </td>
-        </tr>
-        <tr>
-          <th>Password</th>
-          <td>
-            <input type="text" name="pwd" id="pwd" placeholder="Password" />
-          </td>
-        </tr>
-        <tr>
-          <th>Password confirmation</th>
-          <td>
-            <input type="text" name="pwdconf" id="pwdconf" placeholder="Type your password again" />
-          </td>
-        </tr>
-        <tr class="company-input">
-          <th>Company Name</th>
-          <td>
-            <input type="text" name="companyname" id="companyname" class="companyonly" placeholder="Company Name" />
-          </td>
-        </tr>
-        <tr class="company-input">
-          <th>Company Job Title</th>
-          <td>
-            <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role in the company." />
-          </td>
-        </tr>
-        <tr>
-          <th> </th>
-          <td id="newsletter">
-            <label><input type="checkbox" id="checkbox" />
-            I want to receive the newsletter!</label>
-          </td>
-        </tr>
-        <tr>
-          <th> </th>
-          <td id="policy">
-            <label><input type="checkbox" id="checkbox" />
-            I Agree to the Privacy Policy.</label>
-          </td>
-        </tr>
-      </table><br>
-      <button type="submit" value="SUBMIT" class="button" id="sign-up-submit">SUBMIT</button>
-    </form>
-  </div>
+      <h3>CREATE AN ACCOUNT</h3>
+      <!-- why doesn't user sign up work? -->
+      <form action="index.php?action=companySignUp" method="POST">
+        <table id="table">
+          <tr>
+            <th>First name</th>
+            <td>
+              <input type="text" name="fName" id="fName" placeholder="First name">
+            </td>
+          </tr>
+          <tr>
+            <th>Last name</th>
+            <td>
+              <input type="text" name="lName" id="lName" placeholder="Last name">
+            </td>
+          </tr>
+          <tr>
+            <th>E-mail</th>
+            <td>
+              <input type="text" name="email" id="email" placeholder="E-mail" />
+            </td>
+          </tr>
+          <tr>
+            <th>Password</th>
+            <td>
+              <input type="text" name="pwd" id="pwd" placeholder="Password" />
+            </td>
+          </tr>
+          <tr>
+            <th>Password confirmation</th>
+            <td>
+              <input type="text" name="pwdconf" id="pwdconf" placeholder="Type your password again" />
+            </td>
+          </tr>
+          <tr class="company-input">
+            <th>Company Name</th>
+            <td>
+              <input type="text" name="companyname" id="companyname" class="companyonly" placeholder="Company Name" />
+            </td>
+          </tr>
+          <tr class="company-input">
+            <th>Company Job Title</th>
+            <td>
+              <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role in the company." />
+            </td>
+          </tr>
+          <tr>
+            <th> </th>
+            <td id="newsletter">
+              <label><input type="checkbox" id="checkbox" />
+                I want to receive the newsletter!</label>
+            </td>
+          </tr>
+          <tr>
+            <th> </th>
+            <td id="policy">
+              <label><input type="checkbox" id="checkbox" />
+                I Agree to the Privacy Policy.</label>
+            </td>
+          </tr>
+        </table><br>
+        <button type="submit" value="SUBMIT" class="button" id="sign-up-submit">SUBMIT</button>
+      </form>
+    </div>
   </div>
 </div>
 </div>

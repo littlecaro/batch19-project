@@ -41,8 +41,10 @@ class UserManager extends Manager
 
         //insert into db
         $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type)
-        VALUES (:firstName, :lastName, :pwdHash, :email, 0)";
-        // 0 is for email login
+        VALUES (:firstName, :lastName, :pwdHash, :email, 0);
+        SET @last_id_in_table1 = LAST_INSERT_ID(); 
+        INSERT INTO education (user_id) VALUES (@last_id_in_table1);"; // inserting id for education // 0 is for email login
+
         $req = $db->prepare($preparedinsertSql);
         $req->bindParam('firstName', $firstName, PDO::PARAM_STR);
         $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
