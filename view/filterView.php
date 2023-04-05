@@ -102,7 +102,7 @@ $saveData = json_decode($saveData, true);
         <div class="talentSearchMain">
             <?= $talentCards; ?>
         </div>
-        <div>
+        <div class="talentSearchBtns">
             <button id="editSearch">Edit Search</button>
             <button id="cancelSearch">Reset Search</button>
         </div>
