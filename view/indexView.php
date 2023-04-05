@@ -33,6 +33,8 @@ ob_start();
         <img src="./public/images/logos/Telus-Logo.png" />
     </div>
 </div>
+
+
 <div class="feature-new-job">
     <div class="job_table">
         <h1>
@@ -40,7 +42,7 @@ ob_start();
             <span style="color: #13c2c5">Top Global Talent?</span>
         </h1>
         <h1>
-            <span style="font-size: 20px; color: white">Waygookin can help you</span>
+            <span style="font-size: 20px; color: white">Waygukwin can help you</span>
         </h1>
         <table>
             <tr>
@@ -80,7 +82,7 @@ ob_start();
         <figure class="snip1139 hover">
             <blockquote>
                 Within a few hours I had the top players in the tech industry asking
-                me for an interview. Waygookin is awesome!
+                me for an interview. Waygukwin is awesome!
                 <div class="arrow"></div>
             </blockquote>
             <img src="./public/images/users/second.jpg" alt="sample2" />
@@ -90,7 +92,7 @@ ob_start();
         </figure>
         <figure class="snip1139">
             <blockquote>
-                Move over, LinkedIn. Waygookin is where the cool cats are at. Job
+                Move over, LinkedIn. Waygukwin is where the cool cats are at. Job
                 hunting has never been easier.
                 <div class="arrow"></div>
             </blockquote>

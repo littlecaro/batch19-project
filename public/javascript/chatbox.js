@@ -4,8 +4,17 @@ const chatboxContainer = document.querySelector(".chatboxContainer");
 const chatboxHead = document.querySelector(".chatboxHead");
 const messageContainer = document.querySelector(".messageContainer");
 const chatboxFooter = document.querySelector(".chatboxFooter");
+const unreadMessageCount = document.querySelector(".unreadNum");
+const toMessenger = document.querySelector(
+  ".fa-solid.fa-up-right-and-down-left-from-center"
+);
 
+toMessenger.addEventListener("click", () => {
+  window.location.href =
+    "http://localhost/sites/batch19-project/index.php?action=messenger";
+});
 if (chatboxHead) {
+  console.log(chatboxHead);
   chatboxHead.addEventListener("click", (e) => {
     chatBoxExpand(chatboxHead.nextElementSibling);
   });
@@ -17,6 +26,11 @@ function newChat() {
     messageCards.forEach((card) => {
       let thread = new MessageThread(card, null);
       threadList.push(thread);
+      setInterval(() => {
+        countUnreadMessages(card);
+        console.log("running");
+        console.log(card);
+      }, 1000);
 
       card.addEventListener("click", (e) => {
         if (thread.child) {
@@ -58,12 +72,16 @@ function newChat() {
             newChat,
             chatboxFooter
           );
-
+          readMessage(thread);
           refreshMessages(messageContainer, thread);
           // Toggle chatbox expand
+
           newChat.firstElementChild.addEventListener("click", () => {
+            console.log("test");
             chatBoxExpand(chatboxElementWrapper, newChatboxHead);
             scrollDown(messageContainer);
+            countUnreadMessages();
+            readMessage(newChat);
           });
         }
       });
@@ -71,3 +89,7 @@ function newChat() {
   }
 }
 newChat();
+countUnreadMessages();
+setInterval(() => {
+  loadUnreadMessageNum();
+}, 100);

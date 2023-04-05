@@ -37,11 +37,13 @@ class UserManager extends Manager
         $db = $this->dbConnect();
         //hash pw
 
-        $pwdHash = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+        $defaultProfilePic = "./public/images/uploaded/tom.jpg";
+
+        $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
 
         //insert into db
-        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type)
-        VALUES (:firstName, :lastName, :pwdHash, :email, 0);
+        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type, profile_picture)
+        VALUES (:firstName, :lastName, :pwdHash, :email, 0, :inProfile_picture);
         SET @last_id_in_table1 = LAST_INSERT_ID(); 
         INSERT INTO education (user_id) VALUES (@last_id_in_table1);"; // inserting id for education // 0 is for email login
 
@@ -50,6 +52,7 @@ class UserManager extends Manager
         $req->bindParam('lastName', $lastName, PDO::PARAM_STR);
         $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
         $req->bindParam('email', $email, PDO::PARAM_STR);
+        $req->bindParam('inProfile_picture', $defaultProfilePic, PDO::PARAM_STR);
         $wasAdded = $req->execute();
         $req->closeCursor();
         //if a user was added, we'll fetch this info and run one more query
@@ -372,23 +375,49 @@ class UserManager extends Manager
 
     //     return $user;
     // }
+
     public function uploadUserResume($resume)
     {
         $db = $this->dbConnect();
         $preparedinsertSql = "UPDATE users 
-                                SET resume_file_url = :resume
+                                SET resume_file_url = :Inresume
                                 WHERE users.id = :userID";
         $req = $db->prepare($preparedinsertSql);
-        $req->bindParam('resume', $resume, PDO::PARAM_STR);
+        $req->bindParam('Inresume', $resume, PDO::PARAM_STR);
         $req->bindParam('userID', $_SESSION['id'], PDO::PARAM_INT);
         $wasAdded = $req->execute();
 
         if ($wasAdded) {
-            $req = $db->query("SELECT resume_file_url FROM users WHERE id = ?");
-            $req->bindParam('id', $_SESSION['id'], PDO::PARAM_INT);
+            $req = $db->prepare("SELECT resume_file_url FROM users WHERE id = :Inid");
+            $req->bindParam('Inid', $_SESSION['id'], PDO::PARAM_INT);
+            $req->execute();
             $cvresume = $req->fetch(PDO::FETCH_ASSOC);
+            return $cvresume;
         } else {
             return false;
+        }
+    }
+    public function countUnreadMessages($user_id)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT COUNT(*) as count FROM `messages` WHERE is_read = 0 and recipient_id = :user_id");
+        $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
+        $req->execute();
+        $count = $req->fetchAll(PDO::FETCH_OBJ);
+        return $count[0]->count;
+    }
+    public function partyMessageUnread($conversationId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT COUNT(*) as count FROM `messages` WHERE is_read = 0 and conversation_id = :conversationId");
+        $req->bindParam('conversationId', $conversationId, PDO::PARAM_INT);
+        $req->execute();
+        $count = $req->fetchAll(PDO::FETCH_OBJ);
+        $count = $count[0]->count;
+        if ($count == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

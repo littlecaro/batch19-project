@@ -5,6 +5,7 @@
         <p class="chatPreviewText"><?= $chat->message ?></p>
     </div>
     <div class="chatPreviewDate">
+        <i style="display: none;" class='fa-solid fa-circle-check'></i>
         <p><?= $chat->day, " ", $chat->month ?></p>
     </div>
 </li>

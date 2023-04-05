@@ -11,7 +11,9 @@
   --softYellow: #fff5cc;
   --softRed: #ffcbc8;
 }
-
+body {
+  height: 100vh;
+}
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -27,7 +29,11 @@ html {
   z-index: 20;
   padding: 2rem;
   background: var(--text-color-primary);
-  background: linear-gradient(29deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
   color: var(--whiteColor);
   position: fixed;
   left: 0;
@@ -178,7 +184,11 @@ body {
 
 .biz {
   background: var(--text-color-primary);
-  background: linear-gradient(330deg, var(--text-color-primary) 0%, var(--background-color-secondary) 100%);
+  background: linear-gradient(
+    330deg,
+    var(--text-color-primary) 0%,
+    var(--background-color-secondary) 100%
+  );
 }
 
 .header {
@@ -191,7 +201,12 @@ body {
   width: 100%;
   height: 80px;
   background: var(--header-color-primary);
-  background: linear-gradient(29deg, var(--header-color-primary), rgba(40, 34, 93, 1) 27%, rgba(101, 90, 223, 1) 100%);
+  background: linear-gradient(
+    29deg,
+    var(--header-color-primary),
+    rgba(40, 34, 93, 1) 27%,
+    rgba(101, 90, 223, 1) 100%
+  );
   z-index: 2;
 }
 
@@ -376,7 +391,8 @@ button:hover {
 }
 
 h1 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 36px;
   font-weight: medium;
   color: #ffffff;
@@ -385,7 +401,8 @@ h1 {
 }
 
 h2 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 30px;
   font-weight: medium;
   color: var(--header-color-primary);
@@ -411,7 +428,8 @@ h4 {
 #userTable {
   width: 600px;
   margin: auto;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 #userTable th {
@@ -443,7 +461,8 @@ h4 {
 }
 
 .footer p {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
@@ -613,7 +632,8 @@ input[type="checkbox"] {
   color: var(--header-color-primary);
   font-weight: 100;
   font-size: 1.5em;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
   text-shadow: none;
   width: max-content;
@@ -723,4 +743,34 @@ input[type="checkbox"] {
 
 .landingContainer > .landingBtn > div {
   margin: 1em 0;
+}
+
+.landingContainer p:empty {
+  height: 0;
+  display: none;
+}
+
+.resumeU {
+  all: unset;
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+  padding: 0.5vh;
+  cursor: pointer;
+  color: white;
+}
+
+.resumeV {
+  background-color: #d66238;
+}
+
+.resume {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  margin: 0;
+  line-height: normal;
+}
+
+#landing {
+  padding: 2vh;
 }
