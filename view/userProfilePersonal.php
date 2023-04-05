@@ -142,12 +142,12 @@ exit;
             <th id="jobdescription">Profile picture<br><br><br></th>
             <td>
                 <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data"> -->
-                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?? "./public/images/default.svg" ?>" width="100px" height="100px">
+                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>" width="100px" height="100px">
                 </button><br>
                 <input type="file" style="padding-top: 10px" name="imageUpload" id="imageUpload" accept="image/*">
             </td>
         </tr>
-        <input type="hidden" name="oldImage" value="<?= $user->profile_picture ?? "./public/images/default.svg" ?>">
+        <input type="hidden" name="oldImage" value="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>">
     </table>
 
     <p id="personalUpdateStatus"></p>

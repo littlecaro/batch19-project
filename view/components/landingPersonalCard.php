@@ -1,6 +1,6 @@
 <div class="landingPersonalCard" class="landingCard">
     <div class="left">
-        <img src="<?= "$user->profile_picture"; ?>" alt="" width="100" height="100">
+        <img class="profile-img" src="<?= $user->profile_picture ?? './public/images/uploaded/tom.jpg'; ?>" alt="User profile picture" width="100" height="100">
     </div>
     <div class="right">
         <h1><?php if (!empty($user->first_name)) {
