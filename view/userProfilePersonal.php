@@ -38,7 +38,7 @@
         <tr>
             <th><label for="phonenb">Phone Number</label></th>
             <td>
-                <input type="text" name="phoneNb" id="phoneNb" value="<?= $user->phone_number; ?>" />
+                <input type="text" name="phoneNb" id="phoneNb" value="<?= htmlspecialchars($user->phone_number ?? ""); ?>" />
             </td>
         </tr>
         <tr>
@@ -113,7 +113,7 @@
                 <br><br>
                 <div class="salaryslider" style=" display:flex; justify-content:center">
                     <div class="slider-styled" id="slider-square" style="width:300px;"></div>
-                    <input type="hidden" name="salary" id="salary" value="<?= $user->desired_salary; ?>" />
+                    <input type="hidden" name="salary" id="salary" value="<?= htmlspecialchars($user->desired_salary ?? ""); ?>" />
                 </div>
             </td>
         </tr>

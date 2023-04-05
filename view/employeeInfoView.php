@@ -26,7 +26,7 @@ ob_start();
                 <tr>
                     <th>Job Title</th>
                     <td>
-                        <input type="text" name="jobTitle" id="jobTitle" placeholder="Enter your job title" value="<?= $employeeInfo->user_bio ?>">
+                        <input type="text" name="jobTitle" id="jobTitle" placeholder="Enter your job title" value="<?= htmlspecialchars($employeeInfo->user_bio) ?>">
                         <span class="required" id="demo4"></span>
                     </td>
                 </tr>

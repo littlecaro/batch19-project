@@ -11,7 +11,7 @@ ob_start();
         <?php 
                 if (!empty($talent->resume_file_url)) {
                     ?>
-                        <a href="<?=$talent->resume_file_url?>" target="_blank" rel="noopener noreferrer">Click here to open <?=$talent->first_name?>'s resume</a> 
+                        <a href="<?= htmlspecialchars($talent->resume_file_url) ?>" target="_blank" rel="noopener noreferrer">Click here to open <?= htmlspecialchars($talent->first_name) ?>'s resume</a> 
                     <?php } ?>
         <div class="talentBack">
         <?php if ($jobID != null) {
@@ -90,7 +90,7 @@ ob_start();
             if (!empty($interviews)) {
                 ?>
                 <h1><i class="fa-solid fa-handshake-simple"></i>
-                You already have an interview scheduled with <?= $talent->first_name ?? 'user'?></h1>
+                You already have an interview scheduled with <?= htmlspecialchars($talent->first_name) ?? 'user'?></h1>
                 <div class="landingAvail">
                 <?php
                 for ($i = 0; $i < count($interviews); $i++) {
