@@ -1,3 +1,11 @@
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <link rel="stylesheet" href="./public/css/calendar.css">
 <script defer src="./public/js/calendar.js"></script>
 

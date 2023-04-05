@@ -1,4 +1,8 @@
 <?php
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
 $title = "userProfile";
 ob_start();
 ?>

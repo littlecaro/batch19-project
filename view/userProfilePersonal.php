@@ -1,4 +1,12 @@
 <!-- <form action="index.php?action=userProfileView" method="POST"> -->
+<?php
+
+if (empty($_SESSION['id'])) {
+    header('location: http://localhost/sites/batch19-project/index.php');
+exit;
+}
+
+?>
 <style>
     #slider-square {
         border-radius: 0;
