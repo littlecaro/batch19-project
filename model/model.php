@@ -233,7 +233,7 @@ function getAllTalents($userId)
     $str = 'SELECT DISTINCT
     users.id
 FROM
-    users WHERE users.id!=:userId';
+    users WHERE users.id!=:userId AND company_id IS NULL';
     $db = dbConnect();
     $query = $db->prepare($str);
     $query->bindParam(':userId', $userId, PDO::PARAM_INT);
