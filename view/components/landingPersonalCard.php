@@ -4,7 +4,7 @@
     </div>
     <div class="right">
         <h1><?php if (!empty($user->first_name)) {
-                    echo htmlspecialchars($user->first_name) . " " . htmlspecialchars($user->last_name);
+                    echo htmlspecialchars($user->first_name) . " " . !empty(($user->last_name) ? htmlspecialchars($user->last_name) : "");
                     }; ?></h1>
         <p><b>Email:</b> <?= htmlspecialchars($user->email); ?></p>
         <p><b>Phone number:</b> <?= htmlspecialchars($user->phone_number ?? ""); ?></p>
