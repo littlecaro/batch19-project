@@ -288,6 +288,10 @@ function deleteCalendarEntry($entry)
 function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
     // echo $filter;
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
@@ -301,7 +305,7 @@ function showTalents($filter, $saveData)
     ob_start();
     if (!$filter) {
     }
-    $allTalents = getAllTalents();
+    $allTalents = getAllTalents($userId);
     // print_r($allTalents);
     if (!empty($allTalents)) {
         foreach ($allTalents as $talentID => $key) {
@@ -824,6 +828,9 @@ function fetchJobPostings()
 }
 function showJobCard($jobId)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
@@ -919,6 +926,9 @@ function savedSearchExists($jobId)
 
 function showTalentProfileView($id, $jobID = null)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     $talent = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
@@ -957,8 +967,9 @@ function bookInterview($uaID, $id, $jobID)
     $firstName = $meetingDetails[0]->firstName;
     $lastName = $meetingDetails[0]->lastName;
     $companyUserId = $meetingDetails[0]->companyUserId;
+    $conversationId = fetchConversationId($companyUserId, $userId);
     $message = "Interview scheduled for <strong>" . $startDate . "</strong> at <strong>" . $startTime . "</strong> for the position of <strong>" . $jobTitle . "</strong> with " .  $companyName . " for <strong>" . $firstName . " " . $lastName . "</strong>. The meeting link will be sent in a follow up message.";
-    submitMessage(null, $companyUserId, $message, $userId);
+    submitMessage($conversationId, $companyUserId, $message, $userId);
 
     if (!$result) {
         throw new Exception("Unable to schedule interview");
@@ -968,7 +979,10 @@ function bookInterview($uaID, $id, $jobID)
 
 function showBookedMeetings()
 {
+
+
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
     // if (!$bookedMeetings) {
     //     throw new Exception("Unable to fetch booked meetings");
