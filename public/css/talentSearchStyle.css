@@ -230,6 +230,7 @@ label[for="slider"] {
 }
 .searchTags {
   display: flex;
+  justify-content: center;
 }
 .talentCardHeadLeft {
   display: flex;
@@ -289,4 +290,7 @@ label[for="slider"] {
 }
 .userProfile {
   height: 100%;
+}
+progress {
+  accent-color: darkgreen;
 }

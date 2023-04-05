@@ -17,7 +17,6 @@ require_once "./model/model.php";
 
 function showIndex()
 {
-    $chats = loadChats(); // TODO: move this to signed in view
     require("./view/indexView.php");
 }
 
@@ -211,7 +210,8 @@ function showUserSignIn()
 
 function showChats()
 {
-    $chats = loadChats();
+    $user_id = $_SESSION["id"];
+    $chats = loadChats($user_id);
     require("./view/messageView.php");
 }
 
@@ -233,7 +233,8 @@ function showMessages($conversationId)
 function addMessage($conversationId, $senderId, $message)
 {
     // echo "controller start";
-    submitMessage($conversationId, $senderId, $message);
+
+    submitMessage($conversationId, $senderId, $message, null);
 }
 
 function searchMessages($term)
@@ -287,10 +288,24 @@ function deleteCalendarEntry($entry)
 function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
     // echo $filter;
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     ob_start();
     if (!$filter) {
     }
-    $allTalents = getAllTalents();
+    $allTalents = getAllTalents($userId);
     // print_r($allTalents);
     if (!empty($allTalents)) {
         foreach ($allTalents as $talentID => $key) {
@@ -304,7 +319,7 @@ function showTalents($filter, $saveData)
             // print_r($talentLocation);
             if ($filter) {
                 // ob_start();
-                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0], $saveData);
+                $rating = talentRating($key->id, $yearsExperience[0]->years_experience1 ?? null, $skills, $desiredPositions, $highestDegree, $talentLanguages, $talentLocation[0] ?? null, $saveData);
 
                 include('./view/components/talentCard.php'); //TODO:Limit talent cards
                 $talentCard = ob_get_contents();
@@ -513,9 +528,11 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
         $ratings = array();
         foreach ($filteredHighestDegrees as $key => $value) {
             foreach ($highestDegree as $twoKey => $twoValue) {
-                $sim = similar_text($value, $twoValue->highestDegree, $perc);
-                if ($perc > 50) {
-                    array_push($ratings, $perc / 100);
+                if (!empty($twoValue->highestDegree)) {
+                    $sim = similar_text($value, $twoValue->highestDegree, $perc);
+                    if ($perc > 50) {
+                        array_push($ratings, $perc / 100);
+                    }
                 }
             }
         }
@@ -555,6 +572,7 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
 
 function showUserProfileView()
 {
+
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experiences = $userManager->getUserExperience($_SESSION['id']);
@@ -568,6 +586,13 @@ function showUserProfileView()
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
+    if (isset($_SESSION['id'])) {
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
 
     // $experience = $userManager->getUserExperience($_SESSION['id']);
     require("./view/userProfileView.php");
@@ -692,8 +717,19 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
 
 function getCompanyInfo()
 {
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     $companyManager = new CompanyManager();
     $companyInfo = $companyManager->fetchCompanyInfo();
+
     // print_r($companyInfo);
 
     require("./view/companyDashboard.php");
@@ -747,6 +783,15 @@ function getEmployeeInfo()
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $employeeInfo = $companyManager->fetchEmployeeInfo();
     // print_r($companyInfo);
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
 
     require("./view/employeeInfoView.php");
 }
@@ -769,11 +814,33 @@ function fetchJobPostings()
     $companyManager = new CompanyManager();
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $listings = getJobPostings($_SESSION["id"]);
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
 
     require("./view/jobListingsView.php");
 }
 function showJobCard($jobId)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     $jobCard = getJobCard($jobId, $_SESSION["id"]);
     require("./view/jobListingsView.php");
     return $jobCard;
@@ -827,63 +894,19 @@ function uploadResume($resume)
     $first = substr($hash, 0, 2);
     $second = substr($hash, 2, 2);
 
-    mkdir("./public/images/uploaded/$first/$second", 0777, true);
-    // chmod("./public/images/uploaded/$first", 0777);
-    chmod("./public/images/uploaded/$first/$second", 0777);
+    mkdir("./public/images/resume/$first/$second", 0777, true);
+    chmod("./public/images/resume/$first", 0777);
+    chmod("./public/images/resume/$first/$second", 0777);
 
     $type = explode(".", $resume['name'])[1];
     $filename = substr($hash, 4) . "." . $type;
-    $newResumeLivingPlace = "http://localhost/sites/batch19-project/public/images/uploaded/$first/$second/$filename";
+    $newResumeLivingPlace = "./public/images/resume/$first/$second/$filename";
     move_uploaded_file($resume['tmp_name'], $newResumeLivingPlace);
     chmod($newResumeLivingPlace, 0777);
 
-    $UserManager = new UserManager();
-    $result = $UserManager->uploadUserResume($newResumeLivingPlace);
-
-
-
-    // if(isset($_GET['path']))
-    // {
-    // //Read the url
-    // $resume = $_GET['path'];
-
-    // //Clear the cache
-    // clearstatcache();
-
-    // //Check the file path exists or not
-    // if(file_exists($resume)) {
-
-    // //Define header information
-    // header('Content-Description: File Transfer');
-    // header('Content-Type: application/octet-stream');
-    // header('Content-Disposition: attachment; filename="'.basename($resume).'"');
-    // header('Content-Length: ' . filesize($resume));
-    // header('Pragma: public');
-
-    // //Clear system output buffer
-    // flush();
-
-    // //Read the size of the file
-    // readfile($resume,true);
-
-    // //Terminate from the script
-    // die();
-    // }
-    // else{
-    // echo "File path does not exist.";
-    // }
-    // }
-    // echo "File path is not defined.";
-
-    // return $newResumeLivingPlace;
-
-    // $userManager = new UserManager();
-    // $newResumeLivingPlace = $userManager->uploadUserResume($resume);
-    // header("Location:index.php?action=userProfile");
-
-    // $files = scandir("./public/images/uploaded");
-
-    // header("location: index.php?action=userProfileView");
+    $userManager = new UserManager();
+    $newResumeLivingPlace = $userManager->uploadUserResume($newResumeLivingPlace);
+    header("Location:index.php?action=userProfileView");
 }
 
 
@@ -903,8 +926,11 @@ function savedSearchExists($jobId)
 
 function showTalentProfileView($id, $jobID = null)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
-    $user = $userManager->getUserProfile($id);
+    $talent = $userManager->getUserProfile($id);
     $education = $userManager->getUserEducation($id);
     $profExps = showJobs($id);
     $skills = showSkills($id);
@@ -912,6 +938,16 @@ function showTalentProfileView($id, $jobID = null)
     $calendarManager = new CalendarManager();
     $entries = $calendarManager->loadCalendar($id);
     $interviews = $calendarManager->loadTalentInterviews($id);
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
+
     require("./view/talentProfileView.php");
 }
 
@@ -920,6 +956,21 @@ function bookInterview($uaID, $id, $jobID)
     $compID = getCompanyID($id);
     $CalendarManager = new CalendarManager();
     $result = $CalendarManager->insertMeeting($uaID, $compID, $jobID);
+    $meetingDetails = $CalendarManager->getMeetingDetails($uaID);
+    print_r($meetingDetails);
+    echo $meetingDetails[0]->userId;
+    $userId = $meetingDetails[0]->userId;
+    $companyName = $meetingDetails[0]->companyName;
+    $startTime = $meetingDetails[0]->timeStart;
+    $startDate = $meetingDetails[0]->dateStart;
+    $jobTitle = $meetingDetails[0]->jobTitle;
+    $firstName = $meetingDetails[0]->firstName;
+    $lastName = $meetingDetails[0]->lastName;
+    $companyUserId = $meetingDetails[0]->companyUserId;
+    $conversationId = fetchConversationId($companyUserId, $userId);
+    $message = "Interview scheduled for <strong>" . $startDate . "</strong> at <strong>" . $startTime . "</strong> for the position of <strong>" . $jobTitle . "</strong> with " .  $companyName . " for <strong>" . $firstName . " " . $lastName . "</strong>. The meeting link will be sent in a follow up message.";
+    submitMessage($conversationId, $companyUserId, $message, $userId);
+
     if (!$result) {
         throw new Exception("Unable to schedule interview");
     }
@@ -928,11 +979,24 @@ function bookInterview($uaID, $id, $jobID)
 
 function showBookedMeetings()
 {
+
+
     $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $bookedMeetings = $companyManager->fetchBookedMeetings();
     // if (!$bookedMeetings) {
     //     throw new Exception("Unable to fetch booked meetings");
     // } else {
+    $userManager = new UserManager();
+    if (isset($_SESSION['id'])) {
+        $user = $userManager->getUserProfile($_SESSION['id']);
+        $userId = $_SESSION['id'];
+        $chats = loadChats($userId); // TODO: move this to signed in view
+    }
+    if (isset($user->profile_picture)) {
+        $profileImg = $user->profile_picture;
+    }
+
     require("./view/bookedMeetingsView.php");
     // }
 }
@@ -979,4 +1043,22 @@ function calDateToStr($str)
 {
     $d = strtotime($str);
     return date("l, M jS", $d);
+}
+function readMessage($conversationId)
+{
+    messageRead($conversationId);
+}
+function countUnreadMessages()
+{
+    $user_id = $_SESSION['id'];
+    $userManager = new UserManager();
+    $count = $userManager->countUnreadMessages($user_id);
+    echo $count;
+}
+
+function partyMessageUnread($conversationId)
+{
+    $userManager = new UserManager();
+    $count = $userManager->partyMessageUnread($conversationId);
+    echo $count;
 }

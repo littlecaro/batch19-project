@@ -10,7 +10,7 @@
     <h1><i class="fa-solid fa-graduation-cap"></i>Highest Education</h1>
     <button class="landingBtn" onclick="myFunction('education')">
         <div class="landingEducation">
-            <?php if(!empty($education)){
+            <?php if(!empty($education) AND !empty($education->degree)){
                         include("./view/components/landingEducationCard.php");
                     } else {
                         echo "Please click to fill in your first entry.";
@@ -23,7 +23,7 @@
         <div class="landingExperience">
             <?php 
                     $profExps = showJobs();
-                    if(!empty($experience)){
+                    if(!empty($profExps)){
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
