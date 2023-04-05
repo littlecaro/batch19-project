@@ -39,12 +39,14 @@ class UserManager extends Manager
 
         $defaultProfilePic = "./public/images/uploaded/tom.jpg";
 
-        $pwdHash = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+        $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
 
         //insert into db
-        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, profile_picture, login_type)
-        VALUES (:firstName, :lastName, :pwdHash, :email, :inProfile_picture, 0)";
-        // 0 is for email login
+        $preparedinsertSql = "INSERT INTO users (first_name, last_name, password, email, login_type, profile_picture)
+        VALUES (:firstName, :lastName, :pwdHash, :email, 0, :inProfile_picture);
+        SET @last_id_in_table1 = LAST_INSERT_ID(); 
+        INSERT INTO education (user_id) VALUES (@last_id_in_table1);"; // inserting id for education // 0 is for email login
+
         $req = $db->prepare($preparedinsertSql);
         $req->bindParam('firstName', $firstName, PDO::PARAM_STR);
         $req->bindParam('lastName', $lastName, PDO::PARAM_STR);

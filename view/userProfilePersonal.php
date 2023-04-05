@@ -129,7 +129,7 @@
                                                                         echo "checked";
                                                                     } ?> />
             </td>
-            
+
         <tr>
             <th id="jobdescription">Profile picture<br><br><br></th>
             <td>
