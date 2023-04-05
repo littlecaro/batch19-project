@@ -23,7 +23,7 @@
                 <div class="talentBasicInfo">
                     <h4>Basic information</h4>
                     <ul>
-                        <li>Years of Experience: <?= htmlspecialchars($yearsExperience[0]->years_experience1) ?></li>
+                        <li>Years of Experience: <?= !empty($yearsExperience[0]->years_experience1) ? htmlspecialchars($yearsExperience[0]->years_experience1) : null ?></li>
                         <li>Highest Degree: <?php
                                             $degreeEquivalents = (object) array(
                                                 0 => "Mandatory Education",
@@ -39,7 +39,7 @@
                                             } else {
                                                 echo "none";
                                             } ?></li>
-                        <li>Location: <?= htmlspecialchars($talentLocation[0]->location) ?? "None" ?></li>
+                        <li>Location: <?= !empty($talentLocation[0]->location) ? htmlspecialchars($talentLocation[0]->location) : "None" ?></li>
                     </ul>
                 </div>
                 <div class="talentDesiredPosition">

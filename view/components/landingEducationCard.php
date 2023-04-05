@@ -24,7 +24,6 @@
             ?>
         
             <?= !empty($education->degree) ? htmlspecialchars($education->degree) : null ?></h3>
-            <p> <?= !empty($education->date_start) ? htmlspecialchars(eduDateToStr($education->date_start)) . " - " . eduDateToStr($education->date_end) : null ?></p>
         </div>
         <!-- <i class="fa-solid fa-location-dot"></i> -->
         <p><?= !empty($education->city_id) ? htmlspecialchars($userManager->getCityName)($education->city_id)[0]->name : null ?></p>

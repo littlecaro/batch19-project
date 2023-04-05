@@ -11,7 +11,7 @@ ob_start();
     <button class="profile" onclick="myFunction('landing')">
         <img class="profile-img" src="<?= !empty($user->profile_picture) ? htmlspecialchars($user->profile_picture) : './public/images/uploaded/tom.jpg'; ?>" alt="User profile picture"><br>
         <div class="profile-name">
-            <h4><?= $user->first_name . " " . htmlspecialchars($user->last_name)  ?? "Your name" ?></h4>
+            <h4><?= $user->first_name . " " . (!empty($user->last_name) ? htmlspecialchars($user->last_name) : "") ?></h4>
             <p>Member since <?= $user->date_created ?? "YYYY-MM-DD" ?></p>
         </div>
     </button>
