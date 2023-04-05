@@ -23,10 +23,12 @@ function chatBoxExpand(toExpand) {
   } catch (error) {
     innerElem = null;
   }
-  console.log(toExpand);
+  console.log(toExpand.classList.contains("messageContainer"));
+  console.log(toExpand.parentElement);
   if (
     typeof innerElem !== "undefined" &&
-    !toExpand.classList.contains("newChatBox")
+    !toExpand.classList.contains("newChatBox") &&
+    !toExpand.parentElement.classList.contains("newChatBox")
   ) {
     chevronSwitch(toExpand);
   }

@@ -66,6 +66,7 @@ html[data-theme="dark   "] {
   height: 32px;
   padding: 5px;
   border-radius: 50%;
+  object-fit: cover;
 }
 .messagingProfileIco {
   margin: 5px 0 0 5px;
@@ -137,6 +138,7 @@ html[data-theme="dark   "] {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .chatboxPreviewProfile {
@@ -204,6 +206,7 @@ html[data-theme="dark   "] {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
 .chatboxMessageProfile {
   float: left;
