@@ -27,46 +27,46 @@ ob_start();
 
 <!-- main -->
 <div class="main">
-    <section id="landing">
-        <?php include('./view/userProfileLanding.php') ?>
-    </section>
+  <section id="landing">
+    <?php include('./view/userProfileLanding.php') ?>
+  </section>
 
-    <section id="personal" class="hidden">
-        <?php include('./view/userProfilePersonal.php') ?>
-    </section>
+  <section id="personal" class="hidden">
+    <?php include('./view/userProfilePersonal.php') ?>
+  </section>
 
-    <section id="resume" class="hidden">
-        <div id="resume">
-            <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
-                <p>
-                <h2>Resume/CV</h2>
-                <input type="file" name="resume" id="resume" accept=".pdf" />
-                </p>
-                <p>
-                    <input id="submitResume" type="submit" value="Save" />
-                </p>
-            </form>
-        </div>
-    </section>
+  <section id="resume" class="hidden">
+    <div id="resume">
+      <form action="index.php?action=userResumeUpload" method="post" enctype="multipart/form-data">
+        <p>
+        <h2>Resume/CV</h2>
+        <input type="file" name="resume" id="resume" accept=".pdf" />
+        </p>
+        <p>
+          <input id="submitResume" type="submit" value="Save" />
+        </p>
+      </form>
+    </div>
+  </section>
 
-    <section id="education" class="hidden">
-        <?php include('./view/userProfileEducation.php') ?>
-    </section>
+  <section id="education" class="hidden">
+    <?php include('./view/userProfileEducation.php') ?>
+  </section>
 
-    <section id="experience" class="hidden">
-        <?php include('./view/userProfileExperience.php') ?>
-    </section>
+  <section id="experience" class="hidden">
+    <?php include('./view/userProfileExperience.php') ?>
+  </section>
 
-    <section id="skills" class="hidden">
-        <?php include('./view/userProfileSkills.php') ?>
-    </section>
+  <section id="skills" class="hidden">
+    <?php include('./view/userProfileSkills.php') ?>
+  </section>
 
-    <section id="avail" class="hidden">
-        <!-- <p>Your Availability</p>
+  <section id="avail" class="hidden">
+    <!-- <p>Your Availability</p>
         <div class="avail"> -->
-        <?php include('./view/calendarView.php') ?>
-        <!-- </div> -->
-    </section>
+    <?php include('./view/calendarView.php') ?>
+    <!-- </div> -->
+  </section>
 
 </div>
 <?php

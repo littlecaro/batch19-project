@@ -33,6 +33,8 @@ ob_start();
         <img src="./public/images/logos/Telus-Logo.png" />
     </div>
 </div>
+
+
 <div class="feature-new-job">
     <div class="job_table">
         <h1>
