@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <?php require("./view/components/companyHeader.php"); ?>
+    <?php require("./view/components/userHeader.php"); ?>
     <?= $content; ?>
 
     <script>

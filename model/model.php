@@ -45,7 +45,7 @@ function getMessages($conversationId)
     $messages = $query->fetchAll(PDO::FETCH_OBJ);
     return $messages;
 }
-function submitMessage($conversationId = null, $senderId, $message, $recipientId = null)
+function submitMessage(?string $conversationId, $senderId, $message, $recipientId = null)
 {
     echo $senderId . ' ' . $message . " " . $conversationId . "<br>";
 
