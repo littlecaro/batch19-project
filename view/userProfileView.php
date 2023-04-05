@@ -14,15 +14,13 @@ ob_start();
     <div class="menus">
         <button onclick="myFunction('personal')"><i class="fa-solid fa-house"></i>Personal</button>
 
-        <button onclick="myFunction('resume')"><i class="fa-solid fa-magnifying-glass"></i>Resume/CV</button>
+        <button onclick="myFunction('education')"><i class="fa-solid fa-graduation-cap"></i>Education</button>
 
-        <button onclick="myFunction('education')"><i class="fa-solid fa-chart-simple"></i>Education</button>
+        <button onclick="myFunction('experience')"><i class="fa-solid fa-briefcase"></i>Experience</button>
 
-        <button onclick="myFunction('experience')"><i class="fa-solid fa-chart-simple"></i>Experience</button>
+        <button onclick="myFunction('skills')"><i class="fa-solid fa-code"></i>Skills</button>
 
-        <button onclick="myFunction('skills')"><i class="fa-solid fa-bookmark"></i></i>Skills</button>
-
-        <button onclick="showCalendarPage()"><i class="fa-solid fa-message"></i>Availability</button>
+        <button onclick="showCalendarPage()"><i class="fa-regular fa-calendar-days"></i>Availability</button>
     </div>
 </div>
 

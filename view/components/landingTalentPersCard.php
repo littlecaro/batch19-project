@@ -9,14 +9,16 @@
                     }; ?></h1>
         <p><b>Email:</b> <?= "$talent->email"; ?></p>
         <p><b>Phone number:</b> <?= "$talent->phone_number"; ?></p>
-        <p><b>Current location:</b> <?php if(!empty($talent->city)) {
-                                            echo "{$talentManager->getCityName($talent->city_id)[0]->name}";
+        <p><b>Current location:</b> <?php if(!empty($talent->city_id)) {
+                                            echo "{$userManager->getCityName($talent->city_id)[0]->name}";
                                             }  ?></p>
-        <p><b>Uploaded resume: <?php 
+        <p><b>Uploaded resume:</b> <?php 
                                     if (!empty($talent->resume_file_url)) {
                                         ?>
                                             <a onclick="event.stopPropagation()" href="<?=$talent->resume_file_url?>" target="_blank" rel="noopener noreferrer">Click link to open resume.</a> 
-                                        <?php } ?></b></p>
+                                        <?php } else {
+                                            echo "User has not uploaded a resume.";
+                                        } ?></p>
         <p><b>Expected salary (KRW):</b> <?= $talent->desired_salary; ?></p>
         <p><b>Need visa sponsorship:</b> <?php 
                                         if ($talent->visa_sponsorship == 1) 

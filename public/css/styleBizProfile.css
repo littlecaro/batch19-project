@@ -699,6 +699,7 @@ input[type="checkbox"] {
   background-color: rgba(210, 210, 210, 0.6);
   border-radius: 5px;
   padding: 1em;
+  width: 90vh;
 }
 
 .landingBtn {

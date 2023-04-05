@@ -729,3 +729,28 @@ input[type="checkbox"] {
   height: 0;
   display: none;
 }
+
+.resumeU {
+  all: unset;
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+  padding: 0.5vh;
+  cursor: pointer;
+  color: white;
+}
+
+.resumeV {
+  background-color: #d66238;
+}
+
+.resume {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  margin: 0;
+  line-height: normal;
+}
+
+#landing {
+  padding: 2vh;
+}

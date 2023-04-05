@@ -29,7 +29,7 @@ ob_start();
         </div>
         <h1><i class="fa-solid fa-house"></i>Personal info</h1>
         <div class="landingPersonal">
-            <?php include("./view/components/landingTalentCard.php") ?>
+            <?php include("./view/components/landingTalentPersCard.php") ?>
         </div>
 
         <h1><i class="fa-solid fa-graduation-cap"></i>Highest Education</h1>
