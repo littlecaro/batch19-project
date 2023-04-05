@@ -288,6 +288,10 @@ function deleteCalendarEntry($entry)
 function showTalents($filter, $saveData)
 { //TODO:improve flow of loop
     // echo $filter;
+
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
@@ -824,6 +828,9 @@ function fetchJobPostings()
 }
 function showJobCard($jobId)
 {
+    $companyManager = new CompanyManager();
+    $companyInfo = $companyManager->fetchCompanyBasicInfo();
+
     $userManager = new UserManager();
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);

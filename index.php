@@ -154,6 +154,7 @@ try {
             }
             break;
         case "talentSearch":
+
             $jobId = $_GET['jobId'] ?? null;
             // echo $jobId . "<br>";
             $saveData = savedSearchExists($jobId) ?? null;
@@ -166,19 +167,19 @@ try {
             }
 
             break;
-        // case "getUserSkills":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "getUserLanguages":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "getUserCities":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "userProfileView":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
+            // case "getUserSkills":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserLanguages":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "getUserCities":
+            //     require("./view/userProfileSkills.php");
+            //     break;
+            // case "userProfileView":
+            //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
+            //     showCalendar($user_id);
+            //     break;
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
