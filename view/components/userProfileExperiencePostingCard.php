@@ -1,9 +1,15 @@
 <div class="userExperienceInfo">
-    <p class="userExperienceCard">Company: <?= $experience->company_name ?></p><br>
-    <p>Job Title: <?= htmlspecialchars($experience->job_title ?? "") ?></p><br>
-    <p>Years of experience: <?= htmlspecialchars($experience->years_experience ?? "") ?> year(s)</p><br>
-    <button class="editUserExperience" id="editExpButton<?= $experience->id ?>">Edit</button>
-</div>
+        <p class="userExperienceCard">Company: <?= htmlspecialchars($experience->company_name) ?></p><br>
+        <p>Job Title: <?= htmlspecialchars($experience->job_title) ?></p><br>
+        <p>Years of experience:
+            <?php
+            echo htmlspecialchars($experience->years_experience);
+            // check number of years of experience, if it's = 1 echo year, if it's > 1 echo years
+            echo htmlspecialchars($experience->years_experience) === 1 ? ' year' : ' years';
+            ?>
+        </p><br>
+        <button class="editUserExperience" id="editExpButton<?= $experience->id ?>">Edit</button>
+    </div>
 
 <!-- <p id="experienceUpdateStatus"></p> -->
 
@@ -51,18 +57,8 @@
                 Delete
             </button>
         </form>
-
-    <div class="userExperienceInfo">
-        <p class="userExperienceCard">Company: <?= htmlspecialchars($experience->company_name) ?></p><br>
-        <p>Job Title: <?= htmlspecialchars($experience->job_title) ?></p><br>
-        <p>Years of experience:
-            <?php
-            echo htmlspecialchars($experience->years_experience);
-            // check number of years of experience, if it's = 1 echo year, if it's > 1 echo years
-            echo htmlspecialchars($experience->years_experience) === 1 ? ' year' : ' years';
-            ?>
-        </p><br>
-        <button class="editUserExperience" id="editExpButton<?= $experience->id ?>">Edit</button>
     </div>
+
+</dialog>
 
     <!-- <p id="experienceUpdateStatus"></p> -->
