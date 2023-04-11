@@ -53,16 +53,15 @@ class UserManager extends Manager
         $req->bindParam('pwdHash', $pwdHash, PDO::PARAM_STR);
         $req->bindParam('email', $email, PDO::PARAM_STR);
         $req->bindParam('inProfile_picture', $defaultProfilePic, PDO::PARAM_STR);
-        $wasAdded = $req->execute();
-        $req->closeCursor();
+        return $req->execute();
+        // $req->closeCursor();
         //if a user was added, we'll fetch this info and run one more query
         //this query is to get the info for the session
-        if ($wasAdded) {
-            $req = $db->query("SELECT LAST_INSERT_ID() AS user_id, first_name, last_name FROM users WHERE id = LAST_INSERT_ID()");
-            return $req->fetch(PDO::FETCH_OBJ);
-        } else {
-            return false;
-        }
+        // if ($wasAdded) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     // public function updateUserPersonal($id, $phoneNb, $city, $salary, $visa)

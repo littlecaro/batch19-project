@@ -71,9 +71,9 @@ function checkUserSignInGoogle($decodedToken)
 function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
 {
     //validate data
-    $firstNameValid = preg_match("/^[a-z._]+$/", $firstName);
-    $lastNameValid = preg_match("/^[a-z._]+$/", $lastName);
-    $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
+    $firstNameValid = preg_match("/^[A-Za-z._]+$/", $firstName);
+    $lastNameValid = preg_match("/^[A-Za-z._]+$/", $lastName);
+    $pwdValid = preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
     $emailValid = preg_match("/^[a-z0-9_.@]{3,20}$/i", $_POST['email']);
 
@@ -81,16 +81,11 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
         //if data good, insert into database w model function
         $userManager = new UserManager();
         $user = $userManager->insertUser($firstName, $lastName, $email, $pwd);
-
+        
         if ($user) {
-            //create a session for when the user is logged in
-            $_SESSION['id'] = $user->user_id;
-            $_SESSION['first_name'] = $user->first_name;
-            $_SESSION['last_name'] = $user->last_name;
-            header("Location: index.php?action=userProfileView");
-            print_r($_SESSION);
+            echo "Your account has been created! Please sign in :) ";
         } else {
-            echo "Your account has been created! Please click on the 'SIGN IN' button to login :) ";
+            echo "Something went wrong, please try again.";
         }
         require "./view/signUpView.php";
     } else {

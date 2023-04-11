@@ -24,7 +24,7 @@ html[data-theme="dark   "] {
 .chatboxFooter {
   width: 100%;
   background-color: transparent;
-  height: 47px;
+  height: 0;
   bottom: 0;
   position: fixed;
   align-items: flex-end;
