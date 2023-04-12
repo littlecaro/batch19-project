@@ -201,12 +201,8 @@ try {
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             $oldImage = $_POST['oldImage'] ?? null;
-            $profilePic = $_FILES['imageUpload'] ?? null;
-
+            $profilePic = !empty($_FILES['profilePic']['name']) ? $_FILES['profilePic'] : null;
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
-
-            // echo $id, $phoneNb, $city, $salary, $visa;
-            // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
         case "updateUserEducation":
             $userId = $_POST['userId'];
