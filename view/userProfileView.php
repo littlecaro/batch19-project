@@ -1,7 +1,10 @@
 <?php
+if (!empty($_SESSION['company_ID'])) {
+    header('location: http://localhost/sites/batch19-project/index.php?action=companyDashboard');
+    exit;
+}
 if (empty($_SESSION['id'])) {
-    header('location: http://localhost/sites/batch19-project/index.php');
-exit;
+  header('location: http://localhost/sites/batch19-project/index.php');
 }
 $title = "userProfile";
 ob_start();

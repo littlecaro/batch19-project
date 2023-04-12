@@ -56,10 +56,12 @@ class CompanyManager extends Manager
         // Set profile_photo to your $logo variable
         // WHERE the user_id matches the logged in user's id ($_SESSION['id'])
 
-        $query = "UPDATE users SET profile_picture = :logo WHERE ID = :userID";
+        $query = "UPDATE users SET email = :email, profile_picture = :logo, phone_number = :phone  WHERE id = :userID";
         $req = $db->prepare($query);
-        $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
+        $req->bindParam("userID", $_SESSION['id'], PDO::PARAM_INT);
+        $req->bindParam("email", $email, PDO::PARAM_STR);
         $req->bindParam("logo", $logo, PDO::PARAM_STR);
+        $req->bindParam("phone", $phone, PDO::PARAM_INT);
 
         $result2 = $req->execute();
         return [$result, $result2];
