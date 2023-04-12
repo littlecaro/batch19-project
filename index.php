@@ -277,9 +277,7 @@ try {
             $webSite = $_POST['webSite'] ?? null;
             $oldLogo = $_POST['oldLogo'] ?? null;
             $logo = !empty($_FILES['logoUpload']['name']) ? $_FILES['logoUpload'] : null;
-            // echo "<pre>";
-            // print_r($_FILES);
-            // echo "logo; $logo";
+
             updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
             break;
         case "updateEmployeeInfo":

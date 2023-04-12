@@ -748,7 +748,6 @@ function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $log
     $result = $companyManager->changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo);
 
     if ($result[0] and $result[1]) {
-
         header("location:index.php?action=companyDashboard");
     } else {
         throw new Exception("Update failed.");
