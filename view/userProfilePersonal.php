@@ -164,7 +164,7 @@ exit;
         };
         noUiSlider.create(arbitraryValuesSlider, {
             // start values are parsed by 'format'
-            start: ['₩50M'],
+            start: ["₩<?=$user->desired_salary?>M"],
             connect: true,
             range: {
                 min: 0,
