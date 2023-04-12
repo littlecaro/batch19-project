@@ -33,7 +33,7 @@ ob_start();
                 <tr>
                     <th>Email</th>
                     <td>
-                        <input type="text" name="email" id="email" placeholder="Enter an email" value="<?= htmlspecialchars($companyInfo->email) ?>">
+                        <input type="text" name="email" id="email" placeholder="Enter an email" value="<?= !empty($companyInfo->email) ? htmlspecialchars($companyInfo->email) : "" ?>">
                     </td>
                 </tr>
                 <tr>

@@ -108,7 +108,7 @@ function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName,
 {
     $firstNameValid = preg_match("/^[a-zA-Z]+$/i", $firstName);
     $lastNameValid = preg_match("/^[a-zA-Z]+$/i", $lastName);
-    $pwdValid = preg_match("/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,16}$/", $pwd);
+    $pwdValid = preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
 
     require_once("./controller/blacklist.php");
@@ -129,17 +129,11 @@ function companySignUp($firstName, $lastName, $email, $pwd, $pwd2, $companyName,
         $userManager = new UserManager();
         $user = $userManager->insertCompanyUser($firstName, $lastName, $email, $pwd, $companyName, $companyTitle);
         if ($user) {
-            //create a session for when the company is logged in
-            $_SESSION['id'] = $user->user_id;
-            $_SESSION['first_name'] = $user->first_name;
-            $_SESSION['last_name'] = $user->last_name;
-            $_SESSION['company_id'] = $user->company_id;
-            print_r($_SESSION);
-            header("Location: index.php?action=companyDashboard");
+            echo "Your account has been created! Please sign in :) ";
         } else {
-            echo "Something went wrong.";
+            echo "Something went wrong, please try again.";
         }
-        // require "./view/signUpView.php";
+        require "./view/signUpView.php";
     } else {
         $msg = "Please fill in all inputs.";
         echo "something was invalid.";
@@ -163,9 +157,9 @@ function userSignIn($email, $pwd)
         $_SESSION['company_id'] = $user->company_id;
 
 
-        if ($user->company_id != null) {
+        if ($_SESSION['company_id'] != null) {
             $companyManager = new CompanyManager();
-            $companyInfo = $companyManager->fetchCompanyInfo();
+            $companyInfo = $companyManager->fetchCompanyInfo($_SESSION['company_id']);
 
             $_SESSION['company_id'] = $companyInfo->id;
             $_SESSION["profile_pic"] = $companyInfo->logo_img;
@@ -174,23 +168,22 @@ function userSignIn($email, $pwd)
             $_SESSION["date_created"] = $companyInfo->date_created;
             header("Location: index.php?action=companyDashboard");
         } else {
-
             header("Location: index.php?action=userProfileView");
             exit;
         }
     } else {
-        throw new Exception("Invalid Information");
+        throw new Exception("Invalid Information. Please make sure the fields have been inputted correctly.");
     }
 
-    $user = $userManager->signInUser($email, $pwd);
+    // $user = $userManager->signInUser($email, $pwd);
 
-    if (!$user) {
-        throw new Exception("Invalid Info");
-    } else {
-        //if data good, allow sign in
-        header("index.php"); //TODO: change header location
-        exit;
-    }
+    // if (!$user) {
+    //     throw new Exception("Invalid Information. Please make sure the fields have been inputted correctly.");
+    // } else {
+    //     //if data good, allow sign in
+    //     header("index.php"); //TODO: change header location
+    //     exit;
+    // }
 }
 
 function showUserSignUp()
@@ -723,7 +716,7 @@ function getCompanyInfo()
     }
 
     $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyInfo();
+    $companyInfo = $companyManager->fetchCompanyInfo($_SESSION['company_id']);
 
     // print_r($companyInfo);
 
@@ -756,7 +749,7 @@ function uploadImage($file)
 function updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo)
 {
     $companyManager = new CompanyManager();
-    $companyInfo = $companyManager->fetchCompanyInfo();
+    $companyInfo = $companyManager->fetchCompanyInfo($_SESSION['company_id']);
     if ($logo) {
         $logo = uploadImage($logo);
     } else {

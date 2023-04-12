@@ -23,13 +23,12 @@ class CompanyManager extends Manager
         return $result;
     }
 
-    public function fetchCompanyInfo()
+    public function fetchCompanyInfo($compID)
     {
-        $COMPANY_ID = 1; // TODO: REMOVE THIS!!
         $db = $this->dbConnect();
         $select = "SELECT *, DATE(date_created) AS date_created FROM companies WHERE id = :companyId";
         $req = $db->prepare($select);
-        $req->bindParam("companyId", $COMPANY_ID, PDO::PARAM_INT); // TODO: get companyId from $_SESSION
+        $req->bindParam("companyId", $compID, PDO::PARAM_INT); // TODO: get companyId from $_SESSION
 
         $req->execute();
         $companyInfo = $req->fetch(PDO::FETCH_OBJ);
@@ -39,12 +38,10 @@ class CompanyManager extends Manager
     public function changeCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo)
 
     {
-        $COMPANY_ID = 1;  // TODO: REMOVE THIS!!
-        $USER_ID = 2; // TODO: REMOVE THIS!!
         $db = $this->dbConnect();
         $query = "UPDATE companies SET name = :bizName, company_address = :bizAddress, email = :email, phone_number = :phone, website_address = :webSite, logo_img = :logo WHERE ID = :companyId";
         $req = $db->prepare($query);
-        $req->bindParam("companyId", $COMPANY_ID, PDO::PARAM_INT);
+        $req->bindParam("companyId", $_SESSION['company_id'], PDO::PARAM_INT);
         $req->bindParam("bizName", $bizName, PDO::PARAM_STR);
         $req->bindParam("bizAddress", $bizAddress, PDO::PARAM_STR);
         $req->bindParam("email", $email, PDO::PARAM_STR);

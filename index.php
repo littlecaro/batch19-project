@@ -196,7 +196,7 @@ try {
             break;
         case "savedProfiles":
             $companyManager = new CompanyManager();
-            $companyInfo = $companyManager->fetchCompanyInfo();
+            $companyInfo = $companyManager->fetchCompanyInfo($_SESSION['company_id']);
             $userManager = new UserManager();
             if (isset($_SESSION['id'])) {
                 $user = $userManager->getUserProfile($_SESSION['id']);
@@ -293,11 +293,7 @@ try {
             // echo "<pre>";
             // print_r($_FILES);
             // echo "logo; $logo";
-            if ($bizName and $bizAddress and $email and $phone and $webSite) {
-                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
-            } else {
-                throw new Exception("missing data");
-            }
+            updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
             break;
         case "updateEmployeeInfo":
             $firstName = $_POST['firstName'] ?? null;
