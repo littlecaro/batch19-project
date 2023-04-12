@@ -174,16 +174,6 @@ function userSignIn($email, $pwd)
     } else {
         throw new Exception("Invalid Information. Please make sure the fields have been inputted correctly.");
     }
-
-    // $user = $userManager->signInUser($email, $pwd);
-
-    // if (!$user) {
-    //     throw new Exception("Invalid Information. Please make sure the fields have been inputted correctly.");
-    // } else {
-    //     //if data good, allow sign in
-    //     header("index.php"); //TODO: change header location
-    //     exit;
-    // }
 }
 
 function showUserSignUp()
@@ -696,7 +686,7 @@ function addNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadl
     $companyInfo = $companyManager->fetchCompanyBasicInfo();
     $result = $companyManager->insertNewJob($jobTitle, $jobStory, $salaryMin, $salaryMax, $cities, $deadline);
     if ($result) {
-        // TODO: finish this bish!
+        // TODO: finish this!
         header("Location: ./index.php?action=jobListings");
     } else {
         echo "Adding job failed, please contact the administrator";

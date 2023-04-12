@@ -1,5 +1,5 @@
 <?php
-// TODO: Currently can just book one interview with a user. 
+// Currently can just book one interview with a user. 
 // Do we need to book multiple? 
 // HTML structure in place to show more than one.
         if ($i == 0 OR $prevDate != strtotime($interviews[$i]->date)) {
