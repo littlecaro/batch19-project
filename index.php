@@ -105,7 +105,6 @@ try {
             break;
         case "messenger":
             showChats();
-
             break;
         case "search":
             // print_r($_GET);
@@ -142,7 +141,6 @@ try {
 
                 showTalents(false, null);
             }
-
             break;
         case "talentSearchSave":
             // echo "save";
@@ -203,10 +201,7 @@ try {
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             $oldImage = $_POST['oldImage'] ?? null;
-            $profilePic = !empty($_FILES['imageUpload']['name']) ? $_FILES['imageUpload'] : null;
-            $file = $_FILES['imageUpload'];
-            // print_r($_FILES['imageUpload']);
-            // uploadUserProfileImage($file);
+            $profilePic = $_FILES['imageUpload'] ?? null;
 
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
 
@@ -229,7 +224,6 @@ try {
             $id = $_POST['jobID'];
             updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
             break;
-
         case "addNewUserExperience":
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;

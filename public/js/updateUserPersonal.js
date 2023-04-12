@@ -11,9 +11,9 @@ function updateUserPersonal(e) {
   formData.append("city", city.options[city.selectedIndex].value); // TODO:
   formData.append("salary", salary.value);
   formData.append("id", id.value);
-  const file = imageUpload.files[0];
-  formData.append("imageUpload", file);
-  console.log(imageUpload.files[0]);
+  if (typeof file !== "undefined") {
+    formData.append("imageUpload", file);
+  }
   var inputs = document.querySelectorAll('input[type="radio"]');
   // console.log(inputs);
   for (var i = 0; i < inputs.length; i++) {
@@ -27,14 +27,10 @@ function updateUserPersonal(e) {
 
   console.log(formData);
   let xhr = new XMLHttpRequest();
-  xhr.open(
-    "POST",
-    `http://localhost/sites/batch19-project/index.php?action=updateUserPersonal`
-  );
+  xhr.open("POST", `http://localhost/sites/batch19-project/index.php?action=updateUserPersonal`);
   xhr.addEventListener("readystatechange", function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
-      window.location.href =
-        "http://localhost/sites/batch19-project/index.php?action=userProfileView";
+      window.location.href = "http://localhost/sites/batch19-project/index.php?action=userProfileView";
       let response = xhr.responseText;
       console.log(response);
       personalUpdateStatus.textContent = response;
