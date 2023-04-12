@@ -179,7 +179,7 @@ class UserManager extends Manager
     public function getCitiesList()
     {
         $db = $this->dbConnect();
-        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities_kr');
         $cities = $res->fetchAll(PDO::FETCH_ASSOC);
         return $cities;
     }
@@ -187,7 +187,7 @@ class UserManager extends Manager
     public function getCityName($cityId)
     {
         $db = $this->dbConnect();
-        $cityName = ("SELECT name FROM cities WHERE id = :inCityId");
+        $cityName = ("SELECT name FROM cities_kr WHERE id = :inCityId");
         $req = $db->prepare($cityName);
         $req->bindParam(':inCityId', $cityId, PDO::PARAM_INT);
         $req->execute();
@@ -209,11 +209,13 @@ class UserManager extends Manager
     {
         $db = $this->dbConnect();
         // this is to check and get the city id from the cities table. cities -> city_id(matching the city name) -> pass id inside users.
-        $getCityId = "SELECT id FROM cities where name = :inCity AND country_code = 'KR' "; //query
+        $getCityId = "SELECT id FROM cities_kr WHERE name = :inCity AND country_code = 'KR' "; //query
         $req = $db->prepare($getCityId);
         $req->bindParam(':inCity', $city, PDO::PARAM_STR);
         $cityId = $req->execute();
         $cityId = $req->fetchAll(PDO::FETCH_OBJ);
+        echo "pre";
+        print_r($cityId);
         $cityId = $cityId[0]->id ?? NULL; // the city id in table cities
         $updateUserP = "UPDATE users SET phone_number = :inPhoneNb, city_id = :inCity, visa_sponsorship = :inVisa, desired_salary = :inSalary, profile_picture = :inProfilePic WHERE id = :id";
         $req = $db->prepare($updateUserP);

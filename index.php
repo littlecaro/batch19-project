@@ -198,6 +198,7 @@ try {
             $id = $_POST['id'];
             $phoneNb = $_POST['phoneNb'] ?? null;
             $city = $_POST['city'] ?? null;
+            echo $city;
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             $oldImage = $_POST['oldImage'] ?? null;
