@@ -95,11 +95,6 @@ foreach ($experiences as $experience) {
     </div>
 </dialog>
 
-<!-- value="<?= $experience->company_name; ?>" /><br /><br />
-value="<?= $experience->job_title; ?>"><br /><br />
-value="<?= $experience->years_experience; ?>"><br /><br />
-value="<?= $_SESSION['id']; ?>"> -->
-
 <script defer src="./public/js/addNewUserExperience.js"></script>
 <!-- <script defer src="./public/js/deleteUserExperience.js"></script> -->
 <script>
@@ -162,7 +157,7 @@ value="<?= $_SESSION['id']; ?>"> -->
 
             formData.append("jobID", e.target.value);
 
-            console.log("jobID:", e.target.value); //showing job ID
+            // console.log("jobID:", e.target.value); //showing job ID
             // console.log(e); // shows everything
             let xhr = new XMLHttpRequest(); // it didn't work on the JS file so copied and pasted it into here directly.
             xhr.open(
@@ -173,9 +168,9 @@ value="<?= $_SESSION['id']; ?>"> -->
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     window.location.href =
                         "http://localhost/sites/batch19-project/index.php?action=userProfileView";
-                    let response = xhr.responseText;
-                    experienceUpdateStatus.textContent = response;
-                    console.log(response); // 2nd step // shows the "query" DELETE FROM database table...
+                    // let response = xhr.responseText;
+                    // experienceUpdateStatus.textContent = response;
+                    // console.log(response); // 2nd step // shows the "query" DELETE FROM database table...
                 }
             });
             xhr.send(formData);

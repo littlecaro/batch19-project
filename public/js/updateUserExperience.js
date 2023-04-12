@@ -22,17 +22,13 @@ function updateUserExperience(e) {
   //then add then in the e.target[#].value, above to check they are grabbing the correct values
 
   let xhr = new XMLHttpRequest();
-  xhr.open(
-    "POST",
-    `http://localhost/sites/batch19-project/index.php?action=updateUserExperience`
-  );
+  xhr.open("POST", `http://localhost/sites/batch19-project/index.php?action=updateUserExperience`);
   xhr.addEventListener("readystatechange", function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
-      window.location.href =
-        "http://localhost/sites/batch19-project/index.php?action=userProfileView";
+      window.location.href = "http://localhost/sites/batch19-project/index.php?action=userProfileView";
       let response = xhr.responseText;
-      experienceUpdateStatus.textContent = response;
-      console.log(response);
+      // experienceUpdateStatus.textContent = response;
+      // console.log(response);
     }
   });
   xhr.send(formData);
