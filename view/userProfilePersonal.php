@@ -142,12 +142,12 @@ exit;
             <th id="jobdescription">Profile picture<br><br><br></th>
             <td>
                 <!-- <form action="index.php?action=userPhotoUpload" method="post" enctype="multipart/form-data"> -->
-                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>" width="100px" height="100px">
+                <button id="photoUploadClick" type="button" onclick="imageUpload.click()"><img id="imgPreview" src="<?= $user->profile_picture ?>" width="100px" height="100px">
                 </button><br>
                 <input type="file" style="padding-top: 10px" name="imageUpload" id="imageUpload" accept="image/*">
             </td>
         </tr>
-        <input type="hidden" name="oldImage" value="<?= $user->profile_picture ?? "./public/images/uploaded/tom.jpg" ?>">
+        <input type="hidden" name="oldImage" id="oldImage" value="<?= $user->profile_picture ?>">
     </table>
 
     <p id="personalUpdateStatus"></p>
@@ -164,7 +164,7 @@ exit;
         };
         noUiSlider.create(arbitraryValuesSlider, {
             // start values are parsed by 'format'
-            start: ['₩50M'],
+            start: ["₩<?=$user->desired_salary?>M"],
             connect: true,
             range: {
                 min: 0,
@@ -184,7 +184,7 @@ exit;
         const slider = document.querySelector("#slider-square");
         form.addEventListener("submit", function(e) {
             const userSalary = slider.noUiSlider.get();
-            console.log(userSalary);
+            // console.log(userSalary);
             user = userSalary.substr(1, 2);
             document.getElementById('salary').value = parseInt(user);
             e.preventDefault();
@@ -193,15 +193,5 @@ exit;
     <script defer src="./public/js/updateUserPersonal.js"></script>
     <input id="id" type="hidden" name="id" value="<?= $_SESSION['id']; ?>">
     <input onclick="location.reload()" type="submit" value="Save" class="button">
-
 </form>
 <br>
-<script>
-    imageUpload.onchange = () => {
-        const file = imageUpload.files[0];
-        console.log(file);
-        if (file) {
-            imgPreview.src = URL.createObjectURL(file);
-        }
-    };
-</script>

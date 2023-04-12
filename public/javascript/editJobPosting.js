@@ -15,9 +15,7 @@ const addCandidatesBtn = document.querySelector("#addCandidatesBtn");
 
 const closePositionBtn = document.querySelector("#closePositionBtn");
 function updateButton() {
-  let jobState = parseInt(
-    document.querySelector("input[name=jobState]").getAttribute("data")
-  );
+  let jobState = parseInt(document.querySelector("input[name=jobState]").getAttribute("data"));
   if (jobState == 0) {
     closePositionBtn.innerText = "Open Position";
     action = 1;
@@ -38,7 +36,7 @@ addCandidatesBtn.addEventListener("click", () => {
   xhr = new XMLHttpRequest();
   xhr.open("POST", "./index.php?action=talentSearch&filter");
   xhr.onload = () => {
-    console.log(xhr.responseText);
+    // console.log(xhr.responseText);
     main.innerHTML = "";
     main.innerHTML = xhr.response;
   };
@@ -52,7 +50,7 @@ closePositionBtn.addEventListener("click", () => {
   xhr = new XMLHttpRequest();
   xhr.open("POST", "./index.php?action=updatePosition");
   xhr.onload = () => {
-    console.log(xhr.responseText);
+    // console.log(xhr.responseText);
     updateButton();
   };
   xhr.send(formdata);
@@ -73,13 +71,7 @@ function submitFields() {
     form.append("description", editableFields[0].value);
     form.append("minSalary", editableFields[1].value);
     form.append("maxSalary", editableFields[2].value);
-    form.append(
-      "deadline",
-      datetimepicker.value
-        .replace(/-/g, "/")
-        .replace("T", " ")
-        .replaceAll("/", "-")
-    );
+    form.append("deadline", datetimepicker.value.replace(/-/g, "/").replace("T", " ").replaceAll("/", "-"));
     form.append("id", jobId);
     for (var pair of form.entries()) {
       console.log(pair[0] + " - " + pair[1]);

@@ -105,7 +105,6 @@ try {
             break;
         case "messenger":
             showChats();
-
             break;
         case "search":
             // print_r($_GET);
@@ -142,21 +141,7 @@ try {
 
                 showTalents(false, null);
             }
-
             break;
-        // case "getUserSkills":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "getUserLanguages":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "getUserCities":
-        //     require("./view/userProfileSkills.php");
-        //     break;
-        // case "userProfileView":
-        //     $user_id = $_SESSION['user_id'] ?? 1; //TODO: REMOVE 1
-        //     showCalendar($user_id);
-        //     break;
         case "talentSearchSave":
             // echo "save";
             $jobId = $_GET['jobId'] ?? null;
@@ -196,7 +181,7 @@ try {
             break;
         case "savedProfiles":
             $companyManager = new CompanyManager();
-            $companyInfo = $companyManager->fetchCompanyInfo();
+            $companyInfo = $companyManager->fetchCompanyInfo($_SESSION['company_id']);
             $userManager = new UserManager();
             if (isset($_SESSION['id'])) {
                 $user = $userManager->getUserProfile($_SESSION['id']);
@@ -216,15 +201,8 @@ try {
             $salary = $_POST['salary'] ?? null;
             $visa = $_POST['visa'] ?? null;
             $oldImage = $_POST['oldImage'] ?? null;
-            $profilePic = !empty($_FILES['imageUpload']['name']) ? $_FILES['imageUpload'] : null;
-            $file = $_FILES['imageUpload'];
-            // print_r($_FILES['imageUpload']);
-            // uploadUserProfileImage($file);
-
+            $profilePic = !empty($_FILES['profilePic']['name']) ? $_FILES['profilePic'] : null;
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
-
-            // echo $id, $phoneNb, $city, $salary, $visa;
-            // $id, $phone_number, $city_id, $desired_salary, $visa_sponsorship
             break;
         case "updateUserEducation":
             $userId = $_POST['userId'];
@@ -242,7 +220,6 @@ try {
             $id = $_POST['jobID'];
             updateUserExperience($jobTitle, $yearsExperience, $companyName, $userId, $id);
             break;
-
         case "addNewUserExperience":
             $userId = $_POST['userId'];
             $jobTitle = $_POST['jobTitle'] ?? null;
@@ -257,7 +234,7 @@ try {
             deleteUserExperience($id);
             break;
         case "userProfileSkillsSubmit":
-            $userId = $_SESSION['id'] ?? null; //TODO: change this userID
+            $userId = $_SESSION['id'] ?? null;
             $skillsString = $_POST['skills'] ?? null;
             $languagesString = $_POST['languages'] ?? null;
             if ($skillsString != null) {
@@ -290,14 +267,8 @@ try {
             $webSite = $_POST['webSite'] ?? null;
             $oldLogo = $_POST['oldLogo'] ?? null;
             $logo = !empty($_FILES['logoUpload']['name']) ? $_FILES['logoUpload'] : null;
-            // echo "<pre>";
-            // print_r($_FILES);
-            // echo "logo; $logo";
-            if ($bizName and $bizAddress and $email and $phone and $webSite) {
-                updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
-            } else {
-                throw new Exception("missing data");
-            }
+
+            updateCompanyInfo($bizName, $bizAddress, $email, $phone, $webSite, $logo, $oldLogo);
             break;
         case "updateEmployeeInfo":
             $firstName = $_POST['firstName'] ?? null;

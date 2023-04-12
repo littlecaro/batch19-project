@@ -15,7 +15,6 @@ ob_start();
 <h3>Sign In</h3>
 <div class="template">
   <div class="box">
-
     <p><?= isset($_GET['error']) ? $_GET['error'] : "" ?></p>
     <form action="index.php?action=userSignIn" method="POST">
       <input type="text" name="email" placeholder="Email" /><br><br>

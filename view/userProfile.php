@@ -17,7 +17,7 @@ exit;
     <!-- <script defer src="../public/js/userProfile.js"></script> -->
     <title>User Profile</title>
 </head>
-<!-- TODO: Header from Alice -->
+
 
 <body>
     <button>
@@ -185,7 +185,5 @@ exit;
     <div id="avail"></div>
 
 </body>
-
-<!-- TODO: Footer from Alice -->
 
 </html>
