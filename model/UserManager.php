@@ -124,7 +124,7 @@ class UserManager extends Manager
         $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
         //inserting first into companies table
         //then set the most recent insert id as the id for users table, then insert there too
-        $preparedinsertSql = "INSERT INTO companies (name) VALUES (:companyname);
+        $preparedinsertSql = "INSERT INTO companies (name, email) VALUES (:companyname, :email);
         SET @last_id_in_table1 = LAST_INSERT_ID();
         INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0)";
         $req = $db->prepare($preparedinsertSql);
@@ -214,8 +214,6 @@ class UserManager extends Manager
         $req->bindParam(':inCity', $city, PDO::PARAM_STR);
         $cityId = $req->execute();
         $cityId = $req->fetchAll(PDO::FETCH_OBJ);
-        echo "pre";
-        print_r($cityId);
         $cityId = $cityId[0]->id ?? NULL; // the city id in table cities
         $updateUserP = "UPDATE users SET phone_number = :inPhoneNb, city_id = :inCity, visa_sponsorship = :inVisa, desired_salary = :inSalary, profile_picture = :inProfilePic WHERE id = :id";
         $req = $db->prepare($updateUserP);
@@ -225,15 +223,16 @@ class UserManager extends Manager
         $req->bindParam('inSalary', $salary, PDO::PARAM_INT);
         $req->bindParam('inVisa', $visa, PDO::PARAM_INT);
         $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
-        $result1 = $req->execute();
+        $result = $req->execute();
+        return $result;
 
-        $query = "UPDATE users SET profile_picture = :inProfilePic WHERE id = :userID";
-        $req = $db->prepare($query);
-        $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
-        $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
+        // $query = "UPDATE users SET profile_picture = :inProfilePic WHERE id = :userID";
+        // $req = $db->prepare($query);
+        // $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
+        // $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
 
-        $result2 = $req->execute();
-        return [$result1, $result2];
+        // $result2 = $req->execute();
+        // return [$result1, $result2];
     }
 
     // public function getEducationLevel($educationId)

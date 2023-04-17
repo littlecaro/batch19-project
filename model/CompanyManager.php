@@ -51,6 +51,7 @@ class CompanyManager extends Manager
 
         $result = $req->execute();
         $req->closeCursor();
+        // return $result;
 
         // Create an SQL query to update the users table
         // Set profile_photo to your $logo variable
