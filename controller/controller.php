@@ -73,7 +73,7 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     //validate data
     $firstNameValid = preg_match("/^[A-Za-z._]+$/", $firstName);
     $lastNameValid = preg_match("/^[A-Za-z._]+$/", $lastName);
-    $pwdValid = preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $pwd);
+    $pwdValid = preg_match("/^.{8,}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
     $emailValid = preg_match("/^[a-z0-9_.@]{3,20}$/i", $_POST['email']);
 
