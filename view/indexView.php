@@ -15,7 +15,7 @@ ob_start();
                 The perfect job you're looking for is just around the corner with
                 our powerful AI algorithms to guide you through the search process.
             </h4>
-            <button class="button">LEARN MORE</button>
+            <a class="button" href="http://localhost/sites/batch19-project/index.php?action=userSignUpView"><button>SIGN UP</button></a>
         </div>
     </div>
 </div>
@@ -115,7 +115,7 @@ ob_start();
                 "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
                 consectetur, adipisci velit..."
             </h4>
-            <button class="button">TRY FOR FREE</button>
+            <a class="button" href="http://localhost/sites/batch19-project/index.php?action=userSignUpView"><button>TRY IT FOR FREE</button></a>
         </div>
     </div>
 </div>

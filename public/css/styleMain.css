@@ -16,11 +16,7 @@
 
 body {
   background: var(--text-color-primary);
-  background: linear-gradient(
-    29deg,
-    var(--text-color-primary),
-    rgba(101, 90, 223, 0.5) 100%
-  );
+  background: linear-gradient(29deg, var(--text-color-primary), rgba(101, 90, 223, 0.5) 100%);
   background-size: cover;
   margin: 80px 0 0 0;
 }
@@ -36,12 +32,7 @@ contain the landing page in a wrapper... HTML and body should have width and hei
   width: 100%;
   height: 80px;
   background: var(--header-color-primary);
-  background: linear-gradient(
-    29deg,
-    #28225d 0%,
-    #28225d 27%,
-    rgba(101, 90, 223, 1) 100%
-  );
+  background: linear-gradient(29deg, #28225d 0%, #28225d 27%, rgba(101, 90, 223, 1) 100%);
   z-index: 2;
 }
 
@@ -139,8 +130,7 @@ contain the landing page in a wrapper... HTML and body should have width and hei
 }
 
 h1 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 36px;
   font-weight: medium;
   color: rgba(101, 90, 223, 1);
@@ -148,8 +138,7 @@ h1 {
 }
 
 h2 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 30px;
   font-weight: medium;
   color: var(--header-color-primary);
@@ -168,8 +157,7 @@ h3 {
 
 p,
 h4 {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode";
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode";
   line-height: 1.6em;
   font-size: 16px;
   color: #1f2944;
@@ -196,6 +184,12 @@ button {
   background-color: var(--button-color-secondary);
   border: 0;
   height: 30px;
+  border-radius: 20px;
+  padding: 5px 5px;
+}
+
+a > button {
+  background-color: transparent;
 }
 
 .button:hover {
@@ -274,8 +268,7 @@ button {
 
 .job_table table {
   width: 100%;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   border-collapse: collapse;
   text-align: center;
   color: white;
@@ -299,8 +292,7 @@ td {
 }
 
 .footer p {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 14px;
 }
 
