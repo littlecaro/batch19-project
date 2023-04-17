@@ -8,7 +8,7 @@
         <div class="meetingSubCard">
         <form action="index.php?action=talentProfile" method="POST">
         <input type="hidden" name="talentID" value="<?=$bookedMeetings[$i]->userID?>">
-                <button><p><?= htmlspecialchars($bookedMeetings[$i]->first_name) . " " . !empty(($bookedMeetings[$i]->last_name) ? htmlspecialchars($bookedMeetings[$i]->last_name) : null)?> </p></button>
+                <button><p><?= htmlspecialchars($bookedMeetings[$i]->first_name) . " " . (!empty($bookedMeetings[$i]->last_name) ? htmlspecialchars($bookedMeetings[$i]->last_name) : null)?> </p></button>
         </form>
                 <p>-</p>
         <form action="index.php?action=jobListings&ListingId=<?= $bookedMeetings[$i]->jobID?>" method="POST">
