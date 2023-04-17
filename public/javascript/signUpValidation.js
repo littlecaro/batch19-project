@@ -69,7 +69,7 @@ function checkPwd2() {
     document.querySelector("#pwdconf~span").textContent = "";
     return true;
   } else {
-    userPwd.className = "red";
+    // userPwd.className = "red";
     userPwd2.className = "red";
     document.querySelector("#pwdconf~span").className = "invalid";
     document.querySelector("#pwdconf~span").textContent = "Passwords must match.";
@@ -133,7 +133,7 @@ function companyName() {
   } else {
     document.querySelector("#companyname").className = "red";
     document.querySelector("#companyname~span").className = "invalid";
-    document.querySelector("#companyname~span").textContent = "Company name must be between 2 and 30 letters.";
+    document.querySelector("#companyname~span").textContent = "Company name must be between 2 and 30 characters.";
     return false;
   }
 }
@@ -151,7 +151,7 @@ function companyTitle() {
   } else {
     document.querySelector("#companytitle").className = "red";
     document.querySelector("#companytitle~span").className = "invalid";
-    document.querySelector("#companytitle~span").textContent = "Company title must be between 2 and 30 letters.";
+    document.querySelector("#companytitle~span").textContent = "Company title must be between 2 and 30 characters";
     return false;
   }
 }
