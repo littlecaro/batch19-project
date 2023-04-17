@@ -11,7 +11,7 @@ $_SESSION["userId"] = 1; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/9d1def913c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./public/css/styleMain.css" />
-
+    <link rel="shortcut icon" href="./public/images/favicon_io/favicon.ico" type="image/x-icon">
     <title><?= $title; ?></title>
 </head>
 

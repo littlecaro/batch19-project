@@ -121,12 +121,15 @@ class UserManager extends Manager
     {
         $db = $this->dbConnect();
         //hash pw
+
+        $defaultProfilePic = "./public/images/uploaded/defaultComp.jpg";
+
         $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
         //inserting first into companies table
         //then set the most recent insert id as the id for users table, then insert there too
-        $preparedinsertSql = "INSERT INTO companies (name, email) VALUES (:companyname, :email);
+        $preparedinsertSql = "INSERT INTO companies (name, email, logo_img) VALUES (:companyname, :email, :inProfile_picture);
         SET @last_id_in_table1 = LAST_INSERT_ID();
-        INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0)";
+        INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type, profile_picture) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0, :inProfile_picture)";
         $req = $db->prepare($preparedinsertSql);
 
         $req->bindParam(':first_name', $firstName, PDO::PARAM_STR);
@@ -135,6 +138,7 @@ class UserManager extends Manager
         $req->bindParam(':email', $email, PDO::PARAM_STR);
         $req->bindParam(':companyname', $companyName, PDO::PARAM_STR);
         $req->bindParam(':companytitle', $companyTitle, PDO::PARAM_STR);
+        $req->bindParam(':inProfile_picture', $defaultProfilePic, PDO::PARAM_STR);
 
         return $req->execute();
     }
