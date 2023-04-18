@@ -88,13 +88,29 @@ ob_start();
                         }
                         ?>
         </div>
+            <?php
+                $interviews = $calendarManager->loadPastTalentInterviews($id);
+                if (!empty($interviews)) {
+            ?>
+            
+            <h1><i class="fa-solid fa-handshake-simple"></i>Past Interviews with <?= htmlspecialchars($talent->first_name) ?></h1>
+                <div class="landingAvail">
+                    <?php
+                    for ($i = 0; $i < count($interviews); $i++) {
+                        include("./view/components/landingTalentBookedMeetings.php");
+                    } 
+                    ?>
+                </div>
+            <?php }
+            ?>
+        
 
             <?php
-
-            if (!empty($interviews)) {
+                $interviews = $calendarManager->loadTalentInterviews($id);
+                if (!empty($interviews)) {
                 ?>
                 <h1><i class="fa-solid fa-handshake-simple"></i>
-                You already have an interview scheduled with <?= htmlspecialchars($talent->first_name) ?? 'user'?></h1>
+                Scheduled Interviews with <?= htmlspecialchars($talent->first_name) ?? 'user'?></h1>
                 <div class="landingAvail">
                 <?php
                 for ($i = 0; $i < count($interviews); $i++) {

@@ -91,8 +91,27 @@ exit;
             ?>
         </div>
     </button>
+    
+    <?php
+            $receives = $calendarManager->loadPastInterviews($_SESSION['id']);
+            if (!empty($receives)) {
+    ?>
+    <div id="pastInterviews">
+    <h1><i class="fa-solid fa-handshake-simple"></i>Past Interviews</h1>
+    <button class="landingBtn">
+        <div class="landingAvail">
+            <?php
+            for ($i = 0; $i < count($receives); $i++) {
+                include("./view/components/landingInterviewCard.php");
+            } 
+            ?>
+        </div>
+    </button>
+    <?php }
+    ?>
+    </div>
 
-    <h1><i class="fa-solid fa-handshake-simple"></i>Interviews</h1>
+    <h1><i class="fa-solid fa-handshake-simple"></i>Scheduled Interviews</h1>
     <button class="landingBtn" onclick="showCalendarPage()">
         <div class="landingAvail">
             <?php
@@ -109,3 +128,7 @@ exit;
         </div>
     </button>
 </div>
+
+<script>
+    landing.firstElementChild.appendChild(pastInterviews);
+</script>

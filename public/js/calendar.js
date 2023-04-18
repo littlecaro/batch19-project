@@ -1,4 +1,5 @@
 function loadCalendar() {
+  const today = new Date();
   let offset = 0;
 
   const calendar = document.querySelector(".calendar");
@@ -28,7 +29,6 @@ function loadCalendar() {
   function displayCal(x = 0) {
     calendar.innerHTML = "";
     confirmedContainer.innerHTML = "";
-    const today = new Date();
     const dayOfWeek = today.getDay();
     for (let i = 6; i <= 20; i++) {
       const tr = document.createElement("tr");
@@ -82,7 +82,13 @@ function loadCalendar() {
           } else {
             td.setAttribute("data-time", `${i}:00:00`);
           }
-          td.innerHTML = `${td.dataset.time.slice(0, 5)}`;
+          if (td.dataset.unix < Date.now()) {
+            td.className = "prior";
+          } else if (td.dataset.unix == Date.now() && td.dataset.time.slice(0, 2) <= today.getHours()) {
+            td.className = "prior";
+          } else {
+            td.innerHTML = `${td.dataset.time.slice(0, 5)}`;
+          }
           tr.appendChild(td);
         }
       }
@@ -227,20 +233,26 @@ function loadCalendar() {
         return;
       });
     });
-    table.addEventListener("mouseup", function () {
-      table.style.cursor = "grab";
-      isMouseUp = true;
-      displayChoices();
-      return;
-    });
+    // table.addEventListener("mouseup", function () {
+    //   table.style.cursor = "grab";
+    //   isMouseUp = true;
+    //   displayChoices();
+    //   return;
+    // });
     for (let td of tds) {
+      td.addEventListener("mouseup", function () {
+        table.style.cursor = "grab";
+        isMouseUp = true;
+        displayChoices();
+        return;
+      });
       td.addEventListener("mousemove", function (e) {
-        if (!isMouseUp && !td.classList.contains("confirmed") && !td.classList.contains("interview")) {
+        if (!isMouseUp && !td.classList.contains("confirmed") && !td.classList.contains("interview") && !td.classList.contains("prior")) {
           td.className = "selected";
         }
       });
       td.addEventListener("click", function (e) {
-        if (!td.classList.contains("confirmed") && !td.classList.contains("interview")) {
+        if (!td.classList.contains("confirmed") && !td.classList.contains("interview") && !td.classList.contains("prior")) {
           td.className = "selected";
           displayChoices();
         }
@@ -253,9 +265,6 @@ function loadCalendar() {
     if (oldSelection) {
       oldSelection.remove();
     }
-    const selection = document.createElement("div");
-    selection.setAttribute("class", "selection");
-    dynaUpdate.appendChild(selection);
 
     const selected = document.querySelectorAll(".selected");
     // sort selection by date instead of time
@@ -264,76 +273,82 @@ function loadCalendar() {
     function sorter(a, b) {
       return a.dataset.compare.localeCompare(b.dataset.compare);
     }
-    for (let i = 0; i < sorted.length; i++) {
-      let newDate = true;
-      if (i != 0) {
-        newDate = sorted[i].dataset.compare > sorted[i - 1].dataset.compare ? true : false;
+    if (sorted.length != 0) {
+      const selection = document.createElement("div");
+      selection.setAttribute("class", "selection");
+      dynaUpdate.appendChild(selection);
+
+      for (let i = 0; i < sorted.length; i++) {
+        let newDate = true;
+        if (i != 0) {
+          newDate = sorted[i].dataset.compare > sorted[i - 1].dataset.compare ? true : false;
+        }
+        if (newDate) {
+          // console.log(sorted[i].dataset.unix);
+          const sortDiv = document.createElement("div");
+          sortDiv.setAttribute("class", "sortedEntry");
+          sortDiv.setAttribute("data-id", `${sorted[i].dataset.compare}`);
+          let titleDiv = document.createElement("div");
+          titleDiv.setAttribute("class", "titleDate");
+          let titleDateNow = new Date(parseInt(sorted[i].dataset.unix));
+          let titleDay = document.createElement("p");
+          titleDay.textContent = `${dayStr(titleDateNow.getDay())}, `;
+          titleDiv.appendChild(titleDay);
+
+          let titleDate = document.createElement("p");
+          titleDate.textContent = `${sorted[i].dataset.datestr}`;
+          titleDiv.appendChild(titleDate);
+          sortDiv.appendChild(titleDiv);
+
+          let timeDiv = document.createElement("div");
+          timeDiv.setAttribute("class", "timeDiv");
+          let time = document.createElement("p");
+          time.textContent = `${sorted[i].dataset.time.slice(0, 5)}`;
+          timeDiv.appendChild(time);
+          sortDiv.appendChild(timeDiv);
+
+          let undoBtn = document.createElement("button");
+          undoBtn.textContent = "Undo";
+          undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
+          undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
+          undoBtn.addEventListener("click", unselect);
+          timeDiv.appendChild(undoBtn);
+          selection.appendChild(sortDiv);
+        } else {
+          const sortDiv = document.querySelector(`[data-id=${CSS.escape(sorted[i].dataset.compare)}]`);
+          let timeDiv = document.createElement("div");
+          timeDiv.setAttribute("class", "timeDiv");
+          let time = document.createElement("p");
+          time.textContent = `${sorted[i].dataset.time.slice(0, 5)}`;
+          timeDiv.appendChild(time);
+
+          let undoBtn = document.createElement("button");
+          undoBtn.textContent = "Undo";
+          undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
+          undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
+          undoBtn.addEventListener("click", unselect);
+          timeDiv.appendChild(undoBtn);
+          sortDiv.appendChild(timeDiv);
+        }
       }
-      if (newDate) {
-        // console.log(sorted[i].dataset.unix);
-        const sortDiv = document.createElement("div");
-        sortDiv.setAttribute("class", "sortedEntry");
-        sortDiv.setAttribute("data-id", `${sorted[i].dataset.compare}`);
-        let titleDiv = document.createElement("div");
-        titleDiv.setAttribute("class", "titleDate");
-        let titleDateNow = new Date(parseInt(sorted[i].dataset.unix));
-        let titleDay = document.createElement("p");
-        titleDay.textContent = `${dayStr(titleDateNow.getDay())}, `;
-        titleDiv.appendChild(titleDay);
-
-        let titleDate = document.createElement("p");
-        titleDate.textContent = `${sorted[i].dataset.datestr}`;
-        titleDiv.appendChild(titleDate);
-        sortDiv.appendChild(titleDiv);
-
-        let timeDiv = document.createElement("div");
-        timeDiv.setAttribute("class", "timeDiv");
-        let time = document.createElement("p");
-        time.textContent = `${sorted[i].dataset.time.slice(0, 5)}`;
-        timeDiv.appendChild(time);
-        sortDiv.appendChild(timeDiv);
-
-        let undoBtn = document.createElement("button");
-        undoBtn.textContent = "Undo";
-        undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
-        undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
-        undoBtn.addEventListener("click", unselect);
-        timeDiv.appendChild(undoBtn);
-        selection.appendChild(sortDiv);
-      } else {
-        const sortDiv = document.querySelector(`[data-id=${CSS.escape(sorted[i].dataset.compare)}]`);
-        let timeDiv = document.createElement("div");
-        timeDiv.setAttribute("class", "timeDiv");
-        let time = document.createElement("p");
-        time.textContent = `${sorted[i].dataset.time.slice(0, 5)}`;
-        timeDiv.appendChild(time);
-
-        let undoBtn = document.createElement("button");
-        undoBtn.textContent = "Undo";
-        undoBtn.setAttribute("data-php", `${sorted[i].dataset.php}`);
-        undoBtn.setAttribute("data-time", `${sorted[i].dataset.time}`);
-        undoBtn.addEventListener("click", unselect);
-        timeDiv.appendChild(undoBtn);
-        sortDiv.appendChild(timeDiv);
-      }
+      let div = document.createElement("div");
+      div.setAttribute("id", "bottomButtons");
+      const undoAll = document.createElement("button");
+      undoAll.textContent = "Undo all";
+      undoAll.addEventListener("click", () => {
+        displayCal(offset);
+        let selection = document.querySelector(".selection");
+        if (selection) {
+          selection.remove();
+        }
+      });
+      div.appendChild(undoAll);
+      const confirm = document.createElement("button");
+      confirm.textContent = "Confirm";
+      confirm.addEventListener("click", sendIt);
+      div.appendChild(confirm);
+      selection.appendChild(div);
     }
-    let div = document.createElement("div");
-    div.setAttribute("id", "bottomButtons");
-    const undoAll = document.createElement("button");
-    undoAll.textContent = "Undo all";
-    undoAll.addEventListener("click", () => {
-      displayCal(offset);
-      let selection = document.querySelector(".selection");
-      if (selection) {
-        selection.remove();
-      }
-    });
-    div.appendChild(undoAll);
-    const confirm = document.createElement("button");
-    confirm.textContent = "Confirm";
-    confirm.addEventListener("click", sendIt);
-    div.appendChild(confirm);
-    selection.appendChild(div);
   }
 
   function unselect(e) {
@@ -344,6 +359,7 @@ function loadCalendar() {
         e.target.parentNode.remove();
       }
     }
+    displayChoices();
   }
 
   function sendIt() {
@@ -561,3 +577,33 @@ function loadCalendar() {
     xhr.send(null);
   }
 }
+
+// function purgePrior(entries) {
+//   console.log(entries);
+//   let entriesArr = [];
+//   for (let entry of entries) {
+//     let entryUnix = parseInt(new Date(entry.date).getTime().toFixed(0));
+//     let entryHour = entry.time_start.slice(0, 2);
+//     let nowUnix = Date.now();
+//     let entryCompare = Math.floor(entryUnix.toString().slice(0, 5));
+//     let nowCompare = Math.floor(nowUnix.toString().slice(0, 5));
+//     let nowHour = today.getHours();
+//     if (entryCompare < nowCompare || (entryCompare == nowCompare && entryHour <= nowHour)) {
+//       entriesArr.push({
+//         date: `${entry.date}`,
+//         time: `${entry.time_start}`,
+//       });
+//     }
+//   }
+
+//   entriesArr = JSON.stringify(entriesArr);
+//   console.log(entriesArr);
+//   let xhr = new XMLHttpRequest();
+//   xhr.open("POST", `./index.php?action=deleteCalendarEntry&entry=${entriesArr}`);
+
+//   xhr.addEventListener("load", function () {
+//     // location.reload();
+//   });
+
+//   xhr.send(null);
+// }

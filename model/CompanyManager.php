@@ -119,6 +119,7 @@ class CompanyManager extends Manager
                                 INNER JOIN users u
                                 ON u.id = ua.user_id
                                 WHERE r.company_id = :compID
+                                AND r.is_active = 1
                                 ORDER BY ua.date, ua.time_start');
         $req->bindParam("compID", $compID, PDO::PARAM_INT); // TODO: get companyId from $_SESSION
 

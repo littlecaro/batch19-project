@@ -33,7 +33,7 @@ exit;
 </div>
 <dialog id="favDialog">
   <form method="dialog">
-    <p>Please submit your entries before going to a different week</p>
+    <p>Please submit your current entries before selecting a different week</p>
     <div>
       <button>Ok</button>
     </div>

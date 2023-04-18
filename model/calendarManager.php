@@ -42,6 +42,35 @@ class CalendarManager extends Manager
                 INNER JOIN companies c
                 ON r.company_id = c.id
                 WHERE ua.user_id = :user_id
+                AND r.is_active = 1
+                ORDER BY ua.date, ua.time_start'
+        );
+
+        $req->bindParam('user_id', $user_id, PDO::PARAM_INT);
+        $req->execute();
+
+        $receives = $req->fetchAll(PDO::FETCH_OBJ);
+
+        return $receives;
+    }
+
+    public function loadPastInterviews($user_id)
+    {
+        $db = $this->dbConnect();
+
+        $user_id = strip_tags($user_id);
+
+        $req = $db->prepare(
+            'SELECT j.title, c.name, ua.date, ua.time_start, r.id
+            FROM reservations r
+                INNER JOIN user_availability ua
+                ON r.user_availability_id = ua.id
+                INNER JOIN jobs j
+                ON r.job_id = j.id
+                INNER JOIN companies c
+                ON r.company_id = c.id
+                WHERE ua.user_id = :user_id
+                AND r.is_active = 0
                 ORDER BY ua.date, ua.time_start'
         );
 
@@ -70,11 +99,11 @@ class CalendarManager extends Manager
         return $query->execute();
     }
 
-    public function updateDeletion($date, $time)
+    public function updateDeletion($date, $time, $id = null)
     {
         $db = $this->dbConnect();
 
-        // $user_id = $_SESSION['user_id'] ?? 1;
+        $id ?? $_SESSION['id'];
 
         $query = '  DELETE FROM user_availability 
                     WHERE user_id = :user_id 
@@ -83,9 +112,9 @@ class CalendarManager extends Manager
                     AND is_active = 1';
 
         $query = $db->prepare($query);
-        $query->bindParam('user_id', $_SESSION['id'], PDO::PARAM_INT);
-        $query->bindParam('date_php', strip_tags($date), PDO::PARAM_STR);
-        $query->bindParam('time_php', strip_tags($time), PDO::PARAM_STR);
+        $query->bindParam('user_id', $id, PDO::PARAM_INT);
+        $query->bindParam('date_php', $date, PDO::PARAM_STR);
+        $query->bindParam('time_php', $time, PDO::PARAM_STR);
 
         return $query->execute();
     }
@@ -104,6 +133,7 @@ class CalendarManager extends Manager
 
         return $query->execute();
     }
+
     public function getMeetingDetails($uaID)
     {
         $db = $this->dbConnect();
@@ -131,6 +161,7 @@ From
         $result =  $query->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
+
     public function loadTalentInterviews($id)
     {
         $compID = getCompanyID($_SESSION['id']);
@@ -150,6 +181,7 @@ From
                                 ON r.company_id = c.id
                                 WHERE c.id = :comp_id
                                 AND ua.user_id = :user_id
+                                AND r.is_active = 1
                                 ORDER BY ua.date, ua.time_start'
         );
 
@@ -160,5 +192,50 @@ From
         $interviews = $req->fetchAll(PDO::FETCH_OBJ);
 
         return $interviews;
+    }
+
+    public function loadPastTalentInterviews($id)
+    {
+        $compID = getCompanyID($_SESSION['id']);
+
+        $db = $this->dbConnect();
+
+        $user_id = strip_tags($id);
+
+        $req = $db->prepare(
+            'SELECT j.title, c.name, ua.date, ua.time_start, r.id
+                            FROM reservations r
+                                INNER JOIN user_availability ua
+                                ON r.user_availability_id = ua.id
+                                INNER JOIN jobs j
+                                ON r.job_id = j.id
+                                INNER JOIN companies c
+                                ON r.company_id = c.id
+                                WHERE c.id = :comp_id
+                                AND ua.user_id = :user_id
+                                AND r.is_active = 0
+                                ORDER BY ua.date, ua.time_start'
+        );
+
+        $req->bindParam('user_id', $id, PDO::PARAM_INT);
+        $req->bindParam('comp_id', $compID, PDO::PARAM_INT);
+        $req->execute();
+
+        $interviews = $req->fetchAll(PDO::FETCH_OBJ);
+
+        return $interviews;
+    }
+
+    public function updateMeeting($id) {
+        $db = $this->dbConnect();
+
+        $query = '  UPDATE reservations 
+                    SET is_active = 0 
+                    WHERE id = :id';
+
+        $query = $db->prepare($query);
+        $query->bindParam('id', $id, PDO::PARAM_INT);
+
+        return $query->execute();
     }
 }
