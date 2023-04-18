@@ -12,40 +12,45 @@
 //  * @param {HTMLElement} toExpand - The chat box to expand.
 //  */
 
-// // Function to expand the chatboxes and toggle the chevron icon
-// function chatBoxExpand(toExpand) {
-//   // Toggle the 'expand' class to show/hide the chatbox content
-//   toExpand.classList.toggle("expand");
-//   //Checks if the chevron exists
-//   try {
-//     let innerElem = toExpand.querySelector(".expandableWrapper ");
-//     innerElem.classList.toggle("expand");
-//   } catch (error) {
-//     innerElem = null;
-//   }
-//   // console.log(toExpand);
-//   if (typeof innerElem !== "undefined" && !toExpand.classList.contains("newChatBox")) {
-//     chevronSwitch(toExpand);
-//   }
-// }
-// // Chevron switch up and down
-// function chevronSwitch(toExpand) {
-//   // Toggle the chevron icon to point up/down depending on the chatbox state
-//   const chevron = toExpand.previousElementSibling.lastElementChild.lastElementChild;
-//   // console.log(chevron);
-//   if (chevron.classList[1] == "fa-chevron-up") {
-//     chevron.classList.remove("fa-chevron-up");
-//     chevron.classList.add("fa-chevron-down");
-//   } else {
-//     chevron.classList.remove("fa-chevron-down");
-//     chevron.classList.add("fa-chevron-up");
-//   }
-// }
-// /**
-//  * Loads the messages of a thread using an XMLHttpRequest.
-//  * @param {MessageThread} thread - The thread whose messages to load.
-//  * @returns {string} - The response from the server.
-//  */
+// Function to expand the chatboxes and toggle the chevron icon
+function chatBoxExpand(toExpand) {
+  // Toggle the 'expand' class to show/hide the chatbox content
+  toExpand.classList.toggle("expand");
+  //Checks if the chevron exists
+  try {
+    let innerElem = toExpand.querySelector(".expandableWrapper ");
+    innerElem.classList.toggle("expand");
+  } catch (error) {
+    innerElem = null;
+  }
+  console.log(toExpand.classList.contains("messageContainer"));
+  console.log(toExpand.parentElement);
+  if (
+    typeof innerElem !== "undefined" &&
+    !toExpand.classList.contains("newChatBox") &&
+    !toExpand.parentElement.classList.contains("newChatBox")
+  ) {
+    chevronSwitch(toExpand);
+  }
+}
+// Chevron switch up and down
+function chevronSwitch(toExpand) {
+  // Toggle the chevron icon to point up/down depending on the chatbox state
+  const chevron = toExpand.previousElementSibling.lastElementChild.lastElementChild;
+  console.log(chevron);
+  if (chevron.classList[1] == "fa-chevron-up") {
+    chevron.classList.remove("fa-chevron-up");
+    chevron.classList.add("fa-chevron-down");
+  } else {
+    chevron.classList.remove("fa-chevron-down");
+    chevron.classList.add("fa-chevron-up");
+  }
+}
+/**
+ * Loads the messages of a thread using an XMLHttpRequest.
+ * @param {MessageThread} thread - The thread whose messages to load.
+ * @returns {string} - The response from the server.
+ */
 
 // function loadMessages(thread) {
 //   let xhr = new XMLHttpRequest();

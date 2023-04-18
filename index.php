@@ -327,6 +327,10 @@ try {
             $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
             deleteRoleMeetings($rJob);
             break;
+        case "getCounterpartInfo":
+            $conversationId = strip_tags($_POST['conversationId']) ?? null;
+            $counterpart = getCounterpartInfo($conversationId);
+            break;
         default:
             showIndex();
             break;
