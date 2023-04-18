@@ -202,6 +202,7 @@ try {
             $visa = $_POST['visa'] ?? null;
             $oldImage = $_POST['oldImage'] ?? null;
             $profilePic = !empty($_FILES['profilePic']['name']) ? $_FILES['profilePic'] : null;
+            
             updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage);
             break;
         case "updateUserEducation":
@@ -325,6 +326,10 @@ try {
         case "cancelRoleMeetings":
             $rJob = strip_tags($_REQUEST['reserveJob']) ?? null;
             deleteRoleMeetings($rJob);
+            break;
+        case "getCounterpartInfo":
+            $conversationId = strip_tags($_POST['conversationId']) ?? null;
+            $counterpart = getCounterpartInfo($conversationId);
             break;
         default:
             showIndex();

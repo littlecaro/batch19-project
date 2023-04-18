@@ -38,10 +38,10 @@ ob_start();
 
         <h1><i class="fa-solid fa-graduation-cap"></i>Highest Education</h1>
         <div class="landingEducation">
-            <?php if(!empty($education)){
+            <?php if(!empty($education->degree)){
                         include("./view/components/landingEducationCard.php");
                     } else {
-                        echo "<b>This user has not inserted any education.</b>";
+                        echo "<b>User has not inserted any education.</b>";
                     } ?>
         </div>
 
@@ -52,7 +52,7 @@ ob_start();
                         foreach($profExps as $profExp)
                             include("./view/components/landingExperienceCard.php");
                     } else {
-                        echo "<b>This user has not inserted any job experience.</b>";
+                        echo "<b>User has not inserted any job experience.</b>";
                     } ?>
         </div>
 
@@ -70,7 +70,7 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "<b>This user has not inserted any technical skills.</b><br>";
+                            echo "<b>User has not inserted any technical skills.</b><br>";
                         }
                             
                         if(!empty($languages)){
@@ -84,17 +84,33 @@ ob_start();
                             </div>
                             <?php
                         } else {
-                            echo "<b><br>This user has not inserted any languages.</b>";
+                            echo "<b><br>User has not inserted any languages.</b>";
                         }
                         ?>
         </div>
+            <?php
+                $interviews = $calendarManager->loadPastTalentInterviews($id);
+                if (!empty($interviews)) {
+            ?>
+            
+            <h1><i class="fa-solid fa-handshake-simple"></i>Past Interviews with <?= htmlspecialchars($talent->first_name) ?></h1>
+                <div class="landingAvail">
+                    <?php
+                    for ($i = 0; $i < count($interviews); $i++) {
+                        include("./view/components/landingTalentBookedMeetings.php");
+                    } 
+                    ?>
+                </div>
+            <?php }
+            ?>
+        
 
             <?php
-
-            if (!empty($interviews)) {
+                $interviews = $calendarManager->loadTalentInterviews($id);
+                if (!empty($interviews)) {
                 ?>
                 <h1><i class="fa-solid fa-handshake-simple"></i>
-                You already have an interview scheduled with <?= htmlspecialchars($talent->first_name) ?? 'user'?></h1>
+                Scheduled Interviews with <?= htmlspecialchars($talent->first_name) ?? 'user'?></h1>
                 <div class="landingAvail">
                 <?php
                 for ($i = 0; $i < count($interviews); $i++) {

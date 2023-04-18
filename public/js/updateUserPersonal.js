@@ -50,8 +50,8 @@ function updateUserPersonal(e) {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       window.location.href = "http://localhost/sites/batch19-project/index.php?action=userProfileView";
       let response = xhr.responseText;
-      console.log(response);
-      personalUpdateStatus.textContent = response;
+      // console.log(response);
+      // personalUpdateStatus.textContent = response;
     }
   });
   xhr.send(formData);

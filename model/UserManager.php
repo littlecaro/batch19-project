@@ -121,12 +121,15 @@ class UserManager extends Manager
     {
         $db = $this->dbConnect();
         //hash pw
+
+        $defaultProfilePic = "./public/images/uploaded/defaultComp.jpg";
+
         $pwdHash = password_hash($pwd, PASSWORD_DEFAULT);
         //inserting first into companies table
         //then set the most recent insert id as the id for users table, then insert there too
-        $preparedinsertSql = "INSERT INTO companies (name) VALUES (:companyname);
+        $preparedinsertSql = "INSERT INTO companies (name, email, logo_img) VALUES (:companyname, :email, :inProfile_picture);
         SET @last_id_in_table1 = LAST_INSERT_ID();
-        INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0)";
+        INSERT INTO users (first_name,last_name,password,email,user_bio,company_id,login_type, profile_picture) VALUES (:first_name, :last_name, :pwdHash, :email, :companytitle, @last_id_in_table1, 0, :inProfile_picture)";
         $req = $db->prepare($preparedinsertSql);
 
         $req->bindParam(':first_name', $firstName, PDO::PARAM_STR);
@@ -135,6 +138,7 @@ class UserManager extends Manager
         $req->bindParam(':email', $email, PDO::PARAM_STR);
         $req->bindParam(':companyname', $companyName, PDO::PARAM_STR);
         $req->bindParam(':companytitle', $companyTitle, PDO::PARAM_STR);
+        $req->bindParam(':inProfile_picture', $defaultProfilePic, PDO::PARAM_STR);
 
         return $req->execute();
     }
@@ -179,7 +183,7 @@ class UserManager extends Manager
     public function getCitiesList()
     {
         $db = $this->dbConnect();
-        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities');
+        $res = $db->query('SELECT id, CONCAT(name, " - ", country_code) AS item FROM cities_kr');
         $cities = $res->fetchAll(PDO::FETCH_ASSOC);
         return $cities;
     }
@@ -187,7 +191,7 @@ class UserManager extends Manager
     public function getCityName($cityId)
     {
         $db = $this->dbConnect();
-        $cityName = ("SELECT name FROM cities WHERE id = :inCityId");
+        $cityName = ("SELECT name FROM cities_kr WHERE id = :inCityId");
         $req = $db->prepare($cityName);
         $req->bindParam(':inCityId', $cityId, PDO::PARAM_INT);
         $req->execute();
@@ -209,7 +213,7 @@ class UserManager extends Manager
     {
         $db = $this->dbConnect();
         // this is to check and get the city id from the cities table. cities -> city_id(matching the city name) -> pass id inside users.
-        $getCityId = "SELECT id FROM cities where name = :inCity AND country_code = 'KR' "; //query
+        $getCityId = "SELECT id FROM cities_kr WHERE name = :inCity AND country_code = 'KR' "; //query
         $req = $db->prepare($getCityId);
         $req->bindParam(':inCity', $city, PDO::PARAM_STR);
         $cityId = $req->execute();
@@ -223,15 +227,16 @@ class UserManager extends Manager
         $req->bindParam('inSalary', $salary, PDO::PARAM_INT);
         $req->bindParam('inVisa', $visa, PDO::PARAM_INT);
         $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
-        $result1 = $req->execute();
+        $result = $req->execute();
+        return $result;
 
-        $query = "UPDATE users SET profile_picture = :inProfilePic WHERE id = :userID";
-        $req = $db->prepare($query);
-        $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
-        $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
+        // $query = "UPDATE users SET profile_picture = :inProfilePic WHERE id = :userID";
+        // $req = $db->prepare($query);
+        // $req->bindParam("userID", $USER_ID, PDO::PARAM_INT);
+        // $req->bindParam("inProfilePic", $profilePic, PDO::PARAM_STR);
 
-        $result2 = $req->execute();
-        return [$result1, $result2];
+        // $result2 = $req->execute();
+        // return [$result1, $result2];
     }
 
     // public function getEducationLevel($educationId)
@@ -378,5 +383,38 @@ class UserManager extends Manager
         } else {
             return true;
         }
+    }
+    public function getMessengerCounterPartInfo($conversationId, $userId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare("SELECT DISTINCT sender_id, recipient_id FROM messages WHERE conversation_id=:conversationId");
+        $req->bindParam('conversationId', $conversationId, PDO::PARAM_INT);
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_OBJ);
+        $recipientId = $res[0]->recipient_id;
+        $senderId = $res[0]->sender_id;
+        $req = $db->prepare("SELECT
+    users.first_name,
+    users.last_name,
+    users.user_bio,
+    users.email,
+    users.phone_number,
+    users.profile_picture,
+    companies.name,
+    companies.company_address,
+    companies.email As email1,
+    companies.logo_img,
+    companies.website_address,
+    companies.phone_number As phone_number1
+From
+    users Inner Join
+    companies On users.company_id = companies.id WHERE users.id!=:userId AND (users.id=:recipientId OR users.id=:senderId)");
+        $req->bindParam('userId', $userId, PDO::PARAM_INT);
+        $req->bindParam('recipientId', $recipientId, PDO::PARAM_INT);
+        $req->bindParam('senderId', $senderId, PDO::PARAM_INT);
+        $req->execute();
+        $counterpart = $req->fetchAll(PDO::FETCH_OBJ);
+
+        return $counterpart;
     }
 }

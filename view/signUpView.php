@@ -37,42 +37,49 @@ ob_start();
             <th>First name</th>
             <td>
               <input type="text" name="fName" id="fName" placeholder="First name">
+              <span></span>
             </td>
           </tr>
           <tr>
             <th>Last name</th>
             <td>
               <input type="text" name="lName" id="lName" placeholder="Last name">
+              <span></span>
             </td>
           </tr>
           <tr>
             <th>E-mail</th>
             <td>
               <input type="text" name="email" id="email" placeholder="E-mail" />
+              <span></span>
             </td>
           </tr>
           <tr>
             <th>Password</th>
             <td>
               <input type="text" name="pwd" id="pwd" placeholder="Password" />
+              <span></span>
             </td>
           </tr>
           <tr>
             <th>Password confirmation</th>
             <td>
               <input type="text" name="pwdconf" id="pwdconf" placeholder="Type your password again" />
+              <span></span>
             </td>
           </tr>
           <tr class="company-input">
             <th>Company Name</th>
             <td>
               <input type="text" name="companyname" id="companyname" class="companyonly" placeholder="Company Name" />
+              <span></span>
             </td>
           </tr>
           <tr class="company-input">
             <th>Company Job Title</th>
             <td>
               <input type="text" name="companytitle" id="companytitle" class="companyonly" placeholder="Your role in the company." />
+              <span></span>
             </td>
           </tr>
           <tr>

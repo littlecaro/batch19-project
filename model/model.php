@@ -105,8 +105,8 @@ FROM
     $rec = $query->fetchAll(PDO::FETCH_OBJ);
     $companyId = $rec[0]->company_id;
     $str = 'SELECT
-    cities.name AS city_name,
-    cities.country_code AS country_code,
+    cities_kr.name AS city_name,
+    cities_kr.country_code AS country_code,
     jobs.id as jobId,
     jobs.company_id,
     jobs.title,
@@ -121,7 +121,7 @@ FROM
     companies.website_address
 FROM
     jobs INNER JOIN
-    cities ON jobs.city_id = cities.id INNER JOIN
+    cities_kr ON jobs.city_id = cities_kr.id INNER JOIN
     companies ON jobs.company_id = companies.id
     WHERE companies.id = :companiesId';
     $db = dbConnect();
@@ -148,8 +148,8 @@ FROM
     $rec = $query->fetchAll(PDO::FETCH_OBJ);
     $companyId = $rec[0]->company_id;
     $str = 'SELECT
-    cities.name AS city_name,
-    cities.country_code AS country_code,
+    cities_kr.name AS city_name,
+    cities_kr.country_code AS country_code,
     jobs.id as jobId,
     jobs.company_id,
     jobs.title,
@@ -164,7 +164,7 @@ FROM
     companies.website_address
 FROM
     jobs INNER JOIN
-    cities ON jobs.city_id = cities.id INNER JOIN
+    cities_kr ON jobs.city_id = cities_kr.id INNER JOIN
     companies ON jobs.company_id = companies.id
     WHERE companies.id = :companiesId AND jobs.id = :jobId';
     $db = dbConnect();

@@ -8,9 +8,11 @@
                     echo htmlspecialchars($talent->first_name ?? null) . " " . htmlspecialchars($talent->last_name ?? null);
                     }; ?></h1>
         <p><b>Email:</b> <?= htmlspecialchars($talent->email); ?></p>
-        <p><b>Phone number:</b> <?= !empty($talent->phone_number) ? htmlspecialchars($talent->phone_number) : null; ?></p>
+        <p><b>Phone number:</b> <?= !empty($talent->phone_number) ? htmlspecialchars($talent->phone_number) : "User has not entered a phone number."; ?></p>
         <p><b>Current location:</b> <?php if(!empty($talent->city_id)) {
                                             echo "{$userManager->getCityName($talent->city_id)[0]->name}";
+                                            } else {
+                                                echo "User has not entered a city.";
                                             }  ?></p>
         <p><b>Uploaded resume:</b> <?php 
                                     if (!empty($talent->resume_file_url)) {
@@ -19,7 +21,7 @@
                                         <?php } else {
                                             echo "User has not uploaded a resume.";
                                         } ?></p>
-        <p><b>Expected salary (KRW):</b> <?= !empty($talent->desired_salary) ? htmlspecialchars($talent->desired_salary) : null; ?></p>
+        <p><b>Expected salary (KRW):</b> <?= !empty($talent->desired_salary) ? htmlspecialchars($talent->desired_salary) : "User has not entered an expected salary."; ?></p>
         <p><b>Need visa sponsorship:</b> <?php 
                                         if ($talent->visa_sponsorship == 1) 
                                         { 

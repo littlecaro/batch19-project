@@ -16,6 +16,7 @@ exit;
     <script src="https://kit.fontawesome.com/c8900437f0.js" crossorigin="anonymous"></script>
     <!-- fontawesome script link -->
     <link rel="stylesheet" href="./public/css/styleUserProfile.css" />
+    <link rel="shortcut icon" href="./public/images/favicon_io/favicon.ico" type="image/x-icon">
     <!-- We need to choose better font-family: googlefonts?! -->
     <script src="./public/js/scriptUserProfile.js"></script>
     <title>WaygukIn</title>

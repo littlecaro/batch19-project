@@ -64,3 +64,24 @@
   border-color: transparent;
   background-color: #eef3f8;
 }
+.counterpartProfileImg img {
+  width: 130px;
+  height: 130px;
+  margin-left: auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.messengerRight p {
+  margin: 4px;
+}
+.counterpartCompanyLogo {
+  height: 52px;
+  padding-left: 6px;
+}
+
+.messengerRight p:not(.messengerRight h2) {
+  padding-left: 25px;
+}
+.messengerRight h2 {
+  text-align: center;
+}

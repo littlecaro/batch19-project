@@ -73,7 +73,7 @@ function userSignUp($firstName, $lastName, $email, $pwd, $pwd2)
     //validate data
     $firstNameValid = preg_match("/^[A-Za-z._]+$/", $firstName);
     $lastNameValid = preg_match("/^[A-Za-z._]+$/", $lastName);
-    $pwdValid = preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $pwd);
+    $pwdValid = preg_match("/^.{8,}$/", $pwd);
     $pwd2Valid  = $pwd === $pwd2;
     $emailValid = preg_match("/^[a-z0-9_.@]{3,20}$/i", $_POST['email']);
 
@@ -195,6 +195,7 @@ function showChats()
 
 function showMessages($conversationId)
 {
+
     $messages = getMessages($conversationId);
     if ($messages) {
         foreach ($messages as $message) {
@@ -550,7 +551,6 @@ function talentRating($id, $yearsExperience, $skills, $desiredPositions, $highes
 
 function showUserProfileView()
 {
-
     $userManager = new UserManager();
     $user = $userManager->getUserProfile($_SESSION['id']);
     $experiences = $userManager->getUserExperience($_SESSION['id']);
@@ -562,12 +562,15 @@ function showUserProfileView()
     $allLanguages = $userManager->getLanguagesList();
     $allCities = $userManager->getCitiesList();
     $calendarManager = new CalendarManager();
+    purgePrior($_SESSION['id']);
     $entries = $calendarManager->loadCalendar($_SESSION['id']);
+    deactivateOldUserMeetings($_SESSION['id']);
     $receives = $calendarManager->loadInterviews($_SESSION['id']);
     if (isset($_SESSION['id'])) {
         $userId = $_SESSION['id'];
         $chats = loadChats($userId); // TODO: move this to signed in view
     }
+
     if (isset($user->profile_picture)) {
         $profileImg = $user->profile_picture;
     }
@@ -576,6 +579,31 @@ function showUserProfileView()
     require("./view/userProfileView.php");
 }
 
+function purgePrior($user_id) {
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadCalendar($user_id);
+    foreach($result as $entry) {
+        $d = "$entry->date $entry->time_start";
+        $ad = strtotime($d);
+        if ($ad < time()) {
+            $CalendarManager = new CalendarManager();
+            $result = $CalendarManager->updateDeletion($entry->date, $entry->time_start, $user_id);
+        }
+    }
+}
+
+function deactivateOldUserMeetings($user_id) {
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadInterviews($user_id);
+    foreach($result as $entry) {
+        $d = "$entry->date $entry->time_start";
+        $ad = strtotime($d);
+        if ($ad < time()) {
+            $CalendarManager = new CalendarManager();
+            $result = $CalendarManager->updateMeeting($entry->id);
+        }
+    }
+}
 
 function updateUserPersonal($id, $phoneNb, $city, $salary, $visa, $profilePic, $oldImage)
 {
@@ -913,8 +941,9 @@ function showTalentProfileView($id, $jobID = null)
     $skills = showSkills($id);
     $languages = showLanguages($id);
     $calendarManager = new CalendarManager();
+    purgePrior($id);
     $entries = $calendarManager->loadCalendar($id);
-    $interviews = $calendarManager->loadTalentInterviews($id);
+    deactivateOldTalentMeetings($id);
     if (isset($_SESSION['id'])) {
         $user = $userManager->getUserProfile($_SESSION['id']);
         $userId = $_SESSION['id'];
@@ -926,6 +955,19 @@ function showTalentProfileView($id, $jobID = null)
 
 
     require("./view/talentProfileView.php");
+}
+
+function deactivateOldTalentMeetings($user_id) {
+    $calendarManager = new CalendarManager();
+    $result = $calendarManager->loadTalentInterviews($user_id);
+    foreach($result as $entry) {
+        $d = "$entry->date $entry->time_start";
+        $ad = strtotime($d);
+        if ($ad < time()) {
+            $CalendarManager = new CalendarManager();
+            $result = $CalendarManager->updateMeeting($entry->id);
+        }
+    }
 }
 
 function bookInterview($uaID, $id, $jobID)
@@ -1038,4 +1080,12 @@ function partyMessageUnread($conversationId)
     $userManager = new UserManager();
     $count = $userManager->partyMessageUnread($conversationId);
     echo $count;
+}
+function getCounterpartInfo($conversationId)
+{
+    $user_id = $_SESSION["id"];
+    $userManager = new UserManager();
+    $counterpart = $userManager->getMessengerCounterPartInfo($conversationId, $user_id);
+
+    include("./view/components/counterPartMessengerCard.php");
 }

@@ -13,16 +13,12 @@ function addNewUserExperience(e) {
   console.log("userID:", userIdExperience.value);
 
   let xhr = new XMLHttpRequest();
-  xhr.open(
-    "POST",
-    `http://localhost/sites/batch19-project/index.php?action=addNewUserExperience`
-  );
+  xhr.open("POST", `http://localhost/sites/batch19-project/index.php?action=addNewUserExperience`);
   xhr.addEventListener("readystatechange", function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
-      window.location.href =
-        "http://localhost/sites/batch19-project/index.php?action=userProfileView";
-      let response = xhr.responseText;
-      experienceUpdateStatus.textContent = response;
+      window.location.href = "http://localhost/sites/batch19-project/index.php?action=userProfileView";
+      // let response = xhr.responseText;
+      // experienceUpdateStatus.textContent = response;
     }
   });
   xhr.send(formData);
